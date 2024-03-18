@@ -81,7 +81,7 @@ double KLObjective<MemorySpace>::ObjectivePlusCoeffGradImpl(StridedMatrix<const 
                 },
                 thisRowSum);
 
-                grad(row) = thisRowSum;
+                grad(row) += thisRowSum;
             }
         );
         Kokkos::fence();
@@ -122,10 +122,36 @@ void KLObjective<MemorySpace>::CoeffGradImpl(StridedMatrix<const double, MemoryS
                 innerUpdate += scale*densityGradX(row,col);
             },
             thisRowSum);
-            grad(row) = thisRowSum;
+            grad(row) += thisRowSum;
         }
     );
     Kokkos::fence();
+}
+
+// Implement SumObjective<MemorySpace> methods
+template<typename MemorySpace>
+double SumObjective<MemorySpace>::ObjectivePlusCoeffGradImpl(StridedMatrix<const double, MemorySpace> data, StridedVector<double, MemorySpace> grad, std::shared_ptr<ConditionalMapBase<MemorySpace>> map) const {
+    double sum = 0.;
+    for(auto& objective : objectives_) {
+        sum += objective->ObjectivePlusCoeffGradImpl(data, grad, map);
+    }
+    return sum;
+}
+
+template<typename MemorySpace>
+double SumObjective<MemorySpace>::ObjectiveImpl(StridedMatrix<const double, MemorySpace> data, std::shared_ptr<ConditionalMapBase<MemorySpace>> map) const {
+    double sum = 0.;
+    for(auto& objective : objectives_) {
+        sum += objective->ObjectiveImpl(data, map);
+    }
+    return sum;
+}
+
+template<typename MemorySpace>
+void SumObjective<MemorySpace>::CoeffGradImpl(StridedMatrix<const double, MemorySpace> data, StridedVector<double, MemorySpace> grad, std::shared_ptr<ConditionalMapBase<MemorySpace>> map) const {
+    for(auto& objective : objectives_) {
+        objective->CoeffGradImpl(data, grad, map);
+    }
 }
 
 // Explicit template instantiation

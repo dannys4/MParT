@@ -11,11 +11,21 @@
 using namespace mpart;
 using namespace Catch;
 
+using MemorySpace=Kokkos::HostSpace;
+std::tuple<KLObjective<MemorySpace>,StridedMatrix<double, MemorySpace>> SampleObjective(unsigned int dim = 2, unsigned int seed = 28402, unsigned int N_samples = 20'000, double test_prop = 0.2) {
+    unsigned int N_testpts = N_samples * test_prop;
+    std::shared_ptr<GaussianSamplerDensity<Kokkos::HostSpace>> density = std::make_shared<GaussianSamplerDensity<Kokkos::HostSpace>>(dim);
+    density->SetSeed(seed);
+    StridedMatrix<double, Kokkos::HostSpace> reference_samples = density->Sample(N_samples);
+    StridedMatrix<double, Kokkos::HostSpace> test_samples = Kokkos::subview(reference_samples, Kokkos::ALL, Kokkos::make_pair(0u,N_testpts));
+    StridedMatrix<double, Kokkos::HostSpace> train_samples = Kokkos::subview(reference_samples, Kokkos::ALL, Kokkos::make_pair(N_testpts,N_samples));
+    KLObjective<Kokkos::HostSpace> objective {train_samples, test_samples, density};
+    return {objective, reference_samples};
+}
+
 TEST_CASE( "Test KLMapObjective", "[KLMapObjective]") {
-    unsigned int dim = 2;
-    unsigned int seed = 42;
-    unsigned int N_samples = 20000;
-    unsigned int N_testpts = N_samples/5;
+    unsigned int dim = 2, seed = 28402, N_samples = 20'000; double test_prop = 0.2;
+    unsigned int N_testpts = N_samples * test_prop;
     std::shared_ptr<GaussianSamplerDensity<Kokkos::HostSpace>> density = std::make_shared<GaussianSamplerDensity<Kokkos::HostSpace>>(dim);
     density->SetSeed(seed);
     StridedMatrix<double, Kokkos::HostSpace> reference_samples = density->Sample(N_samples);
@@ -94,3 +104,18 @@ TEST_CASE( "Test KLMapObjective", "[KLMapObjective]") {
     }
 }
 
+TEST_CASE( "Test_SumObjective", "[SumObjective]") {
+    unsigned int dim = 2, seed = 28402, N_samples = 20'000; double test_prop = 0.2;
+    unsigned int N_testpts = N_samples * test_prop;
+    std::shared_ptr<GaussianSamplerDensity<Kokkos::HostSpace>> density = std::make_shared<GaussianSamplerDensity<Kokkos::HostSpace>>(dim);
+    density->SetSeed(seed);
+    StridedMatrix<double, Kokkos::HostSpace> reference_samples = density->Sample(N_samples);
+    StridedMatrix<double, Kokkos::HostSpace> train_samples = Kokkos::subview(reference_samples, Kokkos::ALL, Kokkos::make_pair(N_testpts,N_samples));
+
+    std::shared_ptr<MapObjective<Kokkos::HostSpace>> objective = std::make_shared<KLObjective<MemorySpace>>(train_samples, density);
+    std::shared_ptr<MapObjective<MemorySpace>> sum_obj = objective + objective;
+    std::shared_ptr<ConditionalMapBase<Kokkos::HostSpace>> map = MapFactory::CreateTriangular<Kokkos::HostSpace>(dim, dim, 2);
+    Kokkos::deep_copy(map->Coeffs(), 1.);
+    Kokkos::View<double*, Kokkos::HostSpace> grad ("Gradient of Sum Objective", map->numCoeffs);
+    double ref = (*objective)(map->numCoeffs, map->Coeffs().data(), grad.data(), map);
+}

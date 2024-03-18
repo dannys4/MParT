@@ -33,7 +33,8 @@ class MapObjective {
     StridedMatrix<const double, MemorySpace> test_;
 
     public:
-    MapObjective() = delete;
+    MapObjective() = default;
+    MapObjective(const MapObjective& obj2): train_(obj2.train_), test_(obj2.test_) {};
 
     /**
      * @brief Construct a new Map Objective object from just a training dataset
@@ -63,9 +64,9 @@ class MapObjective {
      */
     double operator()(unsigned int n, const double* x, double* grad, std::shared_ptr<ConditionalMapBase<MemorySpace>> map);
 
-    unsigned int InputDim() const {return train_.extent(0);}
+    virtual unsigned int InputDim() const {return train_.extent(0);}
     virtual unsigned int MapOutputDim() const {return train_.extent(0);}
-    unsigned int NumSamples() const {return train_.extent(1);}
+    virtual unsigned int NumSamples() const {return train_.extent(1);}
 
     /**
      * @brief Shortcut to calculate the error of the map on the training dataset
@@ -104,14 +105,14 @@ class MapObjective {
      *
      * @return StridedMatrix<const double, MemorySpace> Training data for optimization
      */
-    StridedMatrix<const double, MemorySpace> GetTrain() {return train_;}
+    virtual StridedMatrix<const double, MemorySpace> GetTrain() const {return train_;}
 
     /**
      * @brief Get the Testing data for this objective
      *
      * @return StridedMatrix<const double, MemorySpace> Testing data for optimization
      */
-    StridedMatrix<const double, MemorySpace> GetTest() {return test_;}
+    virtual StridedMatrix<const double, MemorySpace> GetTest() const {return test_;}
 
     /**
      * @brief Objective value of map at data
@@ -185,6 +186,69 @@ class KLObjective: public MapObjective<MemorySpace> {
      */
     std::shared_ptr<DensityBase<MemorySpace>> density_;
 };
+
+template<typename MemorySpace>
+class SumObjective: public MapObjective<MemorySpace>{
+    public:
+    SumObjective() = delete;
+    SumObjective(const SumObjective& obj2): MapObjective<MemorySpace>(obj2), objectives_(obj2.objectives_) {}
+    SumObjective(std::vector<std::shared_ptr<const MapObjective<MemorySpace>>> objectives): objectives_(objectives) {}
+    double ObjectiveImpl(StridedMatrix<const double, MemorySpace> data, std::shared_ptr<ConditionalMapBase<MemorySpace>> map) const override;
+    void CoeffGradImpl(StridedMatrix<const double, MemorySpace> data, StridedVector<double, MemorySpace> grad, std::shared_ptr<ConditionalMapBase<MemorySpace>> map) const override;
+    double ObjectivePlusCoeffGradImpl(StridedMatrix<const double, MemorySpace> data, StridedVector<double, MemorySpace> grad, std::shared_ptr<ConditionalMapBase<MemorySpace>> map) const override;
+    unsigned int MapOutputDim() const override {return objectives_[0]->MapOutputDim();}
+
+    MapObjective<MemorySpace>& operator+=(const MapObjective<MemorySpace>& obj2) {
+        // Do checking of correct dimensions
+        if(objectives_[0].InputDim() != obj2.InputDim()) {
+            std::stringstream ss;
+            ss << "SumObjective: Input dimensions of objectives do not match! " << objectives_[0].InputDim() << " != " << obj2.InputDim();
+            throw std::runtime_error(ss.str());
+        }
+        if(objectives_[0].MapOutputDim() != obj2.MapOutputDim()) {
+            std::stringstream ss;
+            ss << "SumObjective: Map output dimensions of objectives do not match! " << objectives_[0].MapOutputDim() << " != " << obj2.MapOutputDim();
+            throw std::runtime_error(ss.str());
+        }
+        // Check if obj2 is a SumObjective, if so, add to it
+        std::shared_ptr<SumObjective<MemorySpace>> obj2_sum = std::dynamic_pointer_cast<SumObjective<MemorySpace>>(obj2);
+        if(obj2_sum) {
+            objectives_.insert(objectives_.end(), obj2_sum->objectives_.begin(), obj2_sum->objectives_.end());
+        } else {
+            objectives_.push_back(obj2);
+        }
+        return *this;
+    }
+
+    private:
+    std::vector<std::shared_ptr<const MapObjective<MemorySpace>>> objectives_;
+};
+
+template<typename MemorySpace>
+std::shared_ptr<MapObjective<MemorySpace>> operator+(std::shared_ptr<const MapObjective<MemorySpace>> obj1, std::shared_ptr<const MapObjective<MemorySpace>> obj2){
+    // Check if obj1 or obj2 is a SumObjective, if so, add to it
+    // Otherwise, create a new SumObjective
+    std::shared_ptr<const SumObjective<MemorySpace>> sum_obj1 = std::dynamic_pointer_cast<const SumObjective<MemorySpace>>(obj1);
+    std::shared_ptr<const SumObjective<MemorySpace>> sum_obj2 = std::dynamic_pointer_cast<const SumObjective<MemorySpace>>(obj2);
+    if(sum_obj2) {
+        sum_obj1 = sum_obj2;
+        obj2 = obj1;
+    }
+    if(sum_obj1) {
+        std::shared_ptr<SumObjective<MemorySpace>> ret = std::make_shared<SumObjective<MemorySpace>>(sum_obj1);
+        (*ret) += (*obj2);
+        return ret;
+    }
+    std::vector<std::shared_ptr<const MapObjective<MemorySpace>>> objs = {obj1, obj2};
+    return std::make_shared<SumObjective<MemorySpace>>(objs);
+}
+
+template<typename MemorySpace>
+std::shared_ptr<MapObjective<MemorySpace>> operator+(std::shared_ptr<MapObjective<MemorySpace>> obj1, std::shared_ptr<MapObjective<MemorySpace>> obj2){
+    std::shared_ptr<const MapObjective<MemorySpace>> obj1_const = obj1;
+    std::shared_ptr<const MapObjective<MemorySpace>> obj2_const = obj2;
+    return obj1_const + obj2_const;
+}
 
 namespace ObjectiveFactory {
 template<typename MemorySpace>
