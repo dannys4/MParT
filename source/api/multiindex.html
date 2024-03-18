@@ -1,0 +1,732 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>MultiIndices &#8212; MParT  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'source/api/multiindex';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="MultiIndex" href="multiindices/multiindex.html" />
+    <link rel="prev" title="Monotone Component" href="monotonecomponent.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">MParT  documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../tutorials/index.html">
+                        Tutorials
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../mathematics.html">
+                        Mathematical Background
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../development/index.html">
+                        Community
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MeasureTransport/MParT" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../tutorials/index.html">
+                        Tutorials
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../mathematics.html">
+                        Mathematical Background
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../development/index.html">
+                        Community
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MeasureTransport/MParT" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="mapfactory.html">Map Factory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conditionalmapbase.html">Conditional Map Base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="triangularmap.html">Triangular Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composedmap.html">Composed Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monotonecomponent.html">Monotone Component</a></li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">MultiIndices</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="multiindices/multiindex.html">MultiIndex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiindices/multiindexset.html">MultiIndexSet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiindices/fixedmultiindexset.html">FixedMultiIndexSet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiindices/multiindexlimiter.html">MultiIndexLimiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiindices/multiindexneighborhood.html">MultiIndexNeighborhood</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="quadrature.html">Quadrature</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="quadrature/clenshawcurtis.html">Clenshaw Curtis Quadrature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quadrature/adaptivesimpson.html">Adaptive Simpson Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quadrature/recursivequadrature.html">Adaptive Clenshaw Curtis Quadrature</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utilities/linearalgebra.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities/kokkoswrappers.html">Kokkos Array Conversions</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="templateconcepts.html">Template Concepts</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="concepts/cachedparameterization.html">Cached Parameterization Concept</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="multivariatebasis/multivariateexpansionworker.html">Multivariate Expansion Worker</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="concepts/parameterizedfunction.html">Parameterized Function Concept</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="monotonecomponent.html">Monotone Component</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utilities/initialization.html">Initialization Helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities/serialization.html">Serialization</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="maptraining.html">Map Training</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="maptraining/trainmap.html">Train Map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maptraining/trainmapadaptive.html">Adaptive Map Training</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="multivariatebasis.html">Multivariate Basis Evaluation</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="multivariatebasis/univariatebasis.html">Univariate Bases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multivariatebasis/basisevaluator.html">Basis Evaluators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multivariatebasis/multivariateexpansionworker.html">Multivariate Expansion Worker</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">API Reference</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">MultiIndices</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="multiindices">
+<h1>MultiIndices<a class="headerlink" href="#multiindices" title="Permalink to this heading">#</a></h1>
+<section id="background">
+<h2>Background<a class="headerlink" href="#background" title="Permalink to this heading">#</a></h2>
+<p>A multiindex is simply a length <span class="math notranslate nohighlight">\(D\)</span> vector of nonnegative integers <span class="math notranslate nohighlight">\(\mathbf{p}=[p_1,p_2,\dots,p_D]\)</span>.
+Multiindices are commonly employed for defining multivariate polynomial expansions and other function parameterizations.
+In these cases, sets of multiindices define the form of the expansion.</p>
+<p><strong>Example: Multivariate Polynomial</strong></p>
+<p>A multivariate polynomial <span class="math notranslate nohighlight">\(\Phi_{\mathbf{p}}(\mathbf{x}) : \mathbb{R}^D\rightarrow R\)</span> can be defined as the
+product of <span class="math notranslate nohighlight">\(D\)</span> univariate polynomials.   Using monomials for example,</p>
+<div class="math notranslate nohighlight">
+\[\Phi_{\mathbf{p}}(\mathbf{x}) = \prod_{i=1}^D x_i^{p_i}\]</div>
+<p>A multivariate polynomial expansion can then be written succinctly as</p>
+<div class="math notranslate nohighlight">
+\[f(\mathbf{x}) = \sum_{\mathbf{p}\in\mathcal{S}} c_{\mathbf{p}} \Phi_{\mathbf{p}}(\mathbf{x})\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathcal{S}\)</span> is a set of multiindices and <span class="math notranslate nohighlight">\(c_{\mathbf{p}}\)</span> are scalar coefficients.</p>
+<p><strong>Example: Wavelets</strong></p>
+<p>Multivariate polynomials are constructed from a tensor product of one-dimensional functions and each
+one-dimensional function depends on a single integer: the degree of the one-dimensional polynomial.   This is a common
+way to define multivariate functions from indexed families of one-dimensional basis functions.  In a general
+setting, however, the one-dimensional family does not need to be index by a single integer.  Families of
+one-dimensional functions indexed with multiple integers can also be “tensorized” into multivariate functions.
+Wavelets are a prime example of this.</p>
+<p>A one dimensional wavelet basis contains functions of the form</p>
+<div class="math notranslate nohighlight">
+\[\psi_{j,k}(x) = 2^{j/2}\psi(2^jx -k)\]</div>
+<p>where <span class="math notranslate nohighlight">\(j\)</span> and <span class="math notranslate nohighlight">\(k\)</span> are integers and <span class="math notranslate nohighlight">\(\psi :\mathbb{R}\rightarrow \mathbb{R}\)</span> is an orthogonal wavelet.
+Unlike polynomials, two integers are required to index the one-dimensional family. Nevertheless, a multivariate wavelet
+basis can be defined through the tensor product of components in this family:</p>
+<div class="math notranslate nohighlight">
+\[\Psi_{\mathbf{p}}(\mathbf{x}) = \prod_{i=1}^{D/2} \psi_{p_{2i},p_{2i+1}}(x_i)\]</div>
+<p>where <span class="math notranslate nohighlight">\(\Psi_{\mathbf{p}} : \mathbb{R}^{D/2}\rightarrow \mathbb{R}\)</span> is a multivariate wavelet basis function in
+<span class="math notranslate nohighlight">\(D/2\)</span> dimensions and <span class="math notranslate nohighlight">\(\mathbf{p}\)</span> is a multiindex with <span class="math notranslate nohighlight">\(D\)</span> components.</p>
+</section>
+<section id="c-objects">
+<h2>C++ Objects<a class="headerlink" href="#c-objects" title="Permalink to this heading">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="multiindices/multiindex.html">MultiIndex</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiindices/multiindexset.html">MultiIndexSet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiindices/fixedmultiindexset.html">FixedMultiIndexSet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiindices/multiindexlimiter.html">MultiIndexLimiter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiindices/multiindexneighborhood.html">MultiIndexNeighborhood</a></li>
+</ul>
+</div>
+</section>
+<section id="definitions">
+<h2>Definitions<a class="headerlink" href="#definitions" title="Permalink to this heading">#</a></h2>
+<aside class="topic">
+<p class="topic-title">Limiting Set</p>
+<p>In general, any length <span class="math notranslate nohighlight">\(D\)</span> vector in <span class="math notranslate nohighlight">\(\mathbb{N}^D\)</span> is a multiindex.  In many adaptive approaches, however,
+it is useful to only consider multiindices in some subset <span class="math notranslate nohighlight">\(\mathcal{G}\subseteq \mathbb{N}^D\)</span>.   We call this subset
+the limiting set or, more loosely, the “limiter”.   In MParT, limiting sets are defined by functors that accept a
+MultiIndex and return <cite>true</cite> if the multiindex is in <span class="math notranslate nohighlight">\(\mathcal{G}\)</span> and <cite>false</cite> otherwise.  Some predefined limiting
+sets are defined in the MultiIndexLimiter namespace, but custom functors can also be employed.</p>
+</aside>
+<aside class="topic">
+<p class="topic-title">Neighbors</p>
+<p>In most parameterization applications, there is additional structure in the multiindex set that can be represented
+through edges on a graph.   Each multiindex can be treated as a node in directed graph.  Outgoing edges connect to
+other multiindices, which we call “forward neighbors”, that represent higher order basis functions.   Incoming edges
+come from multiindices, which we call “backward neighbors”, that represent lower order basis functions.</p>
+<p>In the multivariate polynomial example above, the backward neighbors of a multiindex <span class="math notranslate nohighlight">\(\mathbf{j}\)</span> are the multiindices
+that only differ from <span class="math notranslate nohighlight">\(\mbox{j}\)</span> in one component, and in that component, the difference is -1.  More precisely,
+the set of backward neighbors is</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{B}_{\mathbf{j}} = \{\mathbf{i} : \|\mathbf{i}-\mathbf{j}\|_1=1 \text{ and } \mathbf{i}_k \leq \mathbf{j}_k \text{ for all } k \}.\]</div>
+<p>The set of forward neighbors is similarly defined as</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{F}_{\mathbf{j}} = \{\mathbf{i} : \|\mathbf{i}-\mathbf{j}\|_1=1 \text{ and } \mathbf{i}_k \geq \mathbf{j}_k \text{ for all } k \}\]</div>
+<p>The neighborhood structure of a multindex set is defined through a child of the abstract MultiIndexNeighborhood class.</p>
+</aside>
+<aside class="topic">
+<p class="topic-title">Downward Closed</p>
+<p>A multiindex set <span class="math notranslate nohighlight">\(\mathcal{S}\)</span> is downward closed if for any multiindex <span class="math notranslate nohighlight">\(\mathbf{j}\in\mathcal{S}\)</span>, all
+backward neighbors of <span class="math notranslate nohighlight">\(\mathbf{j}\)</span> are also in <span class="math notranslate nohighlight">\(\mathcal{S}\)</span>.</p>
+</aside>
+<aside class="topic">
+<p class="topic-title">Margin</p>
+<p>For a multindex set <span class="math notranslate nohighlight">\(\mathcal{S}\subseteq\mathcal{G}\)</span>, the margin of <span class="math notranslate nohighlight">\(\mathcal{S}\)</span> is the set
+<span class="math notranslate nohighlight">\(\mathcal{M} \in \mathcal{G}\setminus\mathcal{S}\)</span> containing indices that have at least one backward neighbor
+in <span class="math notranslate nohighlight">\(\mathcal{S}\)</span>.</p>
+</aside>
+<aside class="topic">
+<p class="topic-title">Reduced Margin</p>
+<p>The reduced margin <span class="math notranslate nohighlight">\(\mathcal{M}_r\subseteq\mathcal{M}\)</span> is a subset of the margin <span class="math notranslate nohighlight">\(\mathcal{M}\)</span> containing
+indices that could be added to the set <span class="math notranslate nohighlight">\(\mathcal{S}\)</span> while preserving the downward closed property of <span class="math notranslate nohighlight">\(\mathcal{S}\)</span>.
+Multiindices in the reduced margin are often called admissible.</p>
+</aside>
+<aside class="topic">
+<p class="topic-title">Active/Inactive Indices</p>
+<p>The MultiIndexSet class stores both the set <span class="math notranslate nohighlight">\(\mathcal{S}\)</span> and the margin <span class="math notranslate nohighlight">\(\mathcal{M}\)</span>.   In MParT,
+multiindices in <span class="math notranslate nohighlight">\(\mathcal{S}\)</span> are sometimes called active, while multiindices in <span class="math notranslate nohighlight">\(\mathcal{M}\)</span> are called inactive.
+Only active indices are included in the linear indexing.  Inactive
+indices are hidden (i.e. not even considered) in all the public members
+of this class.  Inactive multiindices are used behind the scenes to check admissability, to define the margin, and
+are added to the <span class="math notranslate nohighlight">\(\mathcal{S}\)</span> during adaptation.</p>
+</aside>
+<aside class="topic">
+<p class="topic-title">Frontier</p>
+<p>The Frontier is similar but contains multiindices in <span class="math notranslate nohighlight">\(\mathcal{S}\)</span> that have at least one forward neighbor in
+the margin <span class="math notranslate nohighlight">\(\mathcal{M}\)</span>.   We use the term “strict frontier” to describe the set of multiindices in <span class="math notranslate nohighlight">\(\mathcal{S}\)</span> that have all of their forward neighbors in the margin.</p>
+</aside>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="monotonecomponent.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Monotone Component</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="multiindices/multiindex.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">MultiIndex</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#background">Background</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-objects">C++ Objects</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definitions">Definitions</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/source/api/multiindex.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2022, The MParT development team..
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

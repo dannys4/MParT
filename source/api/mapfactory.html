@@ -1,0 +1,900 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Map Factory &#8212; MParT  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'source/api/mapfactory';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Conditional Map Base" href="conditionalmapbase.html" />
+    <link rel="prev" title="API Reference" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">MParT  documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../tutorials/index.html">
+                        Tutorials
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../mathematics.html">
+                        Mathematical Background
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../development/index.html">
+                        Community
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MeasureTransport/MParT" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../tutorials/index.html">
+                        Tutorials
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../mathematics.html">
+                        Mathematical Background
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../development/index.html">
+                        Community
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MeasureTransport/MParT" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Map Factory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conditionalmapbase.html">Conditional Map Base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="triangularmap.html">Triangular Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composedmap.html">Composed Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monotonecomponent.html">Monotone Component</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="multiindex.html">MultiIndices</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="multiindices/multiindex.html">MultiIndex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiindices/multiindexset.html">MultiIndexSet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiindices/fixedmultiindexset.html">FixedMultiIndexSet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiindices/multiindexlimiter.html">MultiIndexLimiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiindices/multiindexneighborhood.html">MultiIndexNeighborhood</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="quadrature.html">Quadrature</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="quadrature/clenshawcurtis.html">Clenshaw Curtis Quadrature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quadrature/adaptivesimpson.html">Adaptive Simpson Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quadrature/recursivequadrature.html">Adaptive Clenshaw Curtis Quadrature</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utilities/linearalgebra.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities/kokkoswrappers.html">Kokkos Array Conversions</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="templateconcepts.html">Template Concepts</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="concepts/cachedparameterization.html">Cached Parameterization Concept</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="multivariatebasis/multivariateexpansionworker.html">Multivariate Expansion Worker</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="concepts/parameterizedfunction.html">Parameterized Function Concept</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="monotonecomponent.html">Monotone Component</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utilities/initialization.html">Initialization Helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities/serialization.html">Serialization</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="maptraining.html">Map Training</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="maptraining/trainmap.html">Train Map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maptraining/trainmapadaptive.html">Adaptive Map Training</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="multivariatebasis.html">Multivariate Basis Evaluation</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="multivariatebasis/univariatebasis.html">Univariate Bases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multivariatebasis/basisevaluator.html">Basis Evaluators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multivariatebasis/multivariateexpansionworker.html">Multivariate Expansion Worker</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">API Reference</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Map Factory</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="map-factory">
+<h1>Map Factory<a class="headerlink" href="#map-factory" title="Permalink to this heading">#</a></h1>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart10MapFactoryE">
+<span class="target" id="namespacempart_1_1_map_factory"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MapFactory</span></span></span><a class="headerlink" href="#_CPPv4N5mpart10MapFactoryE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Namespace containing factory methods for constructing triangular maps and map components. </p>
+<p>Example usage: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// First, set options defining the paramterization</span>
+<span class="n">MapOptions</span><span class="w"> </span><span class="n">options</span><span class="p">;</span>
+<span class="n">options</span><span class="p">.</span><span class="n">basisType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BasisTypes</span><span class="o">::</span><span class="n">ProbabilistHermite</span><span class="p">;</span><span class="w"> </span><span class="c1">// Optional. Default = BasisTypes::ProbabilistHermite</span>
+<span class="n">options</span><span class="p">.</span><span class="n">posFuncType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PosFuncTypes</span><span class="o">::</span><span class="n">SoftPlus</span><span class="p">;</span><span class="w">       </span><span class="c1">// Optional. Default = PosFuncTypes::SoftPlus</span>
+<span class="n">options</span><span class="p">.</span><span class="n">quadType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">QuadTypes</span><span class="o">::</span><span class="n">AdaptiveSimpson</span><span class="p">;</span><span class="w">      </span><span class="c1">// Optional. Default = QuadTypes::AdaptiveSimpson</span>
+<span class="n">options</span><span class="p">.</span><span class="n">quadAbsTol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1e-6</span><span class="p">;</span><span class="w">                          </span><span class="c1">// Optional. Default = 1e-6</span>
+<span class="n">options</span><span class="p">.</span><span class="n">quadRelTol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1e-6</span><span class="p">;</span><span class="w">                          </span><span class="c1">// Optional. Default = 1e-6</span>
+<span class="n">options</span><span class="p">.</span><span class="n">quadMaxSub</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">                            </span><span class="c1">// Optional. Default = 30</span>
+<span class="n">options</span><span class="p">.</span><span class="n">contDeriv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w">                           </span><span class="c1">// Optional. Default = true</span>
+<span class="n">options</span><span class="p">.</span><span class="n">nugget</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1e-4</span><span class="p">;</span><span class="w">                              </span><span class="c1">// Optional. Default = 0.0</span>
+
+<span class="c1">// Create a triangular map with these options</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">inDim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">outDim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">totalOrder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MapFactory</span><span class="o">::</span><span class="n">CreateTriangular</span><span class="o">&lt;</span><span class="n">Kokkos</span><span class="o">::</span><span class="n">HostSpace</span><span class="o">&gt;</span><span class="p">(</span><span class="n">inDim</span><span class="p">,</span><span class="w"> </span><span class="n">outDim</span><span class="p">,</span><span class="w"> </span><span class="n">totalOrder</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p">);</span>
+</pre></div>
+</div>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN5mpart10MapFactory15CreateComponentENSt10shared_ptrI18ConditionalMapBaseI11MemorySpaceEEERK18FixedMultiIndexSetI11MemorySpaceE10MapOptions">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MemorySpace</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespacempart_1_1_map_factory_1a6337c61359a994bf1da996c42cdac347"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="conditionalmapbase.html#_CPPv4I0EN5mpart18ConditionalMapBaseE" title="mpart::ConditionalMapBase"><span class="n"><span class="pre">ConditionalMapBase</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN5mpart10MapFactory15CreateComponentENSt10shared_ptrI18ConditionalMapBaseI11MemorySpaceEEERK18FixedMultiIndexSetI11MemorySpaceE10MapOptions" title="mpart::MapFactory::CreateComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CreateComponent</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="multiindices/fixedmultiindexset.html#_CPPv4I0EN5mpart18FixedMultiIndexSetE" title="mpart::FixedMultiIndexSet"><span class="n"><span class="pre">FixedMultiIndexSet</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN5mpart10MapFactory15CreateComponentENSt10shared_ptrI18ConditionalMapBaseI11MemorySpaceEEERK18FixedMultiIndexSetI11MemorySpaceE10MapOptions" title="mpart::MapFactory::CreateComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">mset</span></span>, <a class="reference internal" href="#_CPPv4N5mpart10MapOptionsE" title="mpart::MapOptions"><span class="n"><span class="pre">MapOptions</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">options</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5mpart10MapOptionsE" title="mpart::MapOptions"><span class="n"><span class="pre">MapOptions</span></span></a><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN5mpart10MapFactory15CreateComponentENSt10shared_ptrI18ConditionalMapBaseI11MemorySpaceEEERK18FixedMultiIndexSetI11MemorySpaceE10MapOptions" title="Permalink to this definition">#</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mset</strong> – The multiindex set specifying which terms should be used in the multivariate expansion. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN5mpart10MapFactory20CreateSingleEntryMapENSt10shared_ptrI18ConditionalMapBaseI11MemorySpaceEEEjjRKNSt10shared_ptrI18ConditionalMapBaseI11MemorySpaceEEE">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MemorySpace</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespacempart_1_1_map_factory_1af6c59fe268827e12f5d40a8a7697e7b3"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="conditionalmapbase.html#_CPPv4I0EN5mpart18ConditionalMapBaseE" title="mpart::ConditionalMapBase"><span class="n"><span class="pre">ConditionalMapBase</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN5mpart10MapFactory20CreateSingleEntryMapENSt10shared_ptrI18ConditionalMapBaseI11MemorySpaceEEEjjRKNSt10shared_ptrI18ConditionalMapBaseI11MemorySpaceEEE" title="mpart::MapFactory::CreateSingleEntryMap::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CreateSingleEntryMap</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dim</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">activeInd</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="conditionalmapbase.html#_CPPv4I0EN5mpart18ConditionalMapBaseE" title="mpart::ConditionalMapBase"><span class="n"><span class="pre">ConditionalMapBase</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN5mpart10MapFactory20CreateSingleEntryMapENSt10shared_ptrI18ConditionalMapBaseI11MemorySpaceEEEjjRKNSt10shared_ptrI18ConditionalMapBaseI11MemorySpaceEEE" title="mpart::MapFactory::CreateSingleEntryMap::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">comp</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN5mpart10MapFactory20CreateSingleEntryMapENSt10shared_ptrI18ConditionalMapBaseI11MemorySpaceEEEjjRKNSt10shared_ptrI18ConditionalMapBaseI11MemorySpaceEEE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Creates a square triangular map that is an identity in all but one output dimension. </p>
+<p>Constructs a (generally) non-monotone multivariate expansion.</p>
+<p>Given a dimension <span class="math notranslate nohighlight">\(d\)</span>, an active index <span class="math notranslate nohighlight">\(i\)</span>, and a real-valued map <span class="math notranslate nohighlight">\(f:\mathbb{R}^d\rightarrow\mathbb{R}\)</span>, this function creates a map <span class="math notranslate nohighlight">\(T:\mathbb{R}^d\rightarrow\mathbb{R}^d\)</span> such that <span class="math notranslate nohighlight">\(T_j(x) = x_j\)</span> for all <span class="math notranslate nohighlight">\(j\neq i\)</span> and <span class="math notranslate nohighlight">\(T_i(x) = f(x)\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dim</strong> – The dimension of the map. </p></li>
+<li><p><strong>activeInd</strong> – The index of the component to be non-identity. </p></li>
+<li><p><strong>comp</strong> – The component placed the activeInd.</p></li>
+<li><p><strong>outputDim</strong> – The output dimension of the expansion. Each output will be defined by the same multiindex set but will have different coefficients. </p></li>
+<li><p><strong>mset</strong> – The multiindex set specifying which terms should be used in the multivariate expansion. </p></li>
+<li><p><strong>options</strong> – Options specifying the 1d basis functions used in the parameterization. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN5mpart10MapFactory16CreateTriangularENSt10shared_ptrI18ConditionalMapBaseI11MemorySpaceEEEjjj10MapOptions">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MemorySpace</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespacempart_1_1_map_factory_1ae4f6c98d2ef0822127f9118dd4a056fa"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="conditionalmapbase.html#_CPPv4I0EN5mpart18ConditionalMapBaseE" title="mpart::ConditionalMapBase"><span class="n"><span class="pre">ConditionalMapBase</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN5mpart10MapFactory16CreateTriangularENSt10shared_ptrI18ConditionalMapBaseI11MemorySpaceEEEjjj10MapOptions" title="mpart::MapFactory::CreateTriangular::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CreateTriangular</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">inputDim</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">outputDim</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">totalOrder</span></span>, <a class="reference internal" href="#_CPPv4N5mpart10MapOptionsE" title="mpart::MapOptions"><span class="n"><span class="pre">MapOptions</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">options</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5mpart10MapOptionsE" title="mpart::MapOptions"><span class="n"><span class="pre">MapOptions</span></span></a><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN5mpart10MapFactory16CreateTriangularENSt10shared_ptrI18ConditionalMapBaseI11MemorySpaceEEEjjj10MapOptions" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Constructs a triangular map with MonotoneComponents for each block. A total order multiindex set is used to define the <a class="reference internal" href="monotonecomponent.html#classmpart_1_1_monotone_component"><span class="std std-ref">MonotoneComponent</span></a>. </p>
+<p>For more control over the individual components, consider constructing components with MapFactory::CreateComponent function and then manually constructing and instance of the <a class="reference internal" href="triangularmap.html#classmpart_1_1_triangular_map"><span class="std std-ref">TriangularMap</span></a> class. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputDim</strong> – The dimension of the input to this map. Will be the number of inputs passed to the last component of the triangular map. </p></li>
+<li><p><strong>outputDim</strong> – The output dimension of the map. Note that this must be less than or equal to the input dimension. </p></li>
+<li><p><strong>totalOrder</strong> – The total order used to define the parameterization of each <a class="reference internal" href="monotonecomponent.html#classmpart_1_1_monotone_component"><span class="std std-ref">MonotoneComponent</span></a>. </p></li>
+<li><p><strong>options</strong> – Additional options that will be passed on to CreateComponent to construct each <a class="reference internal" href="monotonecomponent.html#classmpart_1_1_monotone_component"><span class="std std-ref">MonotoneComponent</span></a>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN5mpart10MapFactory15CreateExpansionENSt10shared_ptrI25ParameterizedFunctionBaseI11MemorySpaceEEEjRK18FixedMultiIndexSetI11MemorySpaceE10MapOptions">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MemorySpace</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespacempart_1_1_map_factory_1ac42ac45a447d54c7dce938535cf8b22b"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="parameterizedfunctionbase.html#_CPPv4I0EN5mpart25ParameterizedFunctionBaseE" title="mpart::ParameterizedFunctionBase"><span class="n"><span class="pre">ParameterizedFunctionBase</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN5mpart10MapFactory15CreateExpansionENSt10shared_ptrI25ParameterizedFunctionBaseI11MemorySpaceEEEjRK18FixedMultiIndexSetI11MemorySpaceE10MapOptions" title="mpart::MapFactory::CreateExpansion::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CreateExpansion</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">outputDim</span></span>, <a class="reference internal" href="multiindices/fixedmultiindexset.html#_CPPv4I0EN5mpart18FixedMultiIndexSetE" title="mpart::FixedMultiIndexSet"><span class="n"><span class="pre">FixedMultiIndexSet</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN5mpart10MapFactory15CreateExpansionENSt10shared_ptrI25ParameterizedFunctionBaseI11MemorySpaceEEEjRK18FixedMultiIndexSetI11MemorySpaceE10MapOptions" title="mpart::MapFactory::CreateExpansion::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">mset</span></span>, <a class="reference internal" href="#_CPPv4N5mpart10MapOptionsE" title="mpart::MapOptions"><span class="n"><span class="pre">MapOptions</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">options</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5mpart10MapOptionsE" title="mpart::MapOptions"><span class="n"><span class="pre">MapOptions</span></span></a><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN5mpart10MapFactory15CreateExpansionENSt10shared_ptrI25ParameterizedFunctionBaseI11MemorySpaceEEEjRK18FixedMultiIndexSetI11MemorySpaceE10MapOptions" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Constructs a (generally) non-monotone multivariate expansion. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>outputDim</strong> – The output dimension of the expansion. Each output will be defined by the same multiindex set but will have different coefficients. </p></li>
+<li><p><strong>mset</strong> – The multiindex set specifying which terms should be used in the multivariate expansion. </p></li>
+<li><p><strong>options</strong> – Options specifying the 1d basis functions used in the parameterization. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN5mpart10MapFactory15CompFactoryImplE">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MemorySpace</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structmpart_1_1_map_factory_1_1_comp_factory_impl"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CompFactoryImpl</span></span></span><a class="headerlink" href="#_CPPv4I0EN5mpart10MapFactory15CompFactoryImplE" title="Permalink to this definition">#</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;MapFactory.h&gt;</em></div>
+<p>This struct is used to map the options to functions that can create a map component with types corresponding to the options. </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MemorySpace</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespacempart_1_1_map_factory_1a6337c61359a994bf1da996c42cdac347"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="conditionalmapbase.html#_CPPv4I0EN5mpart18ConditionalMapBaseE" title="mpart::ConditionalMapBase"><span class="n"><span class="pre">ConditionalMapBase</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN5mpart10MapFactory15CreateComponentENSt10shared_ptrI18ConditionalMapBaseI11MemorySpaceEEERK18FixedMultiIndexSetI11MemorySpaceE10MapOptions" title="mpart::MapFactory::CreateComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mpart</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N5mpart10MapFactoryE" title="mpart::MapFactory"><span class="n"><span class="pre">MapFactory</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">CreateComponent</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="multiindices/fixedmultiindexset.html#_CPPv4I0EN5mpart18FixedMultiIndexSetE" title="mpart::FixedMultiIndexSet"><span class="n"><span class="pre">FixedMultiIndexSet</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN5mpart10MapFactory15CreateComponentENSt10shared_ptrI18ConditionalMapBaseI11MemorySpaceEEERK18FixedMultiIndexSetI11MemorySpaceE10MapOptions" title="mpart::MapFactory::CreateComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">mset</span></span>, <a class="reference internal" href="#_CPPv4N5mpart10MapOptionsE" title="mpart::MapOptions"><span class="n"><span class="pre">MapOptions</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">options</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5mpart10MapOptionsE" title="mpart::MapOptions"><span class="n"><span class="pre">MapOptions</span></span></a><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mset</strong> – The multiindex set specifying which terms should be used in the multivariate expansion. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MemorySpace</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespacempart_1_1_map_factory_1ae4f6c98d2ef0822127f9118dd4a056fa"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="conditionalmapbase.html#_CPPv4I0EN5mpart18ConditionalMapBaseE" title="mpart::ConditionalMapBase"><span class="n"><span class="pre">ConditionalMapBase</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN5mpart10MapFactory16CreateTriangularENSt10shared_ptrI18ConditionalMapBaseI11MemorySpaceEEEjjj10MapOptions" title="mpart::MapFactory::CreateTriangular::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mpart</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N5mpart10MapFactoryE" title="mpart::MapFactory"><span class="n"><span class="pre">MapFactory</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">CreateTriangular</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">inputDim</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">outputDim</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">totalOrder</span></span>, <a class="reference internal" href="#_CPPv4N5mpart10MapOptionsE" title="mpart::MapOptions"><span class="n"><span class="pre">MapOptions</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">options</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5mpart10MapOptionsE" title="mpart::MapOptions"><span class="n"><span class="pre">MapOptions</span></span></a><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Constructs a triangular map with MonotoneComponents for each block. A total order multiindex set is used to define the <a class="reference internal" href="monotonecomponent.html#classmpart_1_1_monotone_component"><span class="std std-ref">MonotoneComponent</span></a>. </p>
+<p>For more control over the individual components, consider constructing components with MapFactory::CreateComponent function and then manually constructing and instance of the <a class="reference internal" href="triangularmap.html#classmpart_1_1_triangular_map"><span class="std std-ref">TriangularMap</span></a> class. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputDim</strong> – The dimension of the input to this map. Will be the number of inputs passed to the last component of the triangular map. </p></li>
+<li><p><strong>outputDim</strong> – The output dimension of the map. Note that this must be less than or equal to the input dimension. </p></li>
+<li><p><strong>totalOrder</strong> – The total order used to define the parameterization of each <a class="reference internal" href="monotonecomponent.html#classmpart_1_1_monotone_component"><span class="std std-ref">MonotoneComponent</span></a>. </p></li>
+<li><p><strong>options</strong> – Additional options that will be passed on to CreateComponent to construct each <a class="reference internal" href="monotonecomponent.html#classmpart_1_1_monotone_component"><span class="std std-ref">MonotoneComponent</span></a>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart10MapOptionsE">
+<span class="target" id="structmpart_1_1_map_options"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MapOptions</span></span></span><a class="headerlink" href="#_CPPv4N5mpart10MapOptionsE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>struct to hold options used by the <a class="reference internal" href="#namespacempart_1_1_map_factory"><span class="std std-ref">MapFactory</span></a> methods to construct monotone components and triangular maps. </p>
+<p>Subclassed by <a class="reference internal" href="maptraining/trainmapadaptive.html#structmpart_1_1_a_t_m_options"><span class="std std-ref">mpart::ATMOptions</span></a></p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK5mpart10MapOptionseqE10MapOptions">
+<span class="target" id="structmpart_1_1_map_options_1ad94ad6d7443b48bc1aa9ec4d5290dfcc"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N5mpart10MapOptionsE" title="mpart::MapOptions"><span class="n"><span class="pre">MapOptions</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">opts2</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK5mpart10MapOptionseqE10MapOptions" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart10MapOptions6StringEv">
+<span class="target" id="structmpart_1_1_map_options_1a0fd0faed868da32f4e7a8e4d6e3612bf"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">String</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5mpart10MapOptions6StringEv" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart10MapOptions9basisTypeE">
+<span class="target" id="structmpart_1_1_map_options_1a731d5a7dacbb6cfcf9fb5eebd8e82a5a"></span><a class="reference internal" href="#_CPPv4N5mpart10BasisTypesE" title="mpart::BasisTypes"><span class="n"><span class="pre">BasisTypes</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">basisType</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5mpart10BasisTypesE" title="mpart::BasisTypes"><span class="n"><span class="pre">BasisTypes</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N5mpart10BasisTypes18ProbabilistHermiteE" title="mpart::BasisTypes::ProbabilistHermite"><span class="n"><span class="pre">ProbabilistHermite</span></span></a><a class="headerlink" href="#_CPPv4N5mpart10MapOptions9basisTypeE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>The type of 1d basis function used to define the multivariate expansion. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart10MapOptions7basisLBE">
+<span class="target" id="structmpart_1_1_map_options_1a8b8323f0b821e01e45df46a788ff7ae5"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">basisLB</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="o"><span class="pre">-</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">numeric_limits</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">infinity</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N5mpart10MapOptions7basisLBE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Linearization bounds for the 1d basis function. The basis function is linearized outside [lb,ub] </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart10MapOptions7basisUBE">
+<span class="target" id="structmpart_1_1_map_options_1a8eb64758e188b18674a87f58277484f9"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">basisUB</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">numeric_limits</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">infinity</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N5mpart10MapOptions7basisUBE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart10MapOptions11posFuncTypeE">
+<span class="target" id="structmpart_1_1_map_options_1ac3407193f63686a250f506af6de22276"></span><a class="reference internal" href="#_CPPv4N5mpart12PosFuncTypesE" title="mpart::PosFuncTypes"><span class="n"><span class="pre">PosFuncTypes</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">posFuncType</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5mpart12PosFuncTypesE" title="mpart::PosFuncTypes"><span class="n"><span class="pre">PosFuncTypes</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N5mpart12PosFuncTypes8SoftPlusE" title="mpart::PosFuncTypes::SoftPlus"><span class="n"><span class="pre">SoftPlus</span></span></a><a class="headerlink" href="#_CPPv4N5mpart10MapOptions11posFuncTypeE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>The type of positive bijector used inside the monotonicity-guaranteeing integral formulation. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart10MapOptions8quadTypeE">
+<span class="target" id="structmpart_1_1_map_options_1a75ba9eb53151409f53a3caf2e5f4f7ab"></span><a class="reference internal" href="#_CPPv4N5mpart9QuadTypesE" title="mpart::QuadTypes"><span class="n"><span class="pre">QuadTypes</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">quadType</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N5mpart9QuadTypesE" title="mpart::QuadTypes"><span class="n"><span class="pre">QuadTypes</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N5mpart9QuadTypes15AdaptiveSimpsonE" title="mpart::QuadTypes::AdaptiveSimpson"><span class="n"><span class="pre">AdaptiveSimpson</span></span></a><a class="headerlink" href="#_CPPv4N5mpart10MapOptions8quadTypeE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>The type of quadrature rule to use. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart10MapOptions10quadAbsTolE">
+<span class="target" id="structmpart_1_1_map_options_1a3ed7be245b97f480e699ab9d486857fe"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">quadAbsTol</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1e-6</span></span><a class="headerlink" href="#_CPPv4N5mpart10MapOptions10quadAbsTolE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>The absolute tolerance used by adaptive quadrature rules like <a class="reference internal" href="quadrature/adaptivesimpson.html#classmpart_1_1_adaptive_simpson"><span class="std std-ref">AdaptiveSimpson</span></a> and <a class="reference internal" href="quadrature/recursivequadrature.html#classmpart_1_1_adaptive_clenshaw_curtis"><span class="std std-ref">AdaptiveClenshawCurtis</span></a>. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart10MapOptions10quadRelTolE">
+<span class="target" id="structmpart_1_1_map_options_1a76f0bbf05f49b41f9fa762442a05df2e"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">quadRelTol</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1e-6</span></span><a class="headerlink" href="#_CPPv4N5mpart10MapOptions10quadRelTolE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>The relative tolerance used by adaptive quadrature rules like <a class="reference internal" href="quadrature/adaptivesimpson.html#classmpart_1_1_adaptive_simpson"><span class="std std-ref">AdaptiveSimpson</span></a> and <a class="reference internal" href="quadrature/recursivequadrature.html#classmpart_1_1_adaptive_clenshaw_curtis"><span class="std std-ref">AdaptiveClenshawCurtis</span></a>. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart10MapOptions10quadMaxSubE">
+<span class="target" id="structmpart_1_1_map_options_1a7fee0a3fb4508b40c3588fdddd9bc718"></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">quadMaxSub</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">30</span></span><a class="headerlink" href="#_CPPv4N5mpart10MapOptions10quadMaxSubE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>The maximum number of subdivisions used in the adaptive quadrature rules. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart10MapOptions10quadMinSubE">
+<span class="target" id="structmpart_1_1_map_options_1a252da4a60f953511226035357332b2fa"></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">quadMinSub</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N5mpart10MapOptions10quadMinSubE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>The minimum number of subdivisions used in the adaptive quadrature rules. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart10MapOptions7quadPtsE">
+<span class="target" id="structmpart_1_1_map_options_1a7d0f786bfb10bd91a200795c2b5f1bb2"></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">quadPts</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">5</span></span><a class="headerlink" href="#_CPPv4N5mpart10MapOptions7quadPtsE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>The number of quadrature points used in fixed rules like the Clenshaw Curtis rule. Also defines the base level used in the adaptive Clenshaw-Curtis rule. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart10MapOptions9contDerivE">
+<span class="target" id="structmpart_1_1_map_options_1a207743dfc0083a3bfe3c5877c5a03bcf"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">contDeriv</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">true</span></span><a class="headerlink" href="#_CPPv4N5mpart10MapOptions9contDerivE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Specifies whether the derivative of the integral defining a monotone component is used or if the derivative of the quadrature-based approximation of the integral is used. See :ref:<code class="docutils literal notranslate"><span class="pre">diag_deriv_section</span></code> for more details. If true, the integral is differentiated directly. If false, the numerical approximation to the integral is differentiated. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart10MapOptions9basisNormE">
+<span class="target" id="structmpart_1_1_map_options_1a4444a079ae0d1f45b4984f6b2dee39ef"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">basisNorm</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">true</span></span><a class="headerlink" href="#_CPPv4N5mpart10MapOptions9basisNormE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>If orthogonal polynomial basis functions should be normalized. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart10MapOptions6nuggetE">
+<span class="target" id="structmpart_1_1_map_options_1a45504704a5d136c9c7aabbe1b9507f64"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nugget</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.0</span></span><a class="headerlink" href="#_CPPv4N5mpart10MapOptions6nuggetE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>The minimum slope of the monotone component. This nugget is added to the g(df) integrand. Must be non-negative. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart10BasisTypesE">
+<span class="target" id="_map_options_8h_1ac3f6827bd7359d199d9e9460670a9426"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mpart</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">BasisTypes</span></span></span><a class="headerlink" href="#_CPPv4N5mpart10BasisTypesE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart10BasisTypes18ProbabilistHermiteE">
+<span class="target" id="_map_options_8h_1ac3f6827bd7359d199d9e9460670a9426a4a2146718f9b86e829561ea0125d42d4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProbabilistHermite</span></span></span><a class="headerlink" href="#_CPPv4N5mpart10BasisTypes18ProbabilistHermiteE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart10BasisTypes16PhysicistHermiteE">
+<span class="target" id="_map_options_8h_1ac3f6827bd7359d199d9e9460670a9426a7b10a66a18c7785e81c5cbdbf872d403"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PhysicistHermite</span></span></span><a class="headerlink" href="#_CPPv4N5mpart10BasisTypes16PhysicistHermiteE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart10BasisTypes16HermiteFunctionsE">
+<span class="target" id="_map_options_8h_1ac3f6827bd7359d199d9e9460670a9426a2603000be222653b0a899d9b3174acc2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HermiteFunctions</span></span></span><a class="headerlink" href="#_CPPv4N5mpart10BasisTypes16HermiteFunctionsE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart12PosFuncTypesE">
+<span class="target" id="_map_options_8h_1a18f43b9b2d72b8129be8640d6a59ef1f"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mpart</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">PosFuncTypes</span></span></span><a class="headerlink" href="#_CPPv4N5mpart12PosFuncTypesE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart12PosFuncTypes3ExpE">
+<span class="target" id="_map_options_8h_1a18f43b9b2d72b8129be8640d6a59ef1facad39a154bffb61175f674d6eefaf6d0"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Exp</span></span></span><a class="headerlink" href="#_CPPv4N5mpart12PosFuncTypes3ExpE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart12PosFuncTypes8SoftPlusE">
+<span class="target" id="_map_options_8h_1a18f43b9b2d72b8129be8640d6a59ef1fa28be2ec1c34271f6b669a690b603047e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SoftPlus</span></span></span><a class="headerlink" href="#_CPPv4N5mpart12PosFuncTypes8SoftPlusE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart9QuadTypesE">
+<span class="target" id="_map_options_8h_1aaef72369a0c3448181c3d02361f63e5b"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mpart</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">QuadTypes</span></span></span><a class="headerlink" href="#_CPPv4N5mpart9QuadTypesE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart9QuadTypes14ClenshawCurtisE">
+<span class="target" id="_map_options_8h_1aaef72369a0c3448181c3d02361f63e5ba1edb8836a160659e99ce325f7f6251f1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ClenshawCurtis</span></span></span><a class="headerlink" href="#_CPPv4N5mpart9QuadTypes14ClenshawCurtisE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart9QuadTypes15AdaptiveSimpsonE">
+<span class="target" id="_map_options_8h_1aaef72369a0c3448181c3d02361f63e5ba3900dd275ccaf6d50f69f0913ed7cac8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AdaptiveSimpson</span></span></span><a class="headerlink" href="#_CPPv4N5mpart9QuadTypes15AdaptiveSimpsonE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart9QuadTypes22AdaptiveClenshawCurtisE">
+<span class="target" id="_map_options_8h_1aaef72369a0c3448181c3d02361f63e5baeb4f4d25d38c3c900eeb51dddb80c084"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AdaptiveClenshawCurtis</span></span></span><a class="headerlink" href="#_CPPv4N5mpart9QuadTypes22AdaptiveClenshawCurtisE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">API Reference</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="conditionalmapbase.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Conditional Map Base</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/source/api/mapfactory.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2022, The MParT development team..
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1202 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Transport map from samples &#8212; MParT  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/nbsphinx-code-cells.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'source/tutorials/python/FromSamples2D_banana';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">MParT  documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Tutorials
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../mathematics.html">
+                        Mathematical Background
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api/index.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../development/index.html">
+                        Community
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MeasureTransport/MParT" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Tutorials
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../mathematics.html">
+                        Mathematical Background
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api/index.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../development/index.html">
+                        Community
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MeasureTransport/MParT" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Transport...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <p>Launch this notebook on on mybinder.org:</p>
+<a class="reference external image-reference" href="https://mybinder.org/v2/gh/MeasureTransport/MParT-examples/main?urlpath=lab/tree/examples/python/FromSamples2D_banana.ipynb"><img alt="https://mybinder.org/badge_logo.svg" src="https://mybinder.org/badge_logo.svg" /></a>
+<hr class="docutils" />
+<section id="Transport-map-from-samples">
+<h1>Transport map from samples<a class="headerlink" href="#Transport-map-from-samples" title="Permalink to this heading">#</a></h1>
+<p>The objective of this example is to show how a transport map can be build in MParT when samples from the target density are known.</p>
+<section id="Problem-formulation">
+<h2>Problem formulation<a class="headerlink" href="#Problem-formulation" title="Permalink to this heading">#</a></h2>
+<p>From the definition of a transport map, the <em>function</em> <span class="math notranslate nohighlight">\(S(\mathbf{x}; \mathbf{w})\)</span> is invertible and have a positive definite Jacobian for any parameters <span class="math notranslate nohighlight">\(w\)</span>. Combined with a probability density <span class="math notranslate nohighlight">\(\eta(\mathbf{r})\)</span>, we can therefore define a density <span class="math notranslate nohighlight">\(\tilde{\pi}_w(x)\)</span> induced by transforming <span class="math notranslate nohighlight">\(r\)</span> with the inverse map <span class="math notranslate nohighlight">\(S^{-1}(\mathbf{r})\)</span>. More precisely, the change of random variable formula from the reference <span class="math notranslate nohighlight">\(\eta\)</span> to the target <span class="math notranslate nohighlight">\(\tilde{\pi}\)</span>
+reads:</p>
+<div class="math notranslate nohighlight">
+\[\tilde{\pi}_{\mathbf{w}}(\mathbf{x}) = \eta(S(\mathbf{x}; \mathbf{w}))\left| \det\nabla S(\mathbf{x}; \mathbf{w})\right|,\]</div>
+<p>where <span class="math notranslate nohighlight">\(\det\nabla S\)</span> is the determinant of the map Jacobian at the point <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. We refer to <span class="math notranslate nohighlight">\(\tilde{\pi}_{\mathbf{w}}(\mathbf{x})\)</span> as the <em>map-induced</em> density or <em>pullback distribution</em> and will commonly interchange notation for densities and measures to use the notation <span class="math notranslate nohighlight">\(\tilde{\pi} = S^{\sharp} \eta\)</span>.</p>
+<p>The objective of this example is, from samples <span class="math notranslate nohighlight">\(\mathbf{x}^i\)</span>, <span class="math notranslate nohighlight">\(i \in \{1,...,n\}\)</span> drawn according to a density <span class="math notranslate nohighlight">\(\pi\)</span>, build the map-induced density approximation <span class="math notranslate nohighlight">\(\tilde{\pi}\)</span>.</p>
+</section>
+<section id="Imports">
+<h2>Imports<a class="headerlink" href="#Imports" title="Permalink to this heading">#</a></h2>
+<p>First, import MParT and other packages used in this notebook. Note that it is possible to specify the number of threads used by MParT by setting the <code class="docutils literal notranslate"><span class="pre">KOKKOS_NUM_THREADS</span></code> environment variable <strong>before</strong> importing MParT.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">multivariate_normal</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;KOKKOS_NUM_THREADS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;8&#39;</span>
+
+<span class="kn">import</span> <span class="nn">mpart</span> <span class="k">as</span> <span class="nn">mt</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Kokkos is using&#39;</span><span class="p">,</span> <span class="n">mt</span><span class="o">.</span><span class="n">Concurrency</span><span class="p">(),</span> <span class="s1">&#39;threads&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.dpi&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">110</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Kokkos is usingKokkos::OpenMP::initialize WARNING: You are likely oversubscribing your CPU cores.
+  process threads available :   2,  requested thread :   8
+ 8 threads
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Kokkos::OpenMP::initialize WARNING: You are likely oversubscribing your CPU cores.
+                                    Detected: 2 cores per node.
+                                    Detected: 1 MPI_ranks per node.
+                                    Requested: 8 threads per process.
+</pre></div></div>
+</div>
+</section>
+<section id="Reference-density-and-samples">
+<h2>Reference density and samples<a class="headerlink" href="#Reference-density-and-samples" title="Permalink to this heading">#</a></h2>
+<p>In this example we use a 2D target density known as the <em>banana</em> density where the unnormalized probability density, samples and the exact transport map are known.</p>
+<p>The banana density is defined as:</p>
+<div class="math notranslate nohighlight">
+\[\pi(x_1,x_2) \propto N_1(x_1)\times N_1(x_2-x_1^2)\]</div>
+<p>where <span class="math notranslate nohighlight">\(N_1\)</span> is the 1D standard normal density.</p>
+<p>The exact transport map that transport <span class="math notranslate nohighlight">\(\pi\)</span> to the 2D standard normal density is defined as:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}    {S}^\text{true}(x_1,x_2)=
+    \begin{bmatrix}
+x_1\\
+x_2 - x_1^2
+\end{bmatrix}\end{split}\]</div>
+<p>Samples from <span class="math notranslate nohighlight">\(\pi\)</span> are generated by the following:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make target samples for training</span>
+<span class="n">num_points</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">num_points</span><span class="p">)</span>
+<span class="n">x1</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">x2</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">])</span>
+
+
+<span class="c1"># Make target samples for testing</span>
+<span class="n">test_r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">5000</span><span class="p">)</span>
+<span class="n">test_x1</span> <span class="o">=</span> <span class="n">test_r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">test_x2</span> <span class="o">=</span> <span class="n">test_r</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">test_r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">test_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">test_x1</span><span class="p">,</span><span class="n">test_x2</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<section id="Plot-training-samples:">
+<h3>Plot training samples:<a class="headerlink" href="#Plot-training-samples:" title="Permalink to this heading">#</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Target samples&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;$x_1$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;$x_2$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../../_images/source_tutorials_python_FromSamples2D_banana_8_0.png" src="../../../_images/source_tutorials_python_FromSamples2D_banana_8_0.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="Map-training">
+<h2>Map training<a class="headerlink" href="#Map-training" title="Permalink to this heading">#</a></h2>
+<section id="Defining-objective-function-and-its-gradient">
+<h3>Defining objective function and its gradient<a class="headerlink" href="#Defining-objective-function-and-its-gradient" title="Permalink to this heading">#</a></h3>
+<p>To match the map induced density <span class="math notranslate nohighlight">\(\tilde{\pi}_{\mathbf{w}}(\mathbf{x})\)</span> with the samples, we can maximize the likelihood of observing the samples, which is simply</p>
+<div class="math notranslate nohighlight">
+\[\prod_{i=1}^N \tilde{\pi}_w(\mathbf{x}^i).\]</div>
+<p>Numerically, it is typically easier to work with the log-likelihood instead and we will therefore maximize the log likelihood to find the parameters <span class="math notranslate nohighlight">\(w\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[w^\ast = \underset{\mathbf{w}}{\operatorname{argmax}} \sum_{i=1}^N \log \tilde{\pi}_{\mathbf{w}}(\mathbf{x}^i).\]</div>
+<p>Importantly, our use of triangular maps and a standard normal reference density allows us to expand this objective into two independent problems: one for the parameters <span class="math notranslate nohighlight">\(w_1\)</span> defining the first component <span class="math notranslate nohighlight">\(S_1(x_1; w_1)\)</span> of the map, and one for the parameters defining the second component <span class="math notranslate nohighlight">\(S_2(x_{1:2}; w_2)\)</span>. In general, for map component <span class="math notranslate nohighlight">\(k\)</span>, the objective function is given by</p>
+<div class="math notranslate nohighlight">
+\[J_k(\mathbf{w}_k) = - \frac{1}{N}\sum_{i=1}^N \left( \log\eta\left(S_k(\mathbf{x}_{1:k}^i;\mathbf{w}_k)\right) + \log \frac{\partial S_k(\mathbf{x}_{1:k}^i;\mathbf{w}_k)}{\partial x_k}\right)\]</div>
+<p>and the resulting optimization problem is</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{w}_k^\ast = \underset{\mathbf{w}_k}{\operatorname{argmin}} J_k(\mathbf{w}_k).\]</div>
+<p>In order to use efficient gradient-based minimizer we need to define both the objective and its gradient. The gradient is given by</p>
+<div class="math notranslate nohighlight">
+\[\nabla_{\mathbf{w}_k}J_k(\mathbf{w}_k) = - \frac{1}{N}\sum_{i=1}^N \left(\left[\nabla_{\mathbf{w}_k}S_k
+(\mathbf{x}_{1:k}^i;\mathbf{w}_k)\right]^T \nabla_\mathbf{r}\log \eta \left(S_k
+(\mathbf{x}_{1:k}^i;\mathbf{w}_k)\right) - \frac{\partial \nabla_{\mathbf{w}_k}S_k(\mathbf{x}_{1:k}^i;\mathbf{w}_k)}{\partial x_k} \left[\frac{\partial S_k(\mathbf{x}_{1:k}^i;\mathbf{w}_k)}{\partial x_k}\right]^{-1}\right),\]</div>
+<p>where <span class="math notranslate nohighlight">\(\nabla_{\mathbf{w}_k}S_k(\mathbf{x}_{1:k}^i;\mathbf{w}_k)\)</span> is the Jacobian of the map output with respect to the map parameters and <span class="math notranslate nohighlight">\(\nabla_\mathbf{r}\log \eta \left(S_k(\mathbf{x}_{1:k}^i;\mathbf{w}_k)\right)\)</span> is the gradient of the reference log-density evaluated at the map output. Note that for a standard normal reference density, this expression simplifies to
+<span class="math notranslate nohighlight">\(\nabla_\mathbf{r}\log \eta \left(S_k(\mathbf{x}_{1:k}^i;\mathbf{w}_k)\right) = -S_k(\mathbf{x}_{1:k}^i;\mathbf{w}_k)\)</span>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Reference density</span>
+<span class="n">rho1</span> <span class="o">=</span> <span class="n">multivariate_normal</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="c1"># Negative log likelihood objective</span>
+<span class="k">def</span> <span class="nf">obj</span><span class="p">(</span><span class="n">coeffs</span><span class="p">,</span> <span class="n">tri_map</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Evaluates the log-likelihood of the samples using the map-induced density. &quot;&quot;&quot;</span>
+    <span class="n">num_points</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">tri_map</span><span class="o">.</span><span class="n">SetCoeffs</span><span class="p">(</span><span class="n">coeffs</span><span class="p">)</span>
+
+    <span class="c1"># Compute the map-induced density at each point</span>
+    <span class="n">map_of_x</span> <span class="o">=</span> <span class="n">tri_map</span><span class="o">.</span><span class="n">Evaluate</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">rho_of_map_of_x</span> <span class="o">=</span> <span class="n">rho1</span><span class="o">.</span><span class="n">logpdf</span><span class="p">(</span><span class="n">map_of_x</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">log_det</span> <span class="o">=</span> <span class="n">tri_map</span><span class="o">.</span><span class="n">LogDeterminant</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="c1"># Return the negative log-likelihood of the entire dataset</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">rho_of_map_of_x</span> <span class="o">+</span> <span class="n">log_det</span><span class="p">)</span><span class="o">/</span><span class="n">num_points</span>
+
+<span class="k">def</span> <span class="nf">grad_obj</span><span class="p">(</span><span class="n">coeffs</span><span class="p">,</span> <span class="n">tri_map</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Returns the gradient of the log-likelihood objective wrt the map parameters. &quot;&quot;&quot;</span>
+    <span class="n">num_points</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">tri_map</span><span class="o">.</span><span class="n">SetCoeffs</span><span class="p">(</span><span class="n">coeffs</span><span class="p">)</span>
+
+    <span class="c1"># Evaluate the map</span>
+    <span class="n">map_of_x</span> <span class="o">=</span> <span class="n">tri_map</span><span class="o">.</span><span class="n">Evaluate</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="c1"># Now compute the inner product of the map jacobian (\nabla_w S) and the gradient (which is just -S(x) here)</span>
+    <span class="n">grad_rho_of_map_of_x</span> <span class="o">=</span> <span class="o">-</span><span class="n">tri_map</span><span class="o">.</span><span class="n">CoeffGrad</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">map_of_x</span><span class="p">)</span>
+
+    <span class="c1"># Get the gradient of the log determinant with respect to the map coefficients</span>
+    <span class="n">grad_log_det</span> <span class="o">=</span> <span class="n">tri_map</span><span class="o">.</span><span class="n">LogDeterminantCoeffGrad</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">grad_rho_of_map_of_x</span> <span class="o">+</span> <span class="n">grad_log_det</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">num_points</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Map-parameterization">
+<h3>Map parameterization<a class="headerlink" href="#Map-parameterization" title="Permalink to this heading">#</a></h3>
+<p>With the separability property of the objective function mentionned above we can parameterize and optimize components <span class="math notranslate nohighlight">\(S_1\)</span> and <span class="math notranslate nohighlight">\(S_2\)</span> independently.</p>
+<section id="First-component-S_1">
+<h4>First component <span class="math notranslate nohighlight">\(S_1\)</span><a class="headerlink" href="#First-component-S_1" title="Permalink to this heading">#</a></h4>
+<p>Theoritically the first component is <span class="math notranslate nohighlight">\(S_1^{\text{true}}(x_1)=x_1\)</span>. This parameterization can be set with MParT as:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">multis1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">],[</span><span class="mi">1</span><span class="p">]]);</span>
+<span class="n">mset1</span><span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">MultiIndexSet</span><span class="p">(</span><span class="n">multis1</span><span class="p">)</span>
+<span class="n">fixed_mset1</span> <span class="o">=</span> <span class="n">mset1</span><span class="o">.</span><span class="n">fix</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Let’s define the first component:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set-up first component and initialize map coefficients</span>
+<span class="n">map_options1</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">MapOptions</span><span class="p">()</span>
+
+<span class="c1"># Create map component</span>
+<span class="n">S1</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">CreateComponent</span><span class="p">(</span><span class="n">fixed_mset1</span><span class="p">,</span><span class="n">map_options1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Second-component-S_2">
+<h4>Second component <span class="math notranslate nohighlight">\(S_2\)</span><a class="headerlink" href="#Second-component-S_2" title="Permalink to this heading">#</a></h4>
+<p>Theoritically the second component is <span class="math notranslate nohighlight">\(S_2^{\text{true}}(x_1,x_2)=x_2^2-x_1\)</span>. The corresponding multi-index set can exactly be define as:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">multis2_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]]);</span>
+<span class="n">mset2_true</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">MultiIndexSet</span><span class="p">(</span><span class="n">multis2_true</span><span class="p">)</span>
+<span class="n">fixed_mset2_true</span> <span class="o">=</span> <span class="n">mset2_true</span><span class="o">.</span><span class="n">fix</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Other multi-index sets which include the true multi-index set are any total order expansion of order greater than one:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">total_order2</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">fixed_mset2</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">FixedMultiIndexSet</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">total_order2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>This parameterization will include terms: <span class="math notranslate nohighlight">\(x_1\)</span>, <span class="math notranslate nohighlight">\(x_2^2\)</span>, <span class="math notranslate nohighlight">\(x_1 x_2\)</span> that are not required to approximate the true map.</p>
+<p>Let’s define <span class="math notranslate nohighlight">\(S_2\)</span> with one multi-index set.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">map_options2</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">MapOptions</span><span class="p">()</span>
+<span class="n">S2</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">CreateComponent</span><span class="p">(</span><span class="n">fixed_mset2</span><span class="p">,</span><span class="n">map_options2</span><span class="p">)</span> <span class="c1">#or S2 = mt.CreateComponent(fixed_mset2_true,map_options2)</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="Approximation-before-optimization">
+<h3>Approximation before optimization<a class="headerlink" href="#Approximation-before-optimization" title="Permalink to this heading">#</a></h3>
+<p>Coefficients of map components are set to 0 upon creation. The triangular transport map composed by <span class="math notranslate nohighlight">\(S_1\)</span> and <span class="math notranslate nohighlight">\(S_2\)</span> is defined by:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">transport_map</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">TriangularMap</span><span class="p">((</span><span class="n">S1</span><span class="p">,</span><span class="n">S2</span><span class="p">))</span>
+<span class="n">transport_map</span><span class="o">.</span><span class="n">SetCoeffs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">S1</span><span class="o">.</span><span class="n">CoeffMap</span><span class="p">(),</span><span class="n">S2</span><span class="o">.</span><span class="n">CoeffMap</span><span class="p">())))</span>
+</pre></div>
+</div>
+</div>
+<p>Reference density:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># For plotting and computing reference density</span>
+<span class="n">ref_distribution</span> <span class="o">=</span> <span class="n">multivariate_normal</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>  <span class="c1">#standard normal</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">t</span><span class="p">)</span>
+<span class="n">ref_pdf_at_grid</span> <span class="o">=</span> <span class="n">ref_distribution</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">(</span><span class="n">grid</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<p>Transport of target samples via <span class="math notranslate nohighlight">\(S\)</span>:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r_test_before_opt</span> <span class="o">=</span> <span class="n">transport_map</span><span class="o">.</span><span class="n">Evaluate</span><span class="p">(</span><span class="n">test_x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Before optimization plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Before optimization&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="o">*</span><span class="n">grid</span><span class="p">,</span> <span class="n">ref_pdf_at_grid</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">r_test_before_opt</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span><span class="n">r_test_before_opt</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Pushed target samples through $S$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;$r_1$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;$r_2$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="c1"># Print initial coeffs and objective values</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;==================&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Starting coeffs component 1:&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">S1</span><span class="o">.</span><span class="n">CoeffMap</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Objective value for component 1: </span><span class="si">{:.2E}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">obj</span><span class="p">(</span><span class="n">S1</span><span class="o">.</span><span class="n">CoeffMap</span><span class="p">(),</span> <span class="n">S1</span><span class="p">,</span> <span class="n">test_x</span><span class="p">[:</span><span class="mi">1</span><span class="p">,:])))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;==================&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Starting coeffs component 2:&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">S2</span><span class="o">.</span><span class="n">CoeffMap</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Objective value for component 2: </span><span class="si">{:.2E}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">obj</span><span class="p">(</span><span class="n">S2</span><span class="o">.</span><span class="n">CoeffMap</span><span class="p">(),</span> <span class="n">S2</span><span class="p">,</span> <span class="n">test_x</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;==================&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../../_images/source_tutorials_python_FromSamples2D_banana_29_0.png" src="../../../_images/source_tutorials_python_FromSamples2D_banana_29_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+==================
+Starting coeffs component 1:
+[0. 0.]
+Objective value for component 1: 1.53E+00
+==================
+Starting coeffs component 2:
+[0. 0. 0. 0. 0. 0.]
+Objective value for component 2: 2.26E+00
+==================
+</pre></div></div>
+</div>
+</section>
+<section id="Optimization">
+<h3>Optimization<a class="headerlink" href="#Optimization" title="Permalink to this heading">#</a></h3>
+<p>Optimization of <span class="math notranslate nohighlight">\(S_1\)</span> and <span class="math notranslate nohighlight">\(S_2\)</span> coefficients are performed independently.</p>
+<section id="Optimization-of-S_1">
+<h4>Optimization of <span class="math notranslate nohighlight">\(S_1\)</span><a class="headerlink" href="#Optimization-of-S_1" title="Permalink to this heading">#</a></h4>
+<p>For <span class="math notranslate nohighlight">\(S_1\)</span> only samples of the first coordinate <span class="math notranslate nohighlight">\(x_1\)</span> are required to solve the minimization problem.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Optimize</span>
+<span class="n">optimizer_options</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;gtol&#39;</span><span class="p">:</span> <span class="mf">1e-5</span><span class="p">,</span> <span class="s1">&#39;disp&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">S1</span><span class="o">.</span><span class="n">CoeffMap</span><span class="p">(),</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">S1</span><span class="p">,</span> <span class="n">x</span><span class="p">[:</span><span class="mi">1</span><span class="p">,:]),</span> <span class="n">jac</span><span class="o">=</span><span class="n">grad_obj</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;BFGS&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">optimizer_options</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Optimization terminated successfully.
+         Current function value: 1.424850
+         Iterations: 5
+         Function evaluations: 6
+         Gradient evaluations: 6
+</pre></div></div>
+</div>
+</section>
+<section id="Optimization-of-S_2">
+<h4>Optimization of <span class="math notranslate nohighlight">\(S_2\)</span><a class="headerlink" href="#Optimization-of-S_2" title="Permalink to this heading">#</a></h4>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Optimize</span>
+<span class="n">optimizer_options</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;gtol&#39;</span><span class="p">:</span> <span class="mf">1e-5</span><span class="p">,</span> <span class="s1">&#39;disp&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">S2</span><span class="o">.</span><span class="n">CoeffMap</span><span class="p">(),</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">S2</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">jac</span><span class="o">=</span><span class="n">grad_obj</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;BFGS&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">optimizer_options</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Optimization terminated successfully.
+         Current function value: 1.426039
+         Iterations: 16
+         Function evaluations: 18
+         Gradient evaluations: 18
+</pre></div></div>
+</div>
+</section>
+</section>
+<section id="Approximation-after-optimization">
+<h3>Approximation after optimization<a class="headerlink" href="#Approximation-after-optimization" title="Permalink to this heading">#</a></h3>
+<section id="Normality-of-pushed-samples:">
+<h4>Normality of pushed samples:<a class="headerlink" href="#Normality-of-pushed-samples:" title="Permalink to this heading">#</a></h4>
+<p>Coefficients of <code class="docutils literal notranslate"><span class="pre">transport_map</span></code> are now updated, let’s transport testing samples again:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r_test_after_opt</span> <span class="o">=</span> <span class="n">transport_map</span><span class="o">.</span><span class="n">Evaluate</span><span class="p">(</span><span class="n">test_x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># After optimization plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;After optimization&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="o">*</span><span class="n">grid</span><span class="p">,</span> <span class="n">ref_pdf_at_grid</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">r_test_after_opt</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span><span class="n">r_test_after_opt</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Pushed target samples through $S$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;$r_1$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;$r_2$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="c1"># Print final coeffs and objective</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;==================&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Final coeffs component 1:&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">S1</span><span class="o">.</span><span class="n">CoeffMap</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Objective value for component 1: </span><span class="si">{:.2E}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">obj</span><span class="p">(</span><span class="n">S1</span><span class="o">.</span><span class="n">CoeffMap</span><span class="p">(),</span> <span class="n">S1</span><span class="p">,</span> <span class="n">test_x</span><span class="p">[:</span><span class="mi">1</span><span class="p">,:])))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;==================&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Final coeffs component 2:&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">S2</span><span class="o">.</span><span class="n">CoeffMap</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Objective value for component 2: </span><span class="si">{:.2E}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">obj</span><span class="p">(</span><span class="n">S2</span><span class="o">.</span><span class="n">CoeffMap</span><span class="p">(),</span> <span class="n">S2</span><span class="p">,</span> <span class="n">test_x</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;==================&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../../_images/source_tutorials_python_FromSamples2D_banana_39_0.png" src="../../../_images/source_tutorials_python_FromSamples2D_banana_39_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+==================
+Final coeffs component 1:
+[0.00174073 0.84225657]
+Objective value for component 1: 1.43E+00
+==================
+Final coeffs component 2:
+[-0.99504069  0.82750629  0.00824115  0.01208213 -0.01193632 -2.2576335 ]
+Objective value for component 2: 1.42E+00
+==================
+</pre></div></div>
+</div>
+<p>After optimization testing samples are visually distributed according to the standard normal which tell us that the map has been computed accurately. Another estimation of the approximation quality is to test normality of the pushed samples. One simple way to do that is to compute first moments of the pushed test samples:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print statistics of normalized samples</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;==================&#39;</span><span class="p">)</span>
+<span class="n">mean_of_map</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">r_test_after_opt</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mean of normalized test samples&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mean_of_map</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;==================&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cov of normalized test samples&quot;</span><span class="p">)</span>
+<span class="n">cov_of_map</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">r_test_after_opt</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cov_of_map</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;==================&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+==================
+Mean of normalized test samples
+[-0.01391257 -0.01288152]
+==================
+Cov of normalized test samples
+[[ 1.00033428 -0.01059318]
+ [-0.01059318  0.99498315]]
+==================
+</pre></div></div>
+</div>
+<p>Here mean should be 0 and covariance matrix should be identity.</p>
+</section>
+<section id="Comparison-with-the-true-transport-map">
+<h4>Comparison with the true transport map<a class="headerlink" href="#Comparison-with-the-true-transport-map" title="Permalink to this heading">#</a></h4>
+<p>Since the true transport map for this problem is known, we can compare directly map evaluations component by component.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Evaluation grid</span>
+
+<span class="n">ngrid</span><span class="o">=</span><span class="mi">100</span>
+<span class="n">x1_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">ngrid</span><span class="p">)</span>
+<span class="n">x2_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="mf">7.5</span><span class="p">,</span><span class="n">ngrid</span><span class="p">)</span>
+<span class="n">xx1</span><span class="p">,</span><span class="n">xx2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x1_t</span><span class="p">,</span><span class="n">x2_t</span><span class="p">)</span>
+
+<span class="n">xx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">xx1</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="n">xx2</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<section id="First-component">
+<h5>First component<a class="headerlink" href="#First-component" title="Permalink to this heading">#</a></h5>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;$S_1(x_1)$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x1_t</span><span class="p">,</span><span class="n">x1_t</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;true map&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x1_t</span><span class="p">,</span><span class="n">S1</span><span class="o">.</span><span class="n">Evaluate</span><span class="p">(</span><span class="n">x1_t</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span><span class="s1">&#39;--&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;map approximation&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;$x_1$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../../_images/source_tutorials_python_FromSamples2D_banana_47_0.png" src="../../../_images/source_tutorials_python_FromSamples2D_banana_47_0.png" />
+</div>
+</div>
+</section>
+<section id="Second-component">
+<h5>Second component<a class="headerlink" href="#Second-component" title="Permalink to this heading">#</a></h5>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">map_eval_true</span> <span class="o">=</span>  <span class="n">xx</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">-</span> <span class="n">xx</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">map_eval_approx</span> <span class="o">=</span> <span class="n">S2</span><span class="o">.</span><span class="n">Evaluate</span><span class="p">(</span><span class="n">xx</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;$S_2(x_1,x_2)$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="o">*</span><span class="n">grid</span><span class="p">,</span> <span class="n">map_eval_true</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="o">*</span><span class="n">grid</span><span class="p">,</span> <span class="n">map_eval_approx</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">),</span><span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;$x_1$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;$x_2$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../../_images/source_tutorials_python_FromSamples2D_banana_49_0.png" src="../../../_images/source_tutorials_python_FromSamples2D_banana_49_0.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="Contours-of-map-induced-density">
+<h4>Contours of map-induced density<a class="headerlink" href="#Contours-of-map-induced-density" title="Permalink to this heading">#</a></h4>
+<p>We can also compare contours of the map-induced density and true unnormalized density.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Map induced pdf</span>
+<span class="k">def</span> <span class="nf">pullback_pdf</span><span class="p">(</span><span class="n">tri_map</span><span class="p">,</span><span class="n">rho</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">tri_map</span><span class="o">.</span><span class="n">Evaluate</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">log_pdf</span> <span class="o">=</span> <span class="n">rho</span><span class="o">.</span><span class="n">logpdf</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">+</span><span class="n">tri_map</span><span class="o">.</span><span class="n">LogDeterminant</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_pdf</span><span class="p">)</span>
+
+<span class="c1"># True density</span>
+<span class="k">def</span> <span class="nf">target_logpdf</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+  <span class="n">rv1</span> <span class="o">=</span> <span class="n">multivariate_normal</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+  <span class="n">rv2</span> <span class="o">=</span> <span class="n">multivariate_normal</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+  <span class="n">logpdf1</span> <span class="o">=</span> <span class="n">rv1</span><span class="o">.</span><span class="n">logpdf</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+  <span class="n">logpdf2</span> <span class="o">=</span> <span class="n">rv2</span><span class="o">.</span><span class="n">logpdf</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+  <span class="n">logpdf</span> <span class="o">=</span> <span class="n">logpdf1</span> <span class="o">+</span> <span class="n">logpdf2</span>
+  <span class="k">return</span> <span class="n">logpdf</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Comparison grid</span>
+
+<span class="n">ngrid</span><span class="o">=</span><span class="mi">100</span>
+<span class="n">x1_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">ngrid</span><span class="p">)</span>
+<span class="n">x2_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="mf">7.5</span><span class="p">,</span><span class="n">ngrid</span><span class="p">)</span>
+<span class="n">xx1</span><span class="p">,</span><span class="n">xx2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x1_t</span><span class="p">,</span><span class="n">x2_t</span><span class="p">)</span>
+
+<span class="n">xx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">xx1</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="n">xx2</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+
+<span class="c1"># For plotting and computing densities</span>
+
+<span class="n">true_pdf_at_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">target_logpdf</span><span class="p">(</span><span class="n">xx</span><span class="p">))</span>
+
+<span class="n">map_induced_pdf</span> <span class="o">=</span> <span class="n">pullback_pdf</span><span class="p">(</span><span class="n">transport_map</span><span class="p">,</span><span class="n">ref_distribution</span><span class="p">,</span><span class="n">xx</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="c1">#SCA = ax.scatter(test_x[0,:2000],test_x[1,:2000], facecolor=&#39;blue&#39;, alpha=0.1,label=&#39;Target samples&#39;)</span>
+<span class="n">CS1</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">xx1</span><span class="p">,</span> <span class="n">xx2</span><span class="p">,</span> <span class="n">true_pdf_at_grid</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">ngrid</span><span class="p">,</span><span class="n">ngrid</span><span class="p">))</span>
+<span class="n">CS2</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">xx1</span><span class="p">,</span> <span class="n">xx2</span><span class="p">,</span> <span class="n">map_induced_pdf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">ngrid</span><span class="p">,</span><span class="n">ngrid</span><span class="p">),</span><span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$x_1$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$x_2$&#39;</span><span class="p">)</span>
+<span class="n">h1</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">CS1</span><span class="o">.</span><span class="n">legend_elements</span><span class="p">()</span>
+<span class="n">h2</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">CS2</span><span class="o">.</span><span class="n">legend_elements</span><span class="p">()</span>
+<span class="n">legend1</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="n">h1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">h2</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="s1">&#39;Unnormalized target&#39;</span><span class="p">,</span> <span class="s1">&#39;TM approximation&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../../_images/source_tutorials_python_FromSamples2D_banana_52_0.png" src="../../../_images/source_tutorials_python_FromSamples2D_banana_52_0.png" />
+</div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Problem-formulation">Problem formulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Imports">Imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Reference-density-and-samples">Reference density and samples</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Plot-training-samples:">Plot training samples:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Map-training">Map training</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Defining-objective-function-and-its-gradient">Defining objective function and its gradient</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Map-parameterization">Map parameterization</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#First-component-S_1">First component <span class="math notranslate nohighlight">\(S_1\)</span></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Second-component-S_2">Second component <span class="math notranslate nohighlight">\(S_2\)</span></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Approximation-before-optimization">Approximation before optimization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Optimization">Optimization</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Optimization-of-S_1">Optimization of <span class="math notranslate nohighlight">\(S_1\)</span></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Optimization-of-S_2">Optimization of <span class="math notranslate nohighlight">\(S_2\)</span></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Approximation-after-optimization">Approximation after optimization</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Normality-of-pushed-samples:">Normality of pushed samples:</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Comparison-with-the-true-transport-map">Comparison with the true transport map</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#First-component">First component</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#Second-component">Second component</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Contours-of-map-induced-density">Contours of map-induced density</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../../../_sources/source/tutorials/python/FromSamples2D_banana.ipynb.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2022, The MParT development team..
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

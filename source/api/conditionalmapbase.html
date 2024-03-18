@@ -1,0 +1,798 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Conditional Map Base &#8212; MParT  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'source/api/conditionalmapbase';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Triangular Map" href="triangularmap.html" />
+    <link rel="prev" title="Map Factory" href="mapfactory.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">MParT  documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../tutorials/index.html">
+                        Tutorials
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../mathematics.html">
+                        Mathematical Background
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../development/index.html">
+                        Community
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MeasureTransport/MParT" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../tutorials/index.html">
+                        Tutorials
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../mathematics.html">
+                        Mathematical Background
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../development/index.html">
+                        Community
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MeasureTransport/MParT" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="mapfactory.html">Map Factory</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Conditional Map Base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="triangularmap.html">Triangular Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composedmap.html">Composed Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monotonecomponent.html">Monotone Component</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="multiindex.html">MultiIndices</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="multiindices/multiindex.html">MultiIndex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiindices/multiindexset.html">MultiIndexSet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiindices/fixedmultiindexset.html">FixedMultiIndexSet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiindices/multiindexlimiter.html">MultiIndexLimiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiindices/multiindexneighborhood.html">MultiIndexNeighborhood</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="quadrature.html">Quadrature</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="quadrature/clenshawcurtis.html">Clenshaw Curtis Quadrature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quadrature/adaptivesimpson.html">Adaptive Simpson Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quadrature/recursivequadrature.html">Adaptive Clenshaw Curtis Quadrature</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utilities/linearalgebra.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities/kokkoswrappers.html">Kokkos Array Conversions</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="templateconcepts.html">Template Concepts</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="concepts/cachedparameterization.html">Cached Parameterization Concept</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="multivariatebasis/multivariateexpansionworker.html">Multivariate Expansion Worker</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="concepts/parameterizedfunction.html">Parameterized Function Concept</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="monotonecomponent.html">Monotone Component</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utilities/initialization.html">Initialization Helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities/serialization.html">Serialization</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="maptraining.html">Map Training</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="maptraining/trainmap.html">Train Map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maptraining/trainmapadaptive.html">Adaptive Map Training</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="multivariatebasis.html">Multivariate Basis Evaluation</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="multivariatebasis/univariatebasis.html">Univariate Bases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multivariatebasis/basisevaluator.html">Basis Evaluators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multivariatebasis/multivariateexpansionworker.html">Multivariate Expansion Worker</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">API Reference</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Conditional Map Base</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="conditional-map-base">
+<h1>Conditional Map Base<a class="headerlink" href="#conditional-map-base" title="Permalink to this heading">#</a></h1>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN5mpart18ConditionalMapBaseE">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MemorySpace</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmpart_1_1_conditional_map_base"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ConditionalMapBase</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mpart</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="parameterizedfunctionbase.html#_CPPv4I0EN5mpart25ParameterizedFunctionBaseE" title="mpart::ParameterizedFunctionBase"><span class="n"><span class="pre">ParameterizedFunctionBase</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN5mpart18ConditionalMapBaseE" title="mpart::ConditionalMapBase::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0EN5mpart18ConditionalMapBaseE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Provides an abstract base class for conditional transport maps where the input dimension might be larger than output dimension. </p>
+<p>This class provides an interface for functions <span class="math notranslate nohighlight">\(T:\mathbb{R}^{N+M}\rightarrow \mathbb{R}^M\)</span>, where $N\geq 0$. Let <span class="math notranslate nohighlight">\(x_1\in \mathbb{R}^N\)</span> denote the first block of inputs and <span class="math notranslate nohighlight">\(x_2\in\mathbb{R}^M\)</span> denote the second block of inputs. Let <span class="math notranslate nohighlight">\(r\in\mathbb{R}^M\)</span> denote the map output, <span class="math notranslate nohighlight">\(r=T(x_2; x_1)\)</span>. The conditional maps implemented by children of this class guarantee that for fixed <span class="math notranslate nohighlight">\(x_1\)</span>, the conditional mapping from <span class="math notranslate nohighlight">\(x_1 \rightarrow r\)</span> is invertible and the Jacobian matrix with respect to <span class="math notranslate nohighlight">\(x_2\)</span>, <span class="math notranslate nohighlight">\(\nabla_{x_2} T\)</span>, is positive definite.</p>
+<p><div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="mapfactory.html#namespacempart_1_1_map_factory"><span class="std std-ref">mpart::MapFactory</span></a></p>
+</div>
+</p>
+<p>Subclassed by mpart::AffineMap&lt; MemorySpace &gt;, <a class="reference internal" href="composedmap.html#classmpart_1_1_composed_map"><span class="std std-ref">mpart::ComposedMap&lt; MemorySpace &gt;</span></a>, mpart::IdentityMap&lt; MemorySpace &gt;, mpart::InnerMarginalAffineMap&lt; MemorySpace &gt;, <a class="reference internal" href="monotonecomponent.html#classmpart_1_1_monotone_component"><span class="std std-ref">mpart::MonotoneComponent&lt; ExpansionType, PosFuncType, QuadratureType, MemorySpace &gt;</span></a>, mpart::SummarizedMap&lt; MemorySpace &gt;, <a class="reference internal" href="triangularmap.html#classmpart_1_1_triangular_map"><span class="std std-ref">mpart::TriangularMap&lt; MemorySpace &gt;</span></a></p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart18ConditionalMapBase18ConditionalMapBaseEjjj">
+<span class="target" id="classmpart_1_1_conditional_map_base_1a26b34a52d3b5714383799b9429265fc9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ConditionalMapBase</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">inDim</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">outDim</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nCoeffs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5mpart18ConditionalMapBase18ConditionalMapBaseEjjj" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Construct a new Conditional Map Base object. </p>
+<p>Typically the <a class="reference internal" href="#classmpart_1_1_conditional_map_base"><span class="std std-ref">ConditionalMapBase</span></a> class is not constructed directly. The preferred way of creating a <a class="reference internal" href="#classmpart_1_1_conditional_map_base"><span class="std std-ref">ConditionalMapBase</span></a> object is through factory methods in the <a class="reference internal" href="mapfactory.html#namespacempart_1_1_map_factory"><span class="std std-ref">mpart::MapFactory</span></a> namespace. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inDim</strong> – The dimension <span class="math notranslate nohighlight">\(N\)</span> of the input to this map. </p></li>
+<li><p><strong>outDim</strong> – The dimension <span class="math notranslate nohighlight">\(M\)</span> of the output from this map. </p></li>
+<li><p><strong>nCoeffs</strong> – The number of coefficients in the map parameterization. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart18ConditionalMapBase18ConditionalMapBaseEjjjN6Kokkos4ViewIPKd11MemorySpaceEE">
+<span class="target" id="classmpart_1_1_conditional_map_base_1ae200f2b56cecaa665debade1b90e0228"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ConditionalMapBase</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">inDim</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">outDim</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nCoeffs</span></span>, <span class="n"><span class="pre">Kokkos</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">View</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN5mpart18ConditionalMapBaseE" title="mpart::ConditionalMapBase::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">coeffsIn</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5mpart18ConditionalMapBase18ConditionalMapBaseEjjjN6Kokkos4ViewIPKd11MemorySpaceEE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart18ConditionalMapBaseD0Ev">
+<span class="target" id="classmpart_1_1_conditional_map_base_1ad8be4abeabde75eeaa6b7679691fcf35"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~ConditionalMapBase</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N5mpart18ConditionalMapBaseD0Ev" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart18ConditionalMapBase15GetBaseFunctionEv">
+<span class="target" id="classmpart_1_1_conditional_map_base_1adada4aa252deee329b5c62fe250784d5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="parameterizedfunctionbase.html#_CPPv4I0EN5mpart25ParameterizedFunctionBaseE" title="mpart::ParameterizedFunctionBase"><span class="n"><span class="pre">ParameterizedFunctionBase</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN5mpart18ConditionalMapBaseE" title="mpart::ConditionalMapBase::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetBaseFunction</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5mpart18ConditionalMapBase15GetBaseFunctionEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>For Monotone parameterizations that are based on a non-monotone base function, this function will return the base function. If the monotone parameterization is not constructed from a non-monotone base, then this function will return a nullptr. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN5mpart18ConditionalMapBase14LogDeterminantEN6Kokkos4ViewIPd14AnyMemorySpaceEERK13StridedMatrixIKd14AnyMemorySpaceE">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AnyMemorySpace</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmpart_1_1_conditional_map_base_1a9209b3d3237c13ad2244126da7ae1852"></span><span class="n"><span class="pre">Kokkos</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">View</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN5mpart18ConditionalMapBase14LogDeterminantEN6Kokkos4ViewIPd14AnyMemorySpaceEERK13StridedMatrixIKd14AnyMemorySpaceE" title="mpart::ConditionalMapBase::LogDeterminant::AnyMemorySpace"><span class="n"><span class="pre">AnyMemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LogDeterminant</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN5mpart18ConditionalMapBase14LogDeterminantEN6Kokkos4ViewIPd14AnyMemorySpaceEERK13StridedMatrixIKd14AnyMemorySpaceE" title="mpart::ConditionalMapBase::LogDeterminant::AnyMemorySpace"><span class="n"><span class="pre">AnyMemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pts</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN5mpart18ConditionalMapBase14LogDeterminantEN6Kokkos4ViewIPd14AnyMemorySpaceEERK13StridedMatrixIKd14AnyMemorySpaceE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Computes the log determinant of the map Jacobian. For a map <span class="math notranslate nohighlight">\(T:\mathbb{R}^N\rightarrow \mathbb{R}^M\)</span> with <span class="math notranslate nohighlight">\(M\leq N\)</span> and components <span class="math notranslate nohighlight">\(T_i(x_{1:N-M+i})\)</span>, this function computes the determinant of the Jacobian of <span class="math notranslate nohighlight">\(T\)</span> with respect to <span class="math notranslate nohighlight">\(x_{N-M:N}\)</span>. While the map is rectangular, the Jacobian with respect to these inputs will be square. The fact that the map is lower triangular will then imply that the determinant is given by the product of diagonal derviatives. </p>
+<p><div class="math notranslate nohighlight">
+\[
+    \det{\nabla_{x_{N-M:N}} T} = \prod_{i=1}^M \frac{\partial T_i}{\partial x_{N-M+i}}.
+\]</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pts</strong> – The points where we want to evaluate the log determinant. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4IDpEN5mpart18ConditionalMapBase14LogDeterminantEN6Kokkos4ViewIPdN6Kokkos4ViewIPPdDp9AllTraitsE12memory_spaceEEEN6Kokkos4ViewIPPdDp9AllTraitsEE">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">AllTraits</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmpart_1_1_conditional_map_base_1af5841b5c1747dc4ab32623571690f111"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">Kokkos</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">View</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">Kokkos</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">View</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4IDpEN5mpart18ConditionalMapBase14LogDeterminantEN6Kokkos4ViewIPdN6Kokkos4ViewIPPdDp9AllTraitsE12memory_spaceEEEN6Kokkos4ViewIPPdDp9AllTraitsEE" title="mpart::ConditionalMapBase::LogDeterminant::AllTraits"><span class="n"><span class="pre">AllTraits</span></span></a><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">memory_space</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LogDeterminant</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Kokkos</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">View</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4IDpEN5mpart18ConditionalMapBase14LogDeterminantEN6Kokkos4ViewIPdN6Kokkos4ViewIPPdDp9AllTraitsE12memory_spaceEEEN6Kokkos4ViewIPPdDp9AllTraitsEE" title="mpart::ConditionalMapBase::LogDeterminant::AllTraits"><span class="n"><span class="pre">AllTraits</span></span></a><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pts</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IDpEN5mpart18ConditionalMapBase14LogDeterminantEN6Kokkos4ViewIPdN6Kokkos4ViewIPPdDp9AllTraitsE12memory_spaceEEEN6Kokkos4ViewIPPdDp9AllTraitsEE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>LogDeterminant function with conversion between default view layout and const strided matrix. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN5mpart18ConditionalMapBase14LogDeterminantEN6Kokkos4ViewIPd14AnyMemorySpaceEERK13StridedMatrixId14AnyMemorySpaceE">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AnyMemorySpace</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmpart_1_1_conditional_map_base_1a5342d85ab14c6bb98307b2a5b671daa3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">Kokkos</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">View</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN5mpart18ConditionalMapBase14LogDeterminantEN6Kokkos4ViewIPd14AnyMemorySpaceEERK13StridedMatrixId14AnyMemorySpaceE" title="mpart::ConditionalMapBase::LogDeterminant::AnyMemorySpace"><span class="n"><span class="pre">AnyMemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LogDeterminant</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN5mpart18ConditionalMapBase14LogDeterminantEN6Kokkos4ViewIPd14AnyMemorySpaceEERK13StridedMatrixId14AnyMemorySpaceE" title="mpart::ConditionalMapBase::LogDeterminant::AnyMemorySpace"><span class="n"><span class="pre">AnyMemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pts</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN5mpart18ConditionalMapBase14LogDeterminantEN6Kokkos4ViewIPd14AnyMemorySpaceEERK13StridedMatrixId14AnyMemorySpaceE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>LogDeterminant function with conversion from regular strided matrix to const strided matrix. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart18ConditionalMapBase14LogDeterminantERKN5Eigen3RefIKN5Eigen11RowMatrixXdEEE">
+<span class="target" id="classmpart_1_1_conditional_map_base_1af69361bb2dff780a85651148a29a7ba4"></span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LogDeterminant</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Ref</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">RowMatrixXd</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pts</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5mpart18ConditionalMapBase14LogDeterminantERKN5Eigen3RefIKN5Eigen11RowMatrixXdEEE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>LogDeterminant function with conversion from Eigen to Kokkos (and possibly copy to/from device.) </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart18ConditionalMapBase18LogDeterminantImplERK13StridedMatrixIKd11MemorySpaceE13StridedVectorId11MemorySpaceE">
+<span class="target" id="classmpart_1_1_conditional_map_base_1aa85b703a2dae6f8b8f86f9c478323e11"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LogDeterminantImpl</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN5mpart18ConditionalMapBaseE" title="mpart::ConditionalMapBase::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pts</span></span>, <span class="n"><span class="pre">StridedVector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN5mpart18ConditionalMapBaseE" title="mpart::ConditionalMapBase::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">output</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N5mpart18ConditionalMapBase18LogDeterminantImplERK13StridedMatrixIKd11MemorySpaceE13StridedVectorId11MemorySpaceE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN5mpart18ConditionalMapBase7InverseE13StridedMatrixId14AnyMemorySpaceERK13StridedMatrixIKd14AnyMemorySpaceERK13StridedMatrixIKd14AnyMemorySpaceE">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AnyMemorySpace</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmpart_1_1_conditional_map_base_1a5f3c75a28a121c7a38f4b75f9e95f81f"></span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN5mpart18ConditionalMapBase7InverseE13StridedMatrixId14AnyMemorySpaceERK13StridedMatrixIKd14AnyMemorySpaceERK13StridedMatrixIKd14AnyMemorySpaceE" title="mpart::ConditionalMapBase::Inverse::AnyMemorySpace"><span class="n"><span class="pre">AnyMemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Inverse</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN5mpart18ConditionalMapBase7InverseE13StridedMatrixId14AnyMemorySpaceERK13StridedMatrixIKd14AnyMemorySpaceERK13StridedMatrixIKd14AnyMemorySpaceE" title="mpart::ConditionalMapBase::Inverse::AnyMemorySpace"><span class="n"><span class="pre">AnyMemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x1</span></span>, <span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN5mpart18ConditionalMapBase7InverseE13StridedMatrixId14AnyMemorySpaceERK13StridedMatrixIKd14AnyMemorySpaceERK13StridedMatrixIKd14AnyMemorySpaceE" title="mpart::ConditionalMapBase::Inverse::AnyMemorySpace"><span class="n"><span class="pre">AnyMemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">r</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN5mpart18ConditionalMapBase7InverseE13StridedMatrixId14AnyMemorySpaceERK13StridedMatrixIKd14AnyMemorySpaceERK13StridedMatrixIKd14AnyMemorySpaceE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Computes the inverse of the map. </p>
+<p>The <a class="reference internal" href="#classmpart_1_1_conditional_map_base"><span class="std std-ref">ConditionalMapBase</span></a> class defines invertible functions <span class="math notranslate nohighlight">\(T:\mathbb{R}^{d_{in}}\rightarrow\mathbb{R}^{d_{out}}\)</span> where the input dimension <span class="math notranslate nohighlight">\(d_{in}\geq d_{out}\)</span>. An input <span class="math notranslate nohighlight">\(x\in\mathbb{R}^{d_{in}}\)</span> can then be split into two parts <span class="math notranslate nohighlight">\(x=[x_1,x_2]\)</span>, where <span class="math notranslate nohighlight">\(x_1\in\mathbb{R}^{d_{in}-d_{out}}\)</span> represents the “extra” inputs and <span class="math notranslate nohighlight">\(x_2\in\mathbb{R}^{d_{out}}\)</span> has the same size as the map output. This function computes the second block <span class="math notranslate nohighlight">\(x_2\)</span> of the input given the first block <span class="math notranslate nohighlight">\(x_1\)</span> and a vector <span class="math notranslate nohighlight">\(r=T(x_1,x_2)\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x1</strong> – A <span class="math notranslate nohighlight">\(d_{in}-d_{out}\times N\)</span> or <span class="math notranslate nohighlight">\(d_{in}\times N\)</span> matrix containing <span class="math notranslate nohighlight">\(N\)</span> values of the first input block: <span class="math notranslate nohighlight">\(\{x_1^{(1)},\ldots x_1^{(N)}\}\)</span>. If <span class="math notranslate nohighlight">\(d_{in}\)</span> rows are given, then the last <span class="math notranslate nohighlight">\(d_{out}\)</span> rows may be used as an initial guess for <span class="math notranslate nohighlight">\(x_2\)</span> by certain solvers. </p></li>
+<li><p><strong>r</strong> – A <span class="math notranslate nohighlight">\(d_{out}\times N\)</span> matrix containing <span class="math notranslate nohighlight">\(N\)</span> values of the map output: <span class="math notranslate nohighlight">\(\{r^{(1)},\ldots, r^{(N)}\}\)</span>. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <span class="math notranslate nohighlight">\(d_{out} \times N\)</span> matrix containing the computed values of <span class="math notranslate nohighlight">\(\{x_2^{(1)},\ldots,x_2^{(N)}\}\)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN5mpart18ConditionalMapBase7InverseE13StridedMatrixIdN9ViewType112memory_spaceEE9ViewType19ViewType2">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ViewType1</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ViewType2</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmpart_1_1_conditional_map_base_1ac0d18b27208ef14e170e863dbd9bc79c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN5mpart18ConditionalMapBase7InverseE13StridedMatrixIdN9ViewType112memory_spaceEE9ViewType19ViewType2" title="mpart::ConditionalMapBase::Inverse::ViewType1"><span class="n"><span class="pre">ViewType1</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">memory_space</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Inverse</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00EN5mpart18ConditionalMapBase7InverseE13StridedMatrixIdN9ViewType112memory_spaceEE9ViewType19ViewType2" title="mpart::ConditionalMapBase::Inverse::ViewType1"><span class="n"><span class="pre">ViewType1</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">x</span></span>, <a class="reference internal" href="#_CPPv4I00EN5mpart18ConditionalMapBase7InverseE13StridedMatrixIdN9ViewType112memory_spaceEE9ViewType19ViewType2" title="mpart::ConditionalMapBase::Inverse::ViewType2"><span class="n"><span class="pre">ViewType2</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">r</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN5mpart18ConditionalMapBase7InverseE13StridedMatrixIdN9ViewType112memory_spaceEE9ViewType19ViewType2" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Inverse function with conversion between general view type and const strided matrix. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart18ConditionalMapBase7InverseERKN5Eigen3RefIKN5Eigen11RowMatrixXdEEERKN5Eigen3RefIKN5Eigen11RowMatrixXdEEE">
+<span class="target" id="classmpart_1_1_conditional_map_base_1a9c25616622afd5c47e23c5854907a822"></span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">RowMatrixXd</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Inverse</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Ref</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">RowMatrixXd</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x1</span></span>, <span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Ref</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">RowMatrixXd</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">r</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5mpart18ConditionalMapBase7InverseERKN5Eigen3RefIKN5Eigen11RowMatrixXdEEERKN5Eigen3RefIKN5Eigen11RowMatrixXdEEE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Inverse function with conversion between eigen matrix and Kokkos view. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart18ConditionalMapBase11InverseImplERK13StridedMatrixIKd11MemorySpaceERK13StridedMatrixIKd11MemorySpaceE13StridedMatrixId11MemorySpaceE">
+<span class="target" id="classmpart_1_1_conditional_map_base_1aa55ac3b9fc92ca8663b55dacc88dc1a8"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InverseImpl</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN5mpart18ConditionalMapBaseE" title="mpart::ConditionalMapBase::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x1</span></span>, <span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN5mpart18ConditionalMapBaseE" title="mpart::ConditionalMapBase::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">r</span></span>, <span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN5mpart18ConditionalMapBaseE" title="mpart::ConditionalMapBase::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">output</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N5mpart18ConditionalMapBase11InverseImplERK13StridedMatrixIKd11MemorySpaceERK13StridedMatrixIKd11MemorySpaceE13StridedMatrixId11MemorySpaceE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Pure abstract function overridden by child classes. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN5mpart18ConditionalMapBase23LogDeterminantCoeffGradE13StridedMatrixId14AnyMemorySpaceERK13StridedMatrixIKd14AnyMemorySpaceE">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AnyMemorySpace</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmpart_1_1_conditional_map_base_1aa5ecfa0b735386f5892b7dd050419bf3"></span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN5mpart18ConditionalMapBase23LogDeterminantCoeffGradE13StridedMatrixId14AnyMemorySpaceERK13StridedMatrixIKd14AnyMemorySpaceE" title="mpart::ConditionalMapBase::LogDeterminantCoeffGrad::AnyMemorySpace"><span class="n"><span class="pre">AnyMemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LogDeterminantCoeffGrad</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN5mpart18ConditionalMapBase23LogDeterminantCoeffGradE13StridedMatrixId14AnyMemorySpaceERK13StridedMatrixIKd14AnyMemorySpaceE" title="mpart::ConditionalMapBase::LogDeterminantCoeffGrad::AnyMemorySpace"><span class="n"><span class="pre">AnyMemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pts</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN5mpart18ConditionalMapBase23LogDeterminantCoeffGradE13StridedMatrixId14AnyMemorySpaceERK13StridedMatrixIKd14AnyMemorySpaceE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Computes the gradient of the log determinant with respect to the map coefficients. </p>
+<p>For a map <span class="math notranslate nohighlight">\(T(x; w) : \mathbb{R}^N \rightarrow \mathbb{R}^M\)</span> parameterized by coefficients <span class="math notranslate nohighlight">\(w\in\mathbb{R}^K\)</span>, this function computes  <div class="math notranslate nohighlight">
+\[
+  \nabla_w \det{\nabla_x T(x_i; w)},
+\]</div>
+ at multiple points <span class="math notranslate nohighlight">\(x_i\)</span>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pts</strong> – A collection of points where we want to evaluate the gradient. Each column corresponds to a point. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A matrix containing the coefficient gradient at each input point. The <span class="math notranslate nohighlight">\(i^{th}\)</span> column contains <span class="math notranslate nohighlight">\(\nabla_w \det{\nabla_x T(x_i; w)}\)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN5mpart18ConditionalMapBase23LogDeterminantCoeffGradE13StridedMatrixIdN8ViewType12memory_spaceEE8ViewType">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ViewType</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmpart_1_1_conditional_map_base_1a92fa007a3b40d3767c5f80334ce446b4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN5mpart18ConditionalMapBase23LogDeterminantCoeffGradE13StridedMatrixIdN8ViewType12memory_spaceEE8ViewType" title="mpart::ConditionalMapBase::LogDeterminantCoeffGrad::ViewType"><span class="n"><span class="pre">ViewType</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">memory_space</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LogDeterminantCoeffGrad</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN5mpart18ConditionalMapBase23LogDeterminantCoeffGradE13StridedMatrixIdN8ViewType12memory_spaceEE8ViewType" title="mpart::ConditionalMapBase::LogDeterminantCoeffGrad::ViewType"><span class="n"><span class="pre">ViewType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">pts</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN5mpart18ConditionalMapBase23LogDeterminantCoeffGradE13StridedMatrixIdN8ViewType12memory_spaceEE8ViewType" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Include conversion between general view type and Strided matrix. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart18ConditionalMapBase23LogDeterminantCoeffGradERKN5Eigen3RefIKN5Eigen11RowMatrixXdEEE">
+<span class="target" id="classmpart_1_1_conditional_map_base_1a328e56dcdca4b0d53cae2cb9acc3ddaf"></span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">RowMatrixXd</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LogDeterminantCoeffGrad</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Ref</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">RowMatrixXd</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pts</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5mpart18ConditionalMapBase23LogDeterminantCoeffGradERKN5Eigen3RefIKN5Eigen11RowMatrixXdEEE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Evaluation with additional conversion of Eigen matrix to Kokkos unmanaged view. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart18ConditionalMapBase27LogDeterminantCoeffGradImplERK13StridedMatrixIKd11MemorySpaceE13StridedMatrixId11MemorySpaceE">
+<span class="target" id="classmpart_1_1_conditional_map_base_1a365e70f03981d6cd50a33f3b52f09337"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LogDeterminantCoeffGradImpl</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN5mpart18ConditionalMapBaseE" title="mpart::ConditionalMapBase::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pts</span></span>, <span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN5mpart18ConditionalMapBaseE" title="mpart::ConditionalMapBase::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">output</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N5mpart18ConditionalMapBase27LogDeterminantCoeffGradImplERK13StridedMatrixIKd11MemorySpaceE13StridedMatrixId11MemorySpaceE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN5mpart18ConditionalMapBase23LogDeterminantInputGradE13StridedMatrixId14AnyMemorySpaceERK13StridedMatrixIKd14AnyMemorySpaceE">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AnyMemorySpace</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmpart_1_1_conditional_map_base_1a7794d00634501c8d268a3e9e62b2540f"></span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN5mpart18ConditionalMapBase23LogDeterminantInputGradE13StridedMatrixId14AnyMemorySpaceERK13StridedMatrixIKd14AnyMemorySpaceE" title="mpart::ConditionalMapBase::LogDeterminantInputGrad::AnyMemorySpace"><span class="n"><span class="pre">AnyMemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LogDeterminantInputGrad</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN5mpart18ConditionalMapBase23LogDeterminantInputGradE13StridedMatrixId14AnyMemorySpaceERK13StridedMatrixIKd14AnyMemorySpaceE" title="mpart::ConditionalMapBase::LogDeterminantInputGrad::AnyMemorySpace"><span class="n"><span class="pre">AnyMemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pts</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN5mpart18ConditionalMapBase23LogDeterminantInputGradE13StridedMatrixId14AnyMemorySpaceERK13StridedMatrixIKd14AnyMemorySpaceE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN5mpart18ConditionalMapBase23LogDeterminantInputGradE13StridedMatrixIdN8ViewType12memory_spaceEE8ViewType">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ViewType</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmpart_1_1_conditional_map_base_1af31cdee82285b8a7cf48a1ca1c9b2930"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN5mpart18ConditionalMapBase23LogDeterminantInputGradE13StridedMatrixIdN8ViewType12memory_spaceEE8ViewType" title="mpart::ConditionalMapBase::LogDeterminantInputGrad::ViewType"><span class="n"><span class="pre">ViewType</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">memory_space</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LogDeterminantInputGrad</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN5mpart18ConditionalMapBase23LogDeterminantInputGradE13StridedMatrixIdN8ViewType12memory_spaceEE8ViewType" title="mpart::ConditionalMapBase::LogDeterminantInputGrad::ViewType"><span class="n"><span class="pre">ViewType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">pts</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN5mpart18ConditionalMapBase23LogDeterminantInputGradE13StridedMatrixIdN8ViewType12memory_spaceEE8ViewType" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Include conversion between general view type and Strided matrix. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart18ConditionalMapBase23LogDeterminantInputGradERKN5Eigen3RefIKN5Eigen11RowMatrixXdEEE">
+<span class="target" id="classmpart_1_1_conditional_map_base_1a3739373ede62bf2bbae825f553d7d37d"></span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">RowMatrixXd</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LogDeterminantInputGrad</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Ref</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Eigen</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">RowMatrixXd</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pts</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5mpart18ConditionalMapBase23LogDeterminantInputGradERKN5Eigen3RefIKN5Eigen11RowMatrixXdEEE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Evaluation with additional conversion of Eigen matrix to Kokkos unmanaged view. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart18ConditionalMapBase27LogDeterminantInputGradImplERK13StridedMatrixIKd11MemorySpaceE13StridedMatrixId11MemorySpaceE">
+<span class="target" id="classmpart_1_1_conditional_map_base_1a2126a70c10d62e2af40a4fe75b13a2b4"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LogDeterminantInputGradImpl</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN5mpart18ConditionalMapBaseE" title="mpart::ConditionalMapBase::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pts</span></span>, <span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN5mpart18ConditionalMapBaseE" title="mpart::ConditionalMapBase::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">output</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N5mpart18ConditionalMapBase27LogDeterminantInputGradImplERK13StridedMatrixIKd11MemorySpaceE13StridedMatrixId11MemorySpaceE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="mapfactory.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Map Factory</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="triangularmap.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Triangular Map</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/source/api/conditionalmapbase.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2022, The MParT development team..
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,963 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Monotone Component &#8212; MParT  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'source/api/monotonecomponent';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="MultiIndices" href="multiindex.html" />
+    <link rel="prev" title="Composed Map" href="composedmap.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">MParT  documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../tutorials/index.html">
+                        Tutorials
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../mathematics.html">
+                        Mathematical Background
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../development/index.html">
+                        Community
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MeasureTransport/MParT" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../tutorials/index.html">
+                        Tutorials
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../mathematics.html">
+                        Mathematical Background
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../development/index.html">
+                        Community
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MeasureTransport/MParT" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="mapfactory.html">Map Factory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conditionalmapbase.html">Conditional Map Base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="triangularmap.html">Triangular Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composedmap.html">Composed Map</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Monotone Component</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="multiindex.html">MultiIndices</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="multiindices/multiindex.html">MultiIndex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiindices/multiindexset.html">MultiIndexSet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiindices/fixedmultiindexset.html">FixedMultiIndexSet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiindices/multiindexlimiter.html">MultiIndexLimiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiindices/multiindexneighborhood.html">MultiIndexNeighborhood</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="quadrature.html">Quadrature</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="quadrature/clenshawcurtis.html">Clenshaw Curtis Quadrature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quadrature/adaptivesimpson.html">Adaptive Simpson Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quadrature/recursivequadrature.html">Adaptive Clenshaw Curtis Quadrature</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utilities/linearalgebra.html">Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities/kokkoswrappers.html">Kokkos Array Conversions</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="templateconcepts.html">Template Concepts</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="concepts/cachedparameterization.html">Cached Parameterization Concept</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="multivariatebasis/multivariateexpansionworker.html">Multivariate Expansion Worker</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="concepts/parameterizedfunction.html">Parameterized Function Concept</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Monotone Component</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utilities/initialization.html">Initialization Helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities/serialization.html">Serialization</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="maptraining.html">Map Training</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="maptraining/trainmap.html">Train Map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maptraining/trainmapadaptive.html">Adaptive Map Training</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="multivariatebasis.html">Multivariate Basis Evaluation</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="multivariatebasis/univariatebasis.html">Univariate Bases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multivariatebasis/basisevaluator.html">Basis Evaluators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multivariatebasis/multivariateexpansionworker.html">Multivariate Expansion Worker</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">API Reference</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Monotone Component</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="monotone-component">
+<h1>Monotone Component<a class="headerlink" href="#monotone-component" title="Permalink to this heading">#</a></h1>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I0000EN5mpart17MonotoneComponentE">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ExpansionType</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PosFuncType</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">QuadratureType</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MemorySpace</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmpart_1_1_monotone_component"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MonotoneComponent</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mpart</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="conditionalmapbase.html#_CPPv4I0EN5mpart18ConditionalMapBaseE" title="mpart::ConditionalMapBase"><span class="n"><span class="pre">ConditionalMapBase</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Defines a function <span class="math notranslate nohighlight">\(T:R^N\rightarrow R\)</span> such that <span class="math notranslate nohighlight">\(\partial T / \partial x_N &gt;0\)</span> is strictly positive. </p>
+<p>The function <span class="math notranslate nohighlight">\(T\)</span> is based on another (generally non-monotone) function <span class="math notranslate nohighlight">\(f : R^N\rightarrow R\)</span>, a strictly positve function <span class="math notranslate nohighlight">\(g : R\rightarrow R_{&gt;0}\)</span>, and a non-negative scalar <span class="math notranslate nohighlight">\(\epsilon\)</span>. Together, these functions define the monotone component $T$ through</p>
+<p><div class="math notranslate nohighlight">
+\[
+T(x_1, x_2, ..., x_D) = f(x_1,x_2,..., x_{D-1}, 0) + \int_0^{x_D}  g\left( \partial_D f(x_1,x_2,..., x_{D-1}, t) + \epsilon \right) dt
+\]</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ExpansionType</strong> – A class defining the function <span class="math notranslate nohighlight">\(f\)</span>. It must satisfy the cached parameterization concept. </p></li>
+<li><p><strong>PosFuncType</strong> – A class defining the function <span class="math notranslate nohighlight">\(g\)</span>. This class must have <code class="docutils literal notranslate"><span class="pre">Evaluate</span></code> and <code class="docutils literal notranslate"><span class="pre">Derivative</span></code> functions accepting a double and returning a double. The MParT::SoftPlus and MParT::Exp classes in PositiveBijectors.h are examples of classes defining this interface. </p></li>
+<li><p><strong>QuadratureType</strong> – A class defining the integration scheme used to approximate <span class="math notranslate nohighlight">\(\int_0^{x_N}  g\left( \frac{\partial f}{\partial x_d}(x_1,x_2,..., x_{N-1}, t) \right) dt\)</span>. The type must have a function <code class="docutils literal notranslate"><span class="pre">Integrate(f,lb,ub)</span></code> that accepts a functor <code class="docutils literal notranslate"><span class="pre">f</span></code>, a double lower bound <code class="docutils literal notranslate"><span class="pre">lb</span></code>, a double upper bound <code class="docutils literal notranslate"><span class="pre">ub</span></code>, and returns a double with an estimate of the integral. The MParT::AdaptiveSimpson and MParT::RecursiveQuadrature classes provide this interface. </p></li>
+</ul>
+</dd>
+</dl>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart17MonotoneComponent17MonotoneComponentERK13ExpansionTypeRK14QuadratureTypebd">
+<span class="target" id="classmpart_1_1_monotone_component_1a365771e64cb9e589ae05628d7147d967"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MonotoneComponent</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::ExpansionType"><span class="n"><span class="pre">ExpansionType</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">expansion</span></span>, <a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::QuadratureType"><span class="n"><span class="pre">QuadratureType</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">quad</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">useContDeriv</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">true</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nugget</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5mpart17MonotoneComponent17MonotoneComponentERK13ExpansionTypeRK14QuadratureTypebd" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Construct a monotone component with a specific expansion and quadrature type. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>expansion</strong> – The expansion used to define the function <span class="math notranslate nohighlight">\(f\)</span>. </p></li>
+<li><p><strong>quad</strong> – The quadrature rule used to approximate <span class="math notranslate nohighlight">\(\int_0^{x_D}  g\left( \partial_D f(x_1,x_2,..., x_{D-1}, t) \right) dt\)</span></p></li>
+<li><p><strong>useContDeriv</strong> – A flag to specify whether the analytic derivative of <span class="math notranslate nohighlight">\(T(x_1, x_2, ..., x_D)\)</span> should be used by default, or if the derivative of the discretized integral should be used. If “true”, the analytic or “continuous” derivative will be used. If “false”, the derivative of the numerically approximated integral will be used. </p></li>
+<li><p><strong>nugget</strong> – The value of the non negative quantity <span class="math notranslate nohighlight">\(\epsilon\)</span> defining the minimum slope of the transport map. <p><p>See the <a class="reference internal" href="../mathematics.html#diag-deriv-section"><span class="std std-ref">Diagonal Derivatives</span></a> mathematical background for more details.</p>
+</p>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart17MonotoneComponent17MonotoneComponentERK13ExpansionTypeRK14QuadratureTypebdN6Kokkos4ViewIPKd11MemorySpaceEE">
+<span class="target" id="classmpart_1_1_monotone_component_1a9e6caeeb0c4dcccb2c4409fcad1715b3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MonotoneComponent</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::ExpansionType"><span class="n"><span class="pre">ExpansionType</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">expansion</span></span>, <a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::QuadratureType"><span class="n"><span class="pre">QuadratureType</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">quad</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">useContDeriv</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nugget</span></span>, <span class="n"><span class="pre">Kokkos</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">View</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">coeffsIn</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5mpart17MonotoneComponent17MonotoneComponentERK13ExpansionTypeRK14QuadratureTypebdN6Kokkos4ViewIPKd11MemorySpaceEE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart17MonotoneComponent15GetBaseFunctionEv">
+<span class="target" id="classmpart_1_1_monotone_component_1a3ada8dda5b5a15e055d0951b8972eaeb"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="parameterizedfunctionbase.html#_CPPv4I0EN5mpart25ParameterizedFunctionBaseE" title="mpart::ParameterizedFunctionBase"><span class="n"><span class="pre">ParameterizedFunctionBase</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetBaseFunction</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N5mpart17MonotoneComponent15GetBaseFunctionEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>For Monotone parameterizations that are based on a non-monotone base function, this function will return the base function. If the monotone parameterization is not constructed from a non-monotone base, then this function will return a nullptr. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart17MonotoneComponent12EvaluateImplERK13StridedMatrixIKd11MemorySpaceE13StridedMatrixId11MemorySpaceE">
+<span class="target" id="classmpart_1_1_monotone_component_1a2926c9b431e6641f97b7eb7b313f68f5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EvaluateImpl</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pts</span></span>, <span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">output</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N5mpart17MonotoneComponent12EvaluateImplERK13StridedMatrixIKd11MemorySpaceE13StridedMatrixId11MemorySpaceE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Override the <a class="reference internal" href="conditionalmapbase.html#classmpart_1_1_conditional_map_base"><span class="std std-ref">ConditionalMapBase</span></a> Evaluate function. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart17MonotoneComponent11InverseImplERK13StridedMatrixIKd11MemorySpaceERK13StridedMatrixIKd11MemorySpaceE13StridedMatrixId11MemorySpaceE">
+<span class="target" id="classmpart_1_1_monotone_component_1ad9646e36a26f8ddbfd0a373d42f6d815"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InverseImpl</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x1</span></span>, <span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">r</span></span>, <span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">output</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N5mpart17MonotoneComponent11InverseImplERK13StridedMatrixIKd11MemorySpaceERK13StridedMatrixIKd11MemorySpaceE13StridedMatrixId11MemorySpaceE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Pure abstract function overridden by child classes. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart17MonotoneComponent18LogDeterminantImplERK13StridedMatrixIKd11MemorySpaceE13StridedVectorId11MemorySpaceE">
+<span class="target" id="classmpart_1_1_monotone_component_1a7d2749d58a8384fc2076ce7fdf2f21db"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LogDeterminantImpl</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pts</span></span>, <span class="n"><span class="pre">StridedVector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">output</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N5mpart17MonotoneComponent18LogDeterminantImplERK13StridedMatrixIKd11MemorySpaceE13StridedVectorId11MemorySpaceE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart17MonotoneComponent24isGradFunctionInputValidEiiiiiii">
+<span class="target" id="classmpart_1_1_monotone_component_1adcc6623cd50efdaf8ac6719f7fe749c6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isGradFunctionInputValid</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sensRows</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sensCols</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">ptsRows</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">ptsCols</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">outputRows</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">outputCols</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">expectedOutputRows</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5mpart17MonotoneComponent24isGradFunctionInputValidEiiiiiii" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart17MonotoneComponent22checkGradFunctionInputEKNSt6stringEiiiiiii">
+<span class="target" id="classmpart_1_1_monotone_component_1a537707210af1221a7e9b5c238ff10776"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">checkGradFunctionInput</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">method</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sensRows</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sensCols</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">ptsRows</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">ptsCols</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">outputRows</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">outputCols</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">expectedOutputRows</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5mpart17MonotoneComponent22checkGradFunctionInputEKNSt6stringEiiiiiii" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart17MonotoneComponent12GradientImplERK13StridedMatrixIKd11MemorySpaceERK13StridedMatrixIKd11MemorySpaceE13StridedMatrixId11MemorySpaceE">
+<span class="target" id="classmpart_1_1_monotone_component_1a2a7e56a6b1aae7813689fb71b9c46fbb"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GradientImpl</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pts</span></span>, <span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sens</span></span>, <span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">output</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N5mpart17MonotoneComponent12GradientImplERK13StridedMatrixIKd11MemorySpaceERK13StridedMatrixIKd11MemorySpaceE13StridedMatrixId11MemorySpaceE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart17MonotoneComponent13CoeffGradImplERK13StridedMatrixIKd11MemorySpaceERK13StridedMatrixIKd11MemorySpaceE13StridedMatrixId11MemorySpaceE">
+<span class="target" id="classmpart_1_1_monotone_component_1a208ddf2be5b3cab934887aa5a5115a45"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CoeffGradImpl</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pts</span></span>, <span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sens</span></span>, <span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">output</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N5mpart17MonotoneComponent13CoeffGradImplERK13StridedMatrixIKd11MemorySpaceERK13StridedMatrixIKd11MemorySpaceE13StridedMatrixId11MemorySpaceE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Pure virtual function overridden by child classes for computing the gradient of the function output with respect to the parameter vector <span class="math notranslate nohighlight">\(\mathbf{w}\)</span>. See the non-virtual CoeffGrad function for more details. </p>
+<p>Evaluates the gradient with respect to the coefficients and stores the results in a preallocated matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pts</strong> – A <span class="math notranslate nohighlight">\(d_{in}\times N\)</span> matrix containining <span class="math notranslate nohighlight">\(N\)</span> points in <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span> where this function be evaluated. Each column is a point. </p></li>
+<li><p><strong>sens</strong> – A matrix of sensitivity vectors. Each column contains one sensitivity. </p></li>
+<li><p><strong>output</strong> – A preallocated matrix to store the results. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart17MonotoneComponent27LogDeterminantCoeffGradImplERK13StridedMatrixIKd11MemorySpaceE13StridedMatrixId11MemorySpaceE">
+<span class="target" id="classmpart_1_1_monotone_component_1a34b1795f2ff56f0f847bc4e77556a2a0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LogDeterminantCoeffGradImpl</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pts</span></span>, <span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">output</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N5mpart17MonotoneComponent27LogDeterminantCoeffGradImplERK13StridedMatrixIKd11MemorySpaceE13StridedMatrixId11MemorySpaceE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart17MonotoneComponent27LogDeterminantInputGradImplERK13StridedMatrixIKd11MemorySpaceE13StridedMatrixId11MemorySpaceE">
+<span class="target" id="classmpart_1_1_monotone_component_1a24ac96cbdbaac7a6f38c862d3c9b467e"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LogDeterminantInputGradImpl</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pts</span></span>, <span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">output</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N5mpart17MonotoneComponent27LogDeterminantInputGradImplERK13StridedMatrixIKd11MemorySpaceE13StridedMatrixId11MemorySpaceE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0DpEN5mpart17MonotoneComponent12EvaluateImplEvRKN6Kokkos4ViewIPPdDp11OtherTraitsEERK13StridedVectorId11MemorySpaceE13StridedVectorId11MemorySpaceE">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ExecutionSpace</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">MemoryToExecution</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Space</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">OtherTraits</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmpart_1_1_monotone_component_1aa5c50ad7f9d8ea9433351b91584ec608"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EvaluateImpl</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Kokkos</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">View</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0DpEN5mpart17MonotoneComponent12EvaluateImplEvRKN6Kokkos4ViewIPPdDp11OtherTraitsEERK13StridedVectorId11MemorySpaceE13StridedVectorId11MemorySpaceE" title="mpart::MonotoneComponent::EvaluateImpl::OtherTraits"><span class="n"><span class="pre">OtherTraits</span></span></a><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pts</span></span>, <span class="n"><span class="pre">StridedVector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">coeffs</span></span>, <span class="n"><span class="pre">StridedVector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">output</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0DpEN5mpart17MonotoneComponent12EvaluateImplEvRKN6Kokkos4ViewIPPdDp11OtherTraitsEERK13StridedVectorId11MemorySpaceE13StridedVectorId11MemorySpaceE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Support calling EvaluateImpl with non-const views. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0DpEN5mpart17MonotoneComponent12EvaluateImplEvRKN6Kokkos4ViewIPPKdDp11OtherTraitsEERK13StridedVectorIKd11MemorySpaceE13StridedVectorId11MemorySpaceE">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ExecutionSpace</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">MemoryToExecution</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Space</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">OtherTraits</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmpart_1_1_monotone_component_1ade2c28a9220a3b9a1c13ee2761a0cf0b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EvaluateImpl</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Kokkos</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">View</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0DpEN5mpart17MonotoneComponent12EvaluateImplEvRKN6Kokkos4ViewIPPKdDp11OtherTraitsEERK13StridedVectorIKd11MemorySpaceE13StridedVectorId11MemorySpaceE" title="mpart::MonotoneComponent::EvaluateImpl::OtherTraits"><span class="n"><span class="pre">OtherTraits</span></span></a><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pts</span></span>, <span class="n"><span class="pre">StridedVector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">coeffs</span></span>, <span class="n"><span class="pre">StridedVector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">output</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0DpEN5mpart17MonotoneComponent12EvaluateImplEvRKN6Kokkos4ViewIPPKdDp11OtherTraitsEERK13StridedVectorIKd11MemorySpaceE13StridedVectorId11MemorySpaceE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Evaluates the monotone function <span class="math notranslate nohighlight">\(T(x_1,\ldots,x_D)\)</span> at multiple points. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pts</strong> – <strong>[in]</strong> A <span class="math notranslate nohighlight">\(D\times N\)</span> array containing the <span class="math notranslate nohighlight">\(N\)</span> points in <span class="math notranslate nohighlight">\(\mathbb{R}^D\)</span> where we want to evaluate the monotone component. Each column is a point. </p></li>
+<li><p><strong>coeffs</strong> – <strong>[in]</strong> The coefficients in the expansion defining <span class="math notranslate nohighlight">\(f\)</span>. The length of this array must be the same as the number of terms in the multiindex set passed to the constructor. </p></li>
+<li><p><strong>output</strong> – <strong>[out]</strong> Kokkos::View&lt;double*&gt; An array containing the evaluattions <span class="math notranslate nohighlight">\(T(x^{(i)}_1,\ldots,x^{(i)}_D)\)</span> for each <span class="math notranslate nohighlight">\(i\in\{0,\ldots,N\}\)</span>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN5mpart17MonotoneComponent11InverseImplEvRK13StridedMatrixIKd11MemorySpaceERK13StridedVectorIKd11MemorySpaceERK13StridedVectorIKd11MemorySpaceE13StridedVectorId11MemorySpaceENSt3mapINSt6stringENSt6stringEEE">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ExecutionSpace</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">MemoryToExecution</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Space</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmpart_1_1_monotone_component_1ad49c2a4e6a8a66b19570925bb81329f2"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InverseImpl</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">xs</span></span>, <span class="n"><span class="pre">StridedVector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ys</span></span>, <span class="n"><span class="pre">StridedVector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">coeffs</span></span>, <span class="n"><span class="pre">StridedVector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">output</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">options</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN5mpart17MonotoneComponent11InverseImplEvRK13StridedMatrixIKd11MemorySpaceERK13StridedVectorIKd11MemorySpaceERK13StridedVectorIKd11MemorySpaceE13StridedVectorId11MemorySpaceENSt3mapINSt6stringENSt6stringEEE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Evaluates the inverse of the diagonal of the monotone component. </p>
+<p>This function solve the nonlinear equation <span class="math notranslate nohighlight">\(y_D = T(x_1,\ldots,x_D)\)</span> for <span class="math notranslate nohighlight">\(x_D\)</span> given <span class="math notranslate nohighlight">\(N\)</span> different values of <span class="math notranslate nohighlight">\(y_D^{(1)},\ldots,y_D^{(N)}\)</span>. It is possible to specify either a single <span class="math notranslate nohighlight">\(x_{1:D-1}\)</span> sample or <span class="math notranslate nohighlight">\(N\)</span> different values <span class="math notranslate nohighlight">\(x_{1:D-1}^{(1)},\ldots,x_{1:D-1}^{(N)}\)</span>. If only a single point is given, then this function returns a vector containing <span class="math notranslate nohighlight">\(x_D^{(i)}=T^{-1}(x_1,\ldots,x_{D-1}, y^{(i)}_D)\)</span>. When <span class="math notranslate nohighlight">\(N\)</span>N points are given, this function returns a vector containing <span class="math notranslate nohighlight">\(x_D^{(i)}=T^{-1}(x_1^{(i)},\ldots,x_{D-1}^{(i)}, y^{(i)}_D)\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xs</strong> – A <span class="math notranslate nohighlight">\(D\times N_1\)</span> array containing <span class="math notranslate nohighlight">\(N_1\)</span> <span class="math notranslate nohighlight">\(x_{1:D-1}\)</span> points. Note that this matrix must have either 1 or N columns and at least <span class="math notranslate nohighlight">\(D\)</span> rows. The <span class="math notranslate nohighlight">\(D\)</span> row will serve as an initial guess for <span class="math notranslate nohighlight">\(x_D\)</span> during the inversion. </p></li>
+<li><p><strong>ys</strong> – A length <span class="math notranslate nohighlight">\(N\)</span> array containing <span class="math notranslate nohighlight">\(N\)</span> values of <span class="math notranslate nohighlight">\(y_D\)</span> for use in the solve. </p></li>
+<li><p><strong>coeffs</strong> – The coefficients in the expansion defining <span class="math notranslate nohighlight">\(f\)</span>. The length of this array must be the same as the number of terms in the multiindex set passed to the constructor. </p></li>
+<li><p><strong>output</strong> – An array for storing the computed values of <span class="math notranslate nohighlight">\(y_D^{(i)}\)</span>. Memory for this array must be preallocated before calling this function. </p></li>
+<li><p><strong>options</strong> – A map containing options for the method (e.g., converge criteria, step sizes). Available options are “Method” (must be “Bracket”), “xtol” (any nonnegative float), and “ytol” (any nonnegative float). </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN5mpart17MonotoneComponent20ContinuousDerivativeEN6Kokkos4ViewIPd11MemorySpaceEERK13StridedMatrixIKd11MemorySpaceERK13StridedVectorIKd11MemorySpaceE">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ExecutionSpace</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">MemoryToExecution</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Space</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmpart_1_1_monotone_component_1a3574def0e74321dd78635fe567e2ca7c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">Kokkos</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">View</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ContinuousDerivative</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pts</span></span>, <span class="n"><span class="pre">StridedVector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">coeffs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN5mpart17MonotoneComponent20ContinuousDerivativeEN6Kokkos4ViewIPd11MemorySpaceEERK13StridedMatrixIKd11MemorySpaceERK13StridedVectorIKd11MemorySpaceE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Approximates the “continuous derivative” <span class="math notranslate nohighlight">\(\frac{\partial T}{\partial x_D}\)</span> derived from the exact integral form of the transport map. </p>
+<p>See the <a class="reference external" href="../getting_started/mathematics.html">mathematical background</a> section for more details on discrete and continuous map derivatives. <div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#classmpart_1_1_monotone_component_1a5d0abc6dfbddb009ca190d564f23c05b"><span class="std std-ref">DiscreteDerivative</span></a></p>
+</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pts</strong> – The points where we want to evaluate the derivative. Each column represents one point. </p></li>
+<li><p><strong>coeffs</strong> – The ceofficients in an expansion for <span class="math notranslate nohighlight">\(f\)</span>. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Kokkos::View&lt;double*&gt; The values of <span class="math notranslate nohighlight">\(\frac{\partial T}{\partial x_D}\)</span> at each point.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN5mpart17MonotoneComponent20ContinuousDerivativeEvRK13StridedMatrixIKd11MemorySpaceERK13StridedVectorIKd11MemorySpaceE13StridedVectorId11MemorySpaceE">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ExecutionSpace</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">MemoryToExecution</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Space</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmpart_1_1_monotone_component_1a504f8e76969ec347bd5cbb489f135ba0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ContinuousDerivative</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pts</span></span>, <span class="n"><span class="pre">StridedVector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">coeffs</span></span>, <span class="n"><span class="pre">StridedVector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">derivs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN5mpart17MonotoneComponent20ContinuousDerivativeEvRK13StridedMatrixIKd11MemorySpaceERK13StridedVectorIKd11MemorySpaceE13StridedVectorId11MemorySpaceE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Approximates the “continuous derivative” <span class="math notranslate nohighlight">\(\frac{\partial T}{\partial x_D}\)</span> derived from the exact integral form of the transport map. </p>
+<p>See the <a class="reference external" href="../getting_started/mathematics.html">mathematical background</a> section for more details on discrete and continuous map derivatives. <div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#classmpart_1_1_monotone_component_1a5d0abc6dfbddb009ca190d564f23c05b"><span class="std std-ref">DiscreteDerivative</span></a></p>
+</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pts</strong> – <strong>[in]</strong> The points where we want to evaluate the derivative. Each column represents one point. </p></li>
+<li><p><strong>coeffs</strong> – <strong>[in]</strong> The ceofficients in an expansion for <span class="math notranslate nohighlight">\(f\)</span>. </p></li>
+<li><p><strong>evals</strong> – <strong>[inout]</strong> The values of map component itself <span class="math notranslate nohighlight">\(T\)</span> at each point. </p></li>
+<li><p><strong>derivs</strong> – <strong>[inout]</strong> The values of <span class="math notranslate nohighlight">\( \frac{\partial T}{\partial x_D}\)</span> at each point.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN5mpart17MonotoneComponent18DiscreteDerivativeEN6Kokkos4ViewIPd11MemorySpaceEERK13StridedMatrixIKd11MemorySpaceERK13StridedVectorIKd11MemorySpaceE">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ExecutionSpace</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">MemoryToExecution</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Space</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmpart_1_1_monotone_component_1a5d0abc6dfbddb009ca190d564f23c05b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">Kokkos</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">View</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DiscreteDerivative</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pts</span></span>, <span class="n"><span class="pre">StridedVector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">coeffs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN5mpart17MonotoneComponent18DiscreteDerivativeEN6Kokkos4ViewIPd11MemorySpaceEERK13StridedMatrixIKd11MemorySpaceERK13StridedVectorIKd11MemorySpaceE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Approximates the “discrete derivative” of the quadrature-based approximation <span class="math notranslate nohighlight">\(\tilde{T}\)</span>. </p>
+<p>See the <a class="reference external" href="../getting_started/mathematics.html">mathematical background</a> section for more details on discrete and continuous map derivatives. <div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#classmpart_1_1_monotone_component_1a3574def0e74321dd78635fe567e2ca7c"><span class="std std-ref">ContinuousDerivative</span></a></p>
+</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pts</strong> – <strong>[in]</strong> The points where we want to evaluate the derivative. Each column represents one point. </p></li>
+<li><p><strong>coeffs</strong> – <strong>[in]</strong> The ceofficients in an expansion for <span class="math notranslate nohighlight">\(f\)</span>. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Kokkos::View&lt;double*&gt; The values of <span class="math notranslate nohighlight">\( \frac{\partial \tilde{T}}{\partial x_D}\)</span> at each point.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN5mpart17MonotoneComponent18DiscreteDerivativeEvRK13StridedMatrixIKd11MemorySpaceERK13StridedVectorIKd11MemorySpaceE13StridedVectorId11MemorySpaceE13StridedVectorId11MemorySpaceE">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ExecutionSpace</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">MemoryToExecution</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Space</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmpart_1_1_monotone_component_1a33ca61e2cc9f8354f4bb7bc5c4c2fa27"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DiscreteDerivative</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pts</span></span>, <span class="n"><span class="pre">StridedVector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">coeffs</span></span>, <span class="n"><span class="pre">StridedVector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">evals</span></span>, <span class="n"><span class="pre">StridedVector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">derivs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN5mpart17MonotoneComponent18DiscreteDerivativeEvRK13StridedMatrixIKd11MemorySpaceERK13StridedVectorIKd11MemorySpaceE13StridedVectorId11MemorySpaceE13StridedVectorId11MemorySpaceE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Approximates the “discrete derivative” of the quadrature-based approximation <span class="math notranslate nohighlight">\(\tilde{T}\)</span>. </p>
+<p>See the <a class="reference external" href="../getting_started/mathematics.html">mathematical background</a> section for more details on discrete and continuous map derivatives. <div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#classmpart_1_1_monotone_component_1a3574def0e74321dd78635fe567e2ca7c"><span class="std std-ref">ContinuousDerivative</span></a></p>
+</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pts</strong> – <strong>[in]</strong> The points where we want to evaluate the derivative. Each column represents one point. </p></li>
+<li><p><strong>coeffs</strong> – <strong>[in]</strong> The ceofficients in an expansion for <span class="math notranslate nohighlight">\(f\)</span>. </p></li>
+<li><p><strong>evals</strong> – <strong>[out]</strong> The values of the map component itself <span class="math notranslate nohighlight">\(\tilde{T}\)</span> at each point. </p></li>
+<li><p><strong>derivs</strong> – <strong>[out]</strong> Kokkos::View&lt;double*&gt; The values of <span class="math notranslate nohighlight">\( \frac{\partial \tilde{T}}{\partial x_D}\)</span> at each point.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart17MonotoneComponent20isJacobianInputValidEiiiiii">
+<span class="target" id="classmpart_1_1_monotone_component_1a24fe371f6576af9b9655eaf3c4513a72"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isJacobianInputValid</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">jacRows</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">jacCols</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">evalRows</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">expectJacRows</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">expectJacCols</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">expectEvalRows</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5mpart17MonotoneComponent20isJacobianInputValidEiiiiii" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart17MonotoneComponent18checkJacobianInputEKNSt6stringEiiiiii">
+<span class="target" id="classmpart_1_1_monotone_component_1ade81c5d60ce41bbd25f7fa794bf39edf"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">checkJacobianInput</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">method</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">jacRows</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">jacCols</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">evalRows</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">expectJacRows</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">expectJacCols</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">expectEvalRows</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5mpart17MonotoneComponent18checkJacobianInputEKNSt6stringEiiiiii" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN5mpart17MonotoneComponent13CoeffJacobianEvRK13StridedMatrixIKd11MemorySpaceERK13StridedVectorIKd11MemorySpaceE13StridedVectorId11MemorySpaceE13StridedMatrixId11MemorySpaceE">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ExecutionSpace</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">MemoryToExecution</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Space</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmpart_1_1_monotone_component_1ab8e91e60aa420ee4969cf18fef8367e8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CoeffJacobian</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pts</span></span>, <span class="n"><span class="pre">StridedVector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">coeffs</span></span>, <span class="n"><span class="pre">StridedVector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">evaluations</span></span>, <span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">jacobian</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN5mpart17MonotoneComponent13CoeffJacobianEvRK13StridedMatrixIKd11MemorySpaceERK13StridedVectorIKd11MemorySpaceE13StridedVectorId11MemorySpaceE13StridedMatrixId11MemorySpaceE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the gradient of the map with respect to the parameters <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> at multiple points. </p>
+<p>Consider <span class="math notranslate nohighlight">\(N\)</span> points <span class="math notranslate nohighlight">\(\{\mathbf{x}^{(1)},\ldots,\mathbf{x}^{(N)}\}\)</span> and let <span class="math notranslate nohighlight">\(y_d^{(i)} = T_d(\mathbf{x}^{(i)}; \mathbf{w})\)</span>. This function computes <span class="math notranslate nohighlight">\(\nabla_{\mathbf{w}} y_d^{(i)}\)</span> for each output <span class="math notranslate nohighlight">\(y_d^{(i)}\)</span>.</p>
+<p><div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>CoeffGradient </p>
+</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pts</strong> – <strong>[in]</strong> A <span class="math notranslate nohighlight">\(D\times N\)</span> matrix containing the points <span class="math notranslate nohighlight">\(x^{(1)},\ldots,x^{(N)}\)</span>. Each column is a point. </p></li>
+<li><p><strong>coeffs</strong> – <strong>[in]</strong> A vector of coefficients defining the function <span class="math notranslate nohighlight">\(f(\mathbf{x}; \mathbf{w})\)</span>. </p></li>
+<li><p><strong>evaluations</strong> – <strong>[out]</strong> A vector containing the <span class="math notranslate nohighlight">\(N\)</span> predictions <span class="math notranslate nohighlight">\(y_d^{(i)}\)</span>. The vector must be preallocated and have <span class="math notranslate nohighlight">\(N\)</span> components when passed to this function. An error will occur if this vector is not the correct size. </p></li>
+<li><p><strong>jacobian</strong> – <strong>[out]</strong> A matrix containing the <span class="math notranslate nohighlight">\(M\times N\)</span> Jacobian matrix, where <span class="math notranslate nohighlight">\(M\)</span> is the length of the parameter vector <span class="math notranslate nohighlight">\(\mathbf{w}\)</span>. This matrix must be sized correctly or an error will occur.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN5mpart17MonotoneComponent13InputJacobianEvRK13StridedMatrixIKd11MemorySpaceERK13StridedVectorIKd11MemorySpaceE13StridedVectorId11MemorySpaceE13StridedMatrixId11MemorySpaceE">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ExecutionSpace</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">MemoryToExecution</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Space</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmpart_1_1_monotone_component_1aee3da3d0b74c9f880df2051014d61ffb"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InputJacobian</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pts</span></span>, <span class="n"><span class="pre">StridedVector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">coeffs</span></span>, <span class="n"><span class="pre">StridedVector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">evaluations</span></span>, <span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">jacobian</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN5mpart17MonotoneComponent13InputJacobianEvRK13StridedMatrixIKd11MemorySpaceERK13StridedVectorIKd11MemorySpaceE13StridedVectorId11MemorySpaceE13StridedMatrixId11MemorySpaceE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the gradient of the map with respect to the input <span class="math notranslate nohighlight">\(x_{1:d}\)</span> at multiple points. </p>
+<p>Consider <span class="math notranslate nohighlight">\(N\)</span> points <span class="math notranslate nohighlight">\(\{\mathbf{x}^{(1)},\ldots,\mathbf{x}^{(N)}\}\)</span> and let <span class="math notranslate nohighlight">\(y_d^{(i)} = T_d(\mathbf{x}^{(i)}; \mathbf{w})\)</span>. This function computes <span class="math notranslate nohighlight">\(\nabla_{\mathbf{x}} y_d^{(i)}\)</span> for each output <span class="math notranslate nohighlight">\(y_d^{(i)}\)</span>.</p>
+<p><div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>CoeffGradient </p>
+</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pts</strong> – <strong>[in]</strong> A <span class="math notranslate nohighlight">\(D\times N\)</span> matrix containing the points <span class="math notranslate nohighlight">\(x^{(1)},\ldots,x^{(N)}\)</span>. Each column is a point. </p></li>
+<li><p><strong>coeffs</strong> – <strong>[in]</strong> A vector of coefficients defining the function <span class="math notranslate nohighlight">\(f(\mathbf{x}; \mathbf{w})\)</span>. </p></li>
+<li><p><strong>evaluations</strong> – <strong>[out]</strong> A vector containing the <span class="math notranslate nohighlight">\(N\)</span> predictions <span class="math notranslate nohighlight">\(y_d^{(i)}\)</span>. The vector must be preallocated and have <span class="math notranslate nohighlight">\(N\)</span> components when passed to this function. An error will occur if this vector is not the correct size. </p></li>
+<li><p><strong>jacobian</strong> – <strong>[out]</strong> A matrix containing the <span class="math notranslate nohighlight">\(d\times N\)</span> Jacobian matrix, where <span class="math notranslate nohighlight">\(d\)</span> is the length of the input vector <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>. This matrix must be sized correctly or an error will occur.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart17MonotoneComponent23checkMixedJacobianInputEKNSt6stringEiiii">
+<span class="target" id="classmpart_1_1_monotone_component_1a8c75cf0443cf85fd96c6f4e9f8b769ed"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">checkMixedJacobianInput</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">method</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">jacRows</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">jacCols</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">expectJacRows</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">expectJacCols</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5mpart17MonotoneComponent23checkMixedJacobianInputEKNSt6stringEiiii" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN5mpart17MonotoneComponent23ContinuousMixedJacobianEvRK13StridedMatrixIKd11MemorySpaceERK13StridedVectorIKd11MemorySpaceE13StridedMatrixId11MemorySpaceE">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ExecutionSpace</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">MemoryToExecution</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Space</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmpart_1_1_monotone_component_1ae5a3e9eee961920c7c637e4bd45fd5b3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ContinuousMixedJacobian</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pts</span></span>, <span class="n"><span class="pre">StridedVector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">coeffs</span></span>, <span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">jacobian</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN5mpart17MonotoneComponent23ContinuousMixedJacobianEvRK13StridedMatrixIKd11MemorySpaceERK13StridedVectorIKd11MemorySpaceE13StridedMatrixId11MemorySpaceE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN5mpart17MonotoneComponent28ContinuousMixedInputJacobianEvRK13StridedMatrixIKd11MemorySpaceERK13StridedVectorIKd11MemorySpaceE13StridedMatrixId11MemorySpaceE">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ExecutionSpace</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">MemoryToExecution</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Space</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmpart_1_1_monotone_component_1a7e1df579bf6e58a0e613f16c00a216ee"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ContinuousMixedInputJacobian</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pts</span></span>, <span class="n"><span class="pre">StridedVector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">coeffs</span></span>, <span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">jacobian</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN5mpart17MonotoneComponent28ContinuousMixedInputJacobianEvRK13StridedMatrixIKd11MemorySpaceERK13StridedVectorIKd11MemorySpaceE13StridedMatrixId11MemorySpaceE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN5mpart17MonotoneComponent21DiscreteMixedJacobianEvRK13StridedMatrixIKd11MemorySpaceERK13StridedVectorIKd11MemorySpaceE13StridedMatrixId11MemorySpaceE">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ExecutionSpace</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="n"><span class="pre">MemoryToExecution</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Space</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmpart_1_1_monotone_component_1a9b5add51708596c70e80c615515b2485"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DiscreteMixedJacobian</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pts</span></span>, <span class="n"><span class="pre">StridedVector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">coeffs</span></span>, <span class="n"><span class="pre">StridedMatrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">jacobian</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN5mpart17MonotoneComponent21DiscreteMixedJacobianEvRK13StridedMatrixIKd11MemorySpaceERK13StridedVectorIKd11MemorySpaceE13StridedMatrixId11MemorySpaceE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK5mpart17MonotoneComponent16GetMultiIndexSetEv">
+<span class="target" id="classmpart_1_1_monotone_component_1a14bd8fffc41a99cdb92db0f1f41b03c1"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="multiindices/fixedmultiindexset.html#_CPPv4I0EN5mpart18FixedMultiIndexSetE" title="mpart::FixedMultiIndexSet"><span class="n"><span class="pre">FixedMultiIndexSet</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::MemorySpace"><span class="n"><span class="pre">MemorySpace</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetMultiIndexSet</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK5mpart17MonotoneComponent16GetMultiIndexSetEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Give access to the underlying <a class="reference internal" href="multiindices/fixedmultiindexset.html#classmpart_1_1_fixed_multi_index_set"><span class="std std-ref">FixedMultiIndexSet</span></a> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The <a class="reference internal" href="multiindices/fixedmultiindexset.html#classmpart_1_1_fixed_multi_index_set"><span class="std std-ref">FixedMultiIndexSet</span></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN5mpart17MonotoneComponent14EvaluateSingleEdPdPdRK9PointTypedRK10CoeffsTypeRK14QuadratureTypeRK13ExpansionTyped">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PointType</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CoeffsType</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmpart_1_1_monotone_component_1a2d832e2760c615d3881806b97b12b30e"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EvaluateSingle</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">cache</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">workspace</span></span>, <a class="reference internal" href="#_CPPv4I00EN5mpart17MonotoneComponent14EvaluateSingleEdPdPdRK9PointTypedRK10CoeffsTypeRK14QuadratureTypeRK13ExpansionTyped" title="mpart::MonotoneComponent::EvaluateSingle::PointType"><span class="n"><span class="pre">PointType</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pt</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">xd</span></span>, <a class="reference internal" href="#_CPPv4I00EN5mpart17MonotoneComponent14EvaluateSingleEdPdPdRK9PointTypedRK10CoeffsTypeRK14QuadratureTypeRK13ExpansionTyped" title="mpart::MonotoneComponent::EvaluateSingle::CoeffsType"><span class="n"><span class="pre">CoeffsType</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">coeffs</span></span>, <a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::QuadratureType"><span class="n"><span class="pre">QuadratureType</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">quad</span></span>, <a class="reference internal" href="#_CPPv4I0000EN5mpart17MonotoneComponentE" title="mpart::MonotoneComponent::ExpansionType"><span class="n"><span class="pre">ExpansionType</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">expansion</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nugget</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN5mpart17MonotoneComponent14EvaluateSingleEdPdPdRK9PointTypedRK10CoeffsTypeRK14QuadratureTypeRK13ExpansionTyped" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Evaluates the monotone component at a single point using an existing cache. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>PointType</strong> – The type of point used (subview, etc…) </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>cache</strong> – Memory used by the <a class="reference internal" href="multivariateexpansion.html#classmpart_1_1_multivariate_expansion"><span class="std std-ref">MultivariateExpansion</span></a> to cache evaluations </p></li>
+<li><p><strong>workspace</strong> – Memory used by the quadrature routine to store evaluations </p></li>
+<li><p><strong>pt</strong> – </p></li>
+<li><p><strong>coeffs</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="composedmap.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Composed Map</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="multiindex.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">MultiIndices</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/source/api/monotonecomponent.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2022, The MParT development team..
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
