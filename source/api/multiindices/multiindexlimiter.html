@@ -565,6 +565,15 @@ document.write(`
 </dd></dl>
 
 <dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart17MultiIndexLimiter11NonzeroDiagE">
+<span class="target" id="classmpart_1_1_multi_index_limiter_1_1_nonzero_diag"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NonzeroDiag</span></span></span><a class="headerlink" href="#_CPPv4N5mpart17MultiIndexLimiter11NonzeroDiagE" title="Permalink to this definition">#</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;MultiIndexLimiter.h&gt;</em></div>
+<p>Restricts acceptable to any term that has nonzero diagonal entries. </p>
+<p>This limiter only allows terms that satisfy <span class="math notranslate nohighlight">\(\mathbf{j}_d \neq 0\)</span> when the multi-index <span class="math notranslate nohighlight">\(\mathbf{j}\in\mathbb{N}_0^d\)</span>. </p>
+</dd></dl>
+
+<dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N5mpart17MultiIndexLimiter2OrE">
 <span class="target" id="classmpart_1_1_multi_index_limiter_1_1_or"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Or</span></span></span><a class="headerlink" href="#_CPPv4N5mpart17MultiIndexLimiter2OrE" title="Permalink to this definition">#</a><br /></dt>
 <dd><div class="docutils container">
@@ -574,9 +583,13 @@ document.write(`
 </dd></dl>
 
 <dl class="cpp class">
-<dt class="sig sig-object cpp" id="_CPPv4N5mpart17MultiIndexLimiter19SeparableTotalOrderE">
-<span class="target" id="classmpart_1_1_multi_index_limiter_1_1_separable_total_order"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SeparableTotalOrder</span></span></span><a class="headerlink" href="#_CPPv4N5mpart17MultiIndexLimiter19SeparableTotalOrderE" title="Permalink to this definition">#</a><br /></dt>
-<dd></dd></dl>
+<dt class="sig sig-object cpp" id="_CPPv4N5mpart17MultiIndexLimiter9SeparableE">
+<span class="target" id="classmpart_1_1_multi_index_limiter_1_1_separable"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Separable</span></span></span><a class="headerlink" href="#_CPPv4N5mpart17MultiIndexLimiter9SeparableE" title="Permalink to this definition">#</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;MultiIndexLimiter.h&gt;</em></div>
+<p>Restricts multi-indices to refuse cross-terms. </p>
+<p>This limiter only allows terms that satisfy <span class="math notranslate nohighlight">\(\mathbf{j}_d = 0\)</span> <em>or</em> <span class="math notranslate nohighlight">\(\mathbf{j}_d=\|\mathbf{j}\|_1\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{j}\in\mathbb{N}_0^d\)</span> is the multiindex. </p>
+</dd></dl>
 
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N5mpart17MultiIndexLimiter10TotalOrderE">
