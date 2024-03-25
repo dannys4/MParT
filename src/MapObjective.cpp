@@ -3,10 +3,10 @@
 using namespace mpart;
 
 template<typename MemorySpace>
-double MapObjective<MemorySpace>::operator()(unsigned int n, const double* coeffs, double* grad, std::shared_ptr<ConditionalMapBase<MemorySpace>> map) {
-
+double MapObjective<MemorySpace>::operator()(unsigned int n, const double* coeffs, double* grad, std::shared_ptr<ConditionalMapBase<MemorySpace>> map) const {
     Kokkos::View<const double*, MemorySpace> coeffView = ToConstKokkos<double,MemorySpace>(coeffs, n);
     StridedVector<double, MemorySpace> gradView = ToKokkos<double,MemorySpace>(grad, n);
+    Kokkos::deep_copy(gradView, 0.0);
     map->SetCoeffs(coeffView);
     return ObjectivePlusCoeffGradImpl(train_, gradView, map);
 }
@@ -59,8 +59,8 @@ double KLObjective<MemorySpace>::ObjectivePlusCoeffGradImpl(StridedMatrix<const 
     StridedVector<double, MemorySpace> densityX = pullback.LogDensity(data);
     StridedMatrix<double, MemorySpace> densityGradX = pullback.LogDensityCoeffGrad(data);
     double sumDensity = 0.;
-   
-    Kokkos::RangePolicy<typename MemoryToExecution<MemorySpace>::Space> policy(0,N_samps); 
+
+    Kokkos::RangePolicy<typename MemoryToExecution<MemorySpace>::Space> policy(0,N_samps);
     Kokkos::parallel_reduce ("Sum Negative Log Likelihood", policy, KOKKOS_LAMBDA (const int i, double &sum) {
         sum -= densityX(i);
     }, sumDensity);
@@ -157,11 +157,13 @@ void SumObjective<MemorySpace>::CoeffGradImpl(StridedMatrix<const double, Memory
 // Explicit template instantiation
 template class mpart::MapObjective<Kokkos::HostSpace>;
 template class mpart::KLObjective<Kokkos::HostSpace>;
+template class mpart::SumObjective<Kokkos::HostSpace>;
 template std::shared_ptr<MapObjective<Kokkos::HostSpace>> mpart::ObjectiveFactory::CreateGaussianKLObjective<Kokkos::HostSpace>(StridedMatrix<const double, Kokkos::HostSpace>, unsigned int);
 template std::shared_ptr<MapObjective<Kokkos::HostSpace>> mpart::ObjectiveFactory::CreateGaussianKLObjective<Kokkos::HostSpace>(StridedMatrix<const double, Kokkos::HostSpace>, StridedMatrix<const double, Kokkos::HostSpace>, unsigned int);
 #if defined(MPART_ENABLE_GPU)
     template class mpart::MapObjective<DeviceSpace>;
     template class mpart::KLObjective<DeviceSpace>;
+    template class mpart::SumObjective<DeviceSpace>;
     template std::shared_ptr<MapObjective<DeviceSpace>> mpart::ObjectiveFactory::CreateGaussianKLObjective<DeviceSpace>(StridedMatrix<const double, DeviceSpace>, unsigned int);
     template std::shared_ptr<MapObjective<DeviceSpace>> mpart::ObjectiveFactory::CreateGaussianKLObjective<DeviceSpace>(StridedMatrix<const double, DeviceSpace>, StridedMatrix<const double, DeviceSpace>, unsigned int);
 #endif

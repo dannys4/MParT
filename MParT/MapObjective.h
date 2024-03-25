@@ -1,6 +1,7 @@
 #ifndef MPART_MAPOBJECTIVE_H
 #define MPART_MAPOBJECTIVE_H
 
+#include <iostream>
 #include "ConditionalMapBase.h"
 #include "Distributions/PullbackDensity.h"
 #include "Utilities/ArrayConversions.h"
@@ -62,7 +63,7 @@ class MapObjective {
      * @param map Map which we optimize on
      * @return double Training error
      */
-    double operator()(unsigned int n, const double* x, double* grad, std::shared_ptr<ConditionalMapBase<MemorySpace>> map);
+    double operator()(unsigned int n, const double* x, double* grad, std::shared_ptr<ConditionalMapBase<MemorySpace>> map) const;
 
     virtual unsigned int InputDim() const {return train_.extent(0);}
     virtual unsigned int MapOutputDim() const {return train_.extent(0);}
@@ -192,26 +193,26 @@ class SumObjective: public MapObjective<MemorySpace>{
     public:
     SumObjective() = delete;
     SumObjective(const SumObjective& obj2): MapObjective<MemorySpace>(obj2), objectives_(obj2.objectives_) {}
-    SumObjective(std::vector<std::shared_ptr<const MapObjective<MemorySpace>>> objectives): objectives_(objectives) {}
+    SumObjective(std::vector<std::shared_ptr<const MapObjective<MemorySpace>>> objectives): MapObjective<MemorySpace>(objectives[0]->GetTrain(), objectives[0]->GetTest()), objectives_(objectives) {}
     double ObjectiveImpl(StridedMatrix<const double, MemorySpace> data, std::shared_ptr<ConditionalMapBase<MemorySpace>> map) const override;
     void CoeffGradImpl(StridedMatrix<const double, MemorySpace> data, StridedVector<double, MemorySpace> grad, std::shared_ptr<ConditionalMapBase<MemorySpace>> map) const override;
     double ObjectivePlusCoeffGradImpl(StridedMatrix<const double, MemorySpace> data, StridedVector<double, MemorySpace> grad, std::shared_ptr<ConditionalMapBase<MemorySpace>> map) const override;
     unsigned int MapOutputDim() const override {return objectives_[0]->MapOutputDim();}
-
-    MapObjective<MemorySpace>& operator+=(const MapObjective<MemorySpace>& obj2) {
+    
+    MapObjective<MemorySpace>& operator+=(std::shared_ptr<const MapObjective<MemorySpace>> obj2) {
         // Do checking of correct dimensions
-        if(objectives_[0].InputDim() != obj2.InputDim()) {
+        if(objectives_[0]->InputDim() != obj2->InputDim()) {
             std::stringstream ss;
-            ss << "SumObjective: Input dimensions of objectives do not match! " << objectives_[0].InputDim() << " != " << obj2.InputDim();
+            ss << "SumObjective: Input dimensions of objectives do not match! " << objectives_[0]->InputDim() << " != " << obj2->InputDim();
             throw std::runtime_error(ss.str());
         }
-        if(objectives_[0].MapOutputDim() != obj2.MapOutputDim()) {
+        if(objectives_[0]->MapOutputDim() != obj2->MapOutputDim()) {
             std::stringstream ss;
-            ss << "SumObjective: Map output dimensions of objectives do not match! " << objectives_[0].MapOutputDim() << " != " << obj2.MapOutputDim();
+            ss << "SumObjective: Map output dimensions of objectives do not match! " << objectives_[0]->MapOutputDim() << " != " << obj2->MapOutputDim();
             throw std::runtime_error(ss.str());
         }
         // Check if obj2 is a SumObjective, if so, add to it
-        std::shared_ptr<SumObjective<MemorySpace>> obj2_sum = std::dynamic_pointer_cast<SumObjective<MemorySpace>>(obj2);
+        std::shared_ptr<const SumObjective<MemorySpace>> obj2_sum = std::dynamic_pointer_cast<const SumObjective<MemorySpace>>(obj2);
         if(obj2_sum) {
             objectives_.insert(objectives_.end(), obj2_sum->objectives_.begin(), obj2_sum->objectives_.end());
         } else {
@@ -235,8 +236,8 @@ std::shared_ptr<MapObjective<MemorySpace>> operator+(std::shared_ptr<const MapOb
         obj2 = obj1;
     }
     if(sum_obj1) {
-        std::shared_ptr<SumObjective<MemorySpace>> ret = std::make_shared<SumObjective<MemorySpace>>(sum_obj1);
-        (*ret) += (*obj2);
+        std::shared_ptr<SumObjective<MemorySpace>> ret = std::make_shared<SumObjective<MemorySpace>>(*sum_obj1);
+        (*ret) += obj2;
         return ret;
     }
     std::vector<std::shared_ptr<const MapObjective<MemorySpace>>> objs = {obj1, obj2};

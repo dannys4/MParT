@@ -116,6 +116,12 @@ TEST_CASE( "Test_SumObjective", "[SumObjective]") {
     std::shared_ptr<MapObjective<MemorySpace>> sum_obj = objective + objective;
     std::shared_ptr<ConditionalMapBase<Kokkos::HostSpace>> map = MapFactory::CreateTriangular<Kokkos::HostSpace>(dim, dim, 2);
     Kokkos::deep_copy(map->Coeffs(), 1.);
-    Kokkos::View<double*, Kokkos::HostSpace> grad ("Gradient of Sum Objective", map->numCoeffs);
+    Kokkos::View<double*, Kokkos::HostSpace> grad ("Gradient of KL Objective", map->numCoeffs);
     double ref = (*objective)(map->numCoeffs, map->Coeffs().data(), grad.data(), map);
+    Kokkos::View<double*, Kokkos::HostSpace> grad_sum ("Gradient of Sum Objective", map->numCoeffs);
+    double sum = (*sum_obj)(map->numCoeffs, map->Coeffs().data(), grad_sum.data(), map);
+    CHECK(2*ref == Approx(sum).margin(1e-12));
+    for(int i = 0; i < map->numCoeffs; i++) {
+        CHECK(2*grad(i) == Approx(grad_sum(i)).margin(1e-12));
+    }
 }
