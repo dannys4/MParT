@@ -16,16 +16,12 @@ namespace py = pybind11;
 using namespace mpart::binding;
 
 template<typename MemorySpace>
-void mpart::binding::ParameterizedFunctionBaseWrapper<MemorySpace>(py::module &m)
+void mpart::binding::ParameterizedFunctionBaseWrapper(py::module &m)
 {
     // ParameterizedFunctionBase
     py::class_<ParameterizedFunctionBase<MemorySpace>, std::shared_ptr<ParameterizedFunctionBase<MemorySpace>>>(m, "ParameterizedFunctionBase")
-        .def("CoeffMap", [](std::shared_ptr<ParameterizedFunctionBase<MemorySpace>> pfb) {
-            Kokkos::View<const double*, MemorySpace> coeffs = pfb->CoeffMap();
-            Kokkos::View<const double*, Kokkos::HostSpace> host_coeffs = ToHost(coeffs);
-            return Eigen::VectorXd(Eigen::Map<Eigen::VectorXd>(host_coeffs.data(), host_coeffs.size()));
-        })
-        .def("SetCoeffs", py::overload_cast<Eigen::Ref<Eigen::VectorXd>>(&ParameterizedFunctionBase<MemorySpace>::SetCoeffs))
+        .def("CoeffMap", &ParameterizedFunctionBase<MemorySpace>::CoeffMap)
+        .def("SetCoeffs", &ParameterizedFunctionBase<MemorySpace>::template SetCoeffs<Eigen::Ref<Eigen::VectorXd>>)
         .def("WrapCoeffs", [](std::shared_ptr<ParameterizedFunctionBase<MemorySpace>> obj, std::tuple<long,int,int> coeffs){
             obj->WrapCoeffs(ToKokkos<double,MemorySpace>(coeffs));
         })

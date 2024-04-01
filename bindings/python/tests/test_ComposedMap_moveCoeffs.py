@@ -20,8 +20,8 @@ for i in range(num_maps):
     numParams += map.numParams
 
 
-moveCoeffs = True
-composed_map = mpart.ComposedMap(maps, moveCoeffs, num_maps)
+moveParams = True
+composed_map = mpart.ComposedMap(maps, moveParams, num_maps)
 all_coeffs = np.hstack(coeffs_).flatten()
 
 num_samples = 100

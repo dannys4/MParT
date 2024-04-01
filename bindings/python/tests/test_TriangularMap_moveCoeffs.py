@@ -18,7 +18,7 @@ map_2 = mpart.CreateComponent(mset_2, opts)
 coeffs_2 = np.random.randn(map_2.numParams)
 map_2.SetCoeffs(coeffs_2)
 
-triangular = mpart.TriangularMap([map_1,map_2], moveCoeffs=True)
+triangular = mpart.TriangularMap([map_1,map_2], moveParams=True)
 num_samples = 100
 x = np.random.randn(2,num_samples)
 

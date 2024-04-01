@@ -32,7 +32,7 @@ namespace mpart {
          */
         ParameterizedFunctionBase(unsigned int inDim, unsigned int outDim, unsigned int nCoeffs) : inputDim(inDim), outputDim(outDim), numParams(nCoeffs){};
 
-        ParameterizedFunctionBase(unsigned int inDim, unsigned int outDim, unsigned int nCoeffs, Kokkos::View<const double*, MemorySpace> coeffsIn) : inputDim(inDim), outputDim(outDim), numParams(coeffsIn.size()){SetCoeffs(coeffsIn);};
+        ParameterizedFunctionBase(unsigned int inDim, unsigned int outDim, unsigned int nCoeffs, Kokkos::View<const double*, MemorySpace> coeffsIn) : inputDim(inDim), outputDim(outDim), numParams(coeffsIn.size()){SetParams(coeffsIn);};
 
         virtual ~ParameterizedFunctionBase() = default;
 

@@ -8,10 +8,15 @@ void mpart::binding::ParameterizedFunctionBaseWrapper(jlcxx::Module &mod) {
     // ParameterizedFunctionBase
     mod.add_type<ParameterizedFunctionBase<Kokkos::HostSpace>>("ParameterizedFunctionBase")
         .method("CoeffMap" , [](ParameterizedFunctionBase<Kokkos::HostSpace> &pfb){ return KokkosToJulia(pfb.Coeffs()); })
+        .method("ParamMap" , [](ParameterizedFunctionBase<Kokkos::HostSpace> &pfb){ return KokkosToJulia(pfb.Params()); })
         .method("SetCoeffs", [](ParameterizedFunctionBase<Kokkos::HostSpace> &pfb, jlcxx::ArrayRef<double> v){ 
-	    Kokkos::View<const double*, Kokkos::HostSpace> ConstCoeffs = JuliaToKokkos(v);
-	    pfb.SetCoeffs(ConstCoeffs); 
-	})
+            Kokkos::View<const double*, Kokkos::HostSpace> ConstCoeffs = JuliaToKokkos(v);
+            pfb.SetCoeffs(ConstCoeffs); 
+        })
+        .method("SetParams", [](ParameterizedFunctionBase<Kokkos::HostSpace> &pfb, jlcxx::ArrayRef<double> v){ 
+            Kokkos::View<const double*, Kokkos::HostSpace> ConstParams = JuliaToKokkos(v);
+            pfb.SetParams(ConstParams); 
+        })
         .method("numParams", [](ParameterizedFunctionBase<Kokkos::HostSpace> &pfb) { return pfb.numParams; })
         .method("numCoeffs", [](ParameterizedFunctionBase<Kokkos::HostSpace> &pfb) { 
             // TODO: Create deprecation warning
@@ -38,6 +43,13 @@ void mpart::binding::ParameterizedFunctionBaseWrapper(jlcxx::Module &mod) {
             pfb.CoeffGradImpl(JuliaToKokkos(pts), JuliaToKokkos(sens), JuliaToKokkos(output));
             return output;
         })
+        .method("ParamGrad", [](ParameterizedFunctionBase<Kokkos::HostSpace> &pfb, jlcxx::ArrayRef<double,2> pts, jlcxx::ArrayRef<double,2> sens) {
+            unsigned int numPts = size(pts,1);
+            unsigned int numParams = pfb.numParams;
+            jlcxx::ArrayRef<double,2> output = jlMalloc<double>(numParams, numPts);
+            pfb.ParamGradImpl(JuliaToKokkos(pts), JuliaToKokkos(sens), JuliaToKokkos(output));
+            return output;
+        })
         .method("Gradient", [](ParameterizedFunctionBase<Kokkos::HostSpace> &pfb, jlcxx::ArrayRef<double,2> pts, jlcxx::ArrayRef<double,2> sens) {
             unsigned int numPts = size(pts,1);
             unsigned int dim = size(pts,0);
@@ -48,6 +60,18 @@ void mpart::binding::ParameterizedFunctionBaseWrapper(jlcxx::Module &mod) {
                 }
             }
             pfb.GradientImpl(JuliaToKokkos(pts), JuliaToKokkos(sens), JuliaToKokkos(output));
+            return output;
+        })
+        .method("InputGrad", [](ParameterizedFunctionBase<Kokkos::HostSpace> &pfb, jlcxx::ArrayRef<double,2> pts, jlcxx::ArrayRef<double,2> sens) {
+            unsigned int numPts = size(pts,1);
+            unsigned int dim = size(pts,0);
+            jlcxx::ArrayRef<double,2> output = jlMalloc<double>(dim, numPts);
+            for(int j = 0; j < numPts; j++){
+                for(int i = 0; i < dim; i++){
+                    output[j*dim+i] = 0.0;
+                }
+            }
+            pfb.InputGradImpl(JuliaToKokkos(pts), JuliaToKokkos(sens), JuliaToKokkos(output));
             return output;
         })
         .method("Serialize", [](ParameterizedFunctionBase<Kokkos::HostSpace> &pfb, std::string &filename) {
