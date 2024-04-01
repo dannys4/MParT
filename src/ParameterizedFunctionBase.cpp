@@ -287,7 +287,7 @@ StridedMatrix<double, Kokkos::HostSpace> ParameterizedFunctionBase<Kokkos::HostS
                                                                                                  StridedMatrix<const double, Kokkos::HostSpace> const& sens)
 {
     CheckParameters("ParamGrad");
-    Kokkos::View<double**, Kokkos::HostSpace> output("Coeff Grad", numParams, pts.extent(1));
+    Kokkos::View<double**, Kokkos::HostSpace> output("Param Grad", numParams, pts.extent(1));
     ParamGradImpl(pts,sens, output);
     return output;
 }

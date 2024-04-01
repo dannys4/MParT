@@ -26,7 +26,7 @@ void mpart::DeprecationWarning(std::string const& deprecated, std::string const&
         warnings[deprecated] = 0;
     }
     if(warnings[deprecated]<max_warn){
-        std::cerr << "\033[33mWARNING: " << deprecated << " is deprecated.  Please use " << replacement << " instead.\033[0m" << std::endl;
+        std::cerr << "\033[33mMParT WARNING: " << deprecated << " is deprecated.  Please use " << replacement << " instead.\033[0m" << std::endl;
         warnings[deprecated]++;
     }
 }

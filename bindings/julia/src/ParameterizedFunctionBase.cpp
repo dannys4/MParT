@@ -19,7 +19,7 @@ void mpart::binding::ParameterizedFunctionBaseWrapper(jlcxx::Module &mod) {
         })
         .method("numParams", [](ParameterizedFunctionBase<Kokkos::HostSpace> &pfb) { return pfb.numParams; })
         .method("numCoeffs", [](ParameterizedFunctionBase<Kokkos::HostSpace> &pfb) { 
-            // TODO: Create deprecation warning
+            DeprecationWarning("numCoeffs", "numParams");
             return pfb.numParams;
         })
         .method("inputDim" , [](ParameterizedFunctionBase<Kokkos::HostSpace> &pfb) { return pfb.inputDim; })

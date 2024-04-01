@@ -58,7 +58,7 @@ void mpart::binding::ParameterizedFunctionBaseWrapper(py::module &m)
             return mpart.attr("TorchParameterizedFunctionBase")(obj, store_coeffs);
         }, py::arg("store_coeffs")=true)
         .def_property_readonly("numCoeffs", [](ParameterizedFunctionBase<MemorySpace>& pfb){
-            // TODO: Create deprecation warning
+            DeprecationWarning("numCoeffs", "numParams");
             return pfb.numParams;
         })
         .def_readonly("numParams", &ParameterizedFunctionBase<MemorySpace>::numParams)
