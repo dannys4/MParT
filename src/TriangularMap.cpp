@@ -45,7 +45,7 @@ TriangularMap<MemorySpace>::TriangularMap(std::vector<std::shared_ptr<Conditiona
 
         for(unsigned int i=0; i<comps_.size(); ++i){
 
-            if(!comps_.at(i)->CheckCoefficients()){
+            if(!comps_.at(i)->CheckParameters()){
                 std::stringstream msg;
                 msg << "In TriangularMap constructor, moveCoeffs set to true, but component " << i <<" doesn't have coeffs set";
                 throw std::invalid_argument(msg.str());
@@ -224,7 +224,7 @@ void TriangularMap<MemorySpace>::GradientImpl(StridedMatrix<const double, Memory
 }
 
 template<typename MemorySpace>
-void TriangularMap<MemorySpace>::CoeffGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
+void TriangularMap<MemorySpace>::ParamGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
                                                StridedMatrix<const double, MemorySpace> const& sens,
                                                StridedMatrix<double, MemorySpace>              output)
 {

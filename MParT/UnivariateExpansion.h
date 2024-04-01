@@ -94,7 +94,7 @@ class UnivariateExpansion: public ConditionalMapBase<MemorySpace>{
         Kokkos::fence();
     }
 
-    void CoeffGradImpl(StridedMatrix<const double, MemorySpace> const& points,
+    void ParamGradImpl(StridedMatrix<const double, MemorySpace> const& points,
         StridedMatrix<const double, MemorySpace> const& sens,
         StridedMatrix<double, MemorySpace> out) override {
         auto point_slice = Kokkos::subview(points, 0, Kokkos::ALL());

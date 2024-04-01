@@ -49,7 +49,7 @@ void IdentityMap<MemorySpace>::InverseImpl(StridedMatrix<const double, MemorySpa
 
 
 template<typename MemorySpace>
-void IdentityMap<MemorySpace>::CoeffGradImpl(StridedMatrix<const double, MemorySpace> const& pts,  
+void IdentityMap<MemorySpace>::ParamGradImpl(StridedMatrix<const double, MemorySpace> const& pts,  
                                                StridedMatrix<const double, MemorySpace> const& sens,
                                                StridedMatrix<double, MemorySpace>              output)
 {

@@ -115,7 +115,7 @@ void InnerMarginalAffineMap<MemorySpace>::EvaluateImpl(StridedMatrix<const doubl
 }
 
 template<typename MemorySpace>
-void InnerMarginalAffineMap<MemorySpace>::CoeffGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
+void InnerMarginalAffineMap<MemorySpace>::ParamGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
                                            StridedMatrix<const double, MemorySpace> const& sens,
                                            StridedMatrix<double, MemorySpace>              output)
 {

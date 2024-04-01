@@ -32,7 +32,7 @@ public:
                              StridedMatrix<const double, MemorySpace> const& r,
                              StridedMatrix<double, MemorySpace>              output) override{Kokkos::deep_copy(output,r);};
 
-    virtual void CoeffGradImpl(StridedMatrix<const double, MemorySpace> const& pts,  
+    virtual void ParamGradImpl(StridedMatrix<const double, MemorySpace> const& pts,  
                                StridedMatrix<const double, MemorySpace> const& sens,
                                StridedMatrix<double, MemorySpace>              output) override
     {

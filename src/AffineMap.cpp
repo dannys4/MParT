@@ -165,7 +165,7 @@ void AffineMap<MemorySpace>::EvaluateImpl(StridedMatrix<const double, MemorySpac
 }
 
 template<typename MemorySpace>
-void AffineMap<MemorySpace>::CoeffGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
+void AffineMap<MemorySpace>::ParamGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
                                            StridedMatrix<const double, MemorySpace> const& sens,
                                            StridedMatrix<double, MemorySpace>              output)
 {

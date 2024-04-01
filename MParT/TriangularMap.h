@@ -111,7 +111,7 @@ public:
                                 StridedMatrix<const double, MemorySpace> const& r);
 
 
-    void CoeffGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
+    void ParamGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
                        StridedMatrix<const double, MemorySpace> const& sens,
                        StridedMatrix<double, MemorySpace>              output) override;
 

@@ -174,7 +174,7 @@ void SummarizedMap<MemorySpace>::GradientImpl(StridedMatrix<const double, Memory
 }
 
 template<typename MemorySpace>
-void SummarizedMap<MemorySpace>::CoeffGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
+void SummarizedMap<MemorySpace>::ParamGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
                                                StridedMatrix<const double, MemorySpace> const& sens,
                                                StridedMatrix<double, MemorySpace>              output)
 {
@@ -184,7 +184,7 @@ void SummarizedMap<MemorySpace>::CoeffGradImpl(StridedMatrix<const double, Memor
     // Summarize the pts
     this->SummarizePts(pts, summarizedPts);
 
-    // CoeffGradImpl of map
+    // ParamGradImpl of map
     comp_->CoeffGradImpl(summarizedPts, sens, output);
 }
 
@@ -198,7 +198,7 @@ void SummarizedMap<MemorySpace>::LogDeterminantParamGradImpl(StridedMatrix<const
     // Summarize the pts
     this->SummarizePts(pts, summarizedPts);
 
-    // CoeffGradImpl of map
+    // ParamGradImpl of map
     comp_->LogDeterminantParamGradImpl(summarizedPts, output);
 }
 

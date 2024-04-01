@@ -156,33 +156,84 @@ namespace mpart {
         @return A collection of vectors \f$g_i\f$.  Will have the same number of columns as pts with \f$K\f$ rows.
         */
         template<typename AnyMemorySpace>
-        StridedMatrix<double, AnyMemorySpace> CoeffGrad(StridedMatrix<const double, AnyMemorySpace> const& pts,
+        StridedMatrix<double, AnyMemorySpace> ParamGrad(StridedMatrix<const double, AnyMemorySpace> const& pts,
                                                         StridedMatrix<const double, AnyMemorySpace> const& sens);
 
-        /** CoeffGrad function with conversion between general view type and const strided matrix. */
+        /** ParamGrad function with conversion between general view type and const strided matrix. */
         template<typename PtsViewType, typename SensViewType>
-        StridedMatrix<double, typename PtsViewType::memory_space> CoeffGrad(PtsViewType pts,  SensViewType sens){
+        StridedMatrix<double, typename PtsViewType::memory_space> ParamGrad(PtsViewType pts,  SensViewType sens){
             StridedMatrix<const double, typename PtsViewType::memory_space> newpts(pts);
             StridedMatrix<const double, typename SensViewType::memory_space> newsens(sens);
-            return this->CoeffGrad(newpts,newsens);
+            return this->ParamGrad(newpts,newsens);
+        }
+
+        /**
+         * @brief Deprecated function.  Use the ParamGrad function instead.
+         * @deprecated
+         * 
+         * @tparam PtsViewType 
+         * @tparam SensViewType 
+         * @param pts 
+         * @param sens 
+         * @return StridedMatrix<double, typename PtsViewType::memory_space> 
+         */
+        template<typename PtsViewType, typename SensViewType>
+        StridedMatrix<double, typename PtsViewType::memory_space> CoeffGrad(PtsViewType pts,  SensViewType sens){
+            // TODO: Warn that this is deprecated
+            return this->ParamGrad(pts,sens);
         }
 
         /** Coeff grad function with conversion between Eigen and Kokkos matrix types. */
-        Eigen::RowMatrixXd CoeffGrad(Eigen::Ref<const Eigen::RowMatrixXd> const& pts,
+        Eigen::RowMatrixXd ParamGrad(Eigen::Ref<const Eigen::RowMatrixXd> const& pts,
                                      Eigen::Ref<const Eigen::RowMatrixXd> const& sens);
+        /**
+         * @brief Deprecated Function. Use the ParamGrad function instead.
+         * @deprecated
+         * 
+         * @param pts 
+         * @param sens 
+         * @return Eigen::RowMatrixXd 
+         */
+        Eigen::RowMatrixXd CoeffGrad(Eigen::Ref<const Eigen::RowMatrixXd> const& pts,
+                                     Eigen::Ref<const Eigen::RowMatrixXd> const& sens) {
+            // TODO: Warn that this is deprecated
+            return this->ParamGrad(pts,sens);
+        }
+        
 
-        /** @brief Pure virtual function overridden by child classes for computing the gradient of the function output with respect to the parameter vector \f$\mathbf{w}\f$.  See the non-virtual CoeffGrad function for more details.
-        @details Evaluates the gradient with respect to the coefficients and stores the results in a preallocated matrix.
+        /** @brief Pure virtual function overridden by child classes for computing the gradient of the function output with respect to the parameter vector \f$\mathbf{w}\f$.  See the non-virtual ParamGrad function for more details.
+        @details Evaluates the gradient with respect to the parameters and stores the results in a preallocated matrix.
         @param pts A \f$d_{in}\times N\f$ matrix containining \f$N\f$ points in \f$\mathbb{R}^d\f$ where this function be evaluated.  Each column is a point.
         @param sens A matrix of sensitivity vectors.  Each column contains one sensitivity.
         @param output A preallocated matrix to store the results.
         */
-        virtual void CoeffGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
+        virtual void ParamGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
                                    StridedMatrix<const double, MemorySpace> const& sens,
                                    StridedMatrix<double, MemorySpace>              output) = 0;
+        
+
+        /**
+         * @brief Deprecated version of ParamGradImpl. Do not use.
+         * @deprecated
+         * 
+         * @param pts 
+         * @param sens 
+         * @param output 
+         */
+        void CoeffGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
+                           StridedMatrix<const double, MemorySpace> const& sens,
+                           StridedMatrix<double, MemorySpace>              output) {
+            // TODO: Warn that this is deprecated
+            ParamGradImpl(pts,sens,output);
+        }
 
         /** Checks to see if the coefficients have been initialized yet, returns true if so, false if not */
-        bool CheckCoefficients() const;
+        bool CheckParameters() const;
+
+        bool CheckCoefficients() const {
+            // TODO: Warn that this is deprecated
+            return CheckParameters();
+        }
 
         const unsigned int inputDim; /// The total dimension of the input N+M
         const unsigned int outputDim; /// The output dimension M
@@ -240,7 +291,7 @@ namespace mpart {
         void CheckDeviceMismatch(std::string functionName) const;
 
         /** Checks to see if the coefficients have been initialized yet. If not, an exception is thrown. */
-        void CheckCoefficients(std::string const& functionName) const;
+        void CheckParameters(std::string const& functionName) const;
 
         Kokkos::View<double*, MemorySpace> savedCoeffs;
         

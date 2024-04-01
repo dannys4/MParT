@@ -8,7 +8,7 @@ template<>
 template<>
 Kokkos::View<double*, Kokkos::HostSpace> ConditionalMapBase<Kokkos::HostSpace>::LogDeterminant(StridedMatrix<const double, Kokkos::HostSpace> const& pts)
 {
-    this->CheckCoefficients("LogDeterminant");
+    this->CheckParameters("LogDeterminant");
     Kokkos::View<double*, Kokkos::HostSpace> output("Log Determinants", pts.extent(1));
     LogDeterminantImpl(pts, output);
     return output;
@@ -17,7 +17,7 @@ Kokkos::View<double*, Kokkos::HostSpace> ConditionalMapBase<Kokkos::HostSpace>::
 template<>
 Eigen::VectorXd ConditionalMapBase<Kokkos::HostSpace>::LogDeterminant(Eigen::Ref<const Eigen::RowMatrixXd> const& pts)
 {
-    this->CheckCoefficients("LogDeterminant");
+    this->CheckParameters("LogDeterminant");
 
     StridedMatrix<const double,Kokkos::HostSpace> ptsView = ConstRowMatToKokkos<double,Kokkos::HostSpace>(pts);
     Kokkos::View<double*,Kokkos::HostSpace> outView = LogDeterminant(ptsView);
@@ -31,7 +31,7 @@ template<>
 template<>
 Kokkos::View<double*, mpart::DeviceSpace> ConditionalMapBase<mpart::DeviceSpace>::LogDeterminant(StridedMatrix<const double, mpart::DeviceSpace> const& pts)
 {
-    this->CheckCoefficients("LogDeterminant");
+    this->CheckParameters("LogDeterminant");
     Kokkos::View<double*, mpart::DeviceSpace> output("Log Determinants", pts.extent(1));
     LogDeterminantImpl(pts, output);
     return output;
@@ -67,7 +67,7 @@ template<>
 StridedMatrix<double, Kokkos::HostSpace> ConditionalMapBase<Kokkos::HostSpace>::Inverse(StridedMatrix<const double, Kokkos::HostSpace> const& x1,
                                                                                         StridedMatrix<const double, Kokkos::HostSpace> const& r)
 {
-    this->CheckCoefficients("Inverse");
+    this->CheckParameters("Inverse");
     // Throw an error if the inputs don't have the same number of columns
     if(x1.extent(1)!=r.extent(1)){
         std::stringstream msg;
@@ -83,7 +83,7 @@ StridedMatrix<double, Kokkos::HostSpace> ConditionalMapBase<Kokkos::HostSpace>::
 template<>
 Eigen::RowMatrixXd ConditionalMapBase<Kokkos::HostSpace>::Inverse(Eigen::Ref<const Eigen::RowMatrixXd> const& x1, Eigen::Ref<const Eigen::RowMatrixXd> const& r)
 {
-    this->CheckCoefficients("Inverse");
+    this->CheckParameters("Inverse");
 
     StridedMatrix<const double, Kokkos::HostSpace> x1View = ConstRowMatToKokkos<double,Kokkos::HostSpace>(x1);
     StridedMatrix<const double, Kokkos::HostSpace> rView = ConstRowMatToKokkos<double,Kokkos::HostSpace>(r);
@@ -99,7 +99,7 @@ template<>
 StridedMatrix<double, mpart::DeviceSpace> ConditionalMapBase<mpart::DeviceSpace>::Inverse(StridedMatrix<const double, mpart::DeviceSpace> const& x1,
                                                                                           StridedMatrix<const double, mpart::DeviceSpace> const& r)
 {
-    this->CheckCoefficients("Inverse");
+    this->CheckParameters("Inverse");
     // Throw an error if the inputs don't have the same number of columns
     if(x1.extent(1)!=r.extent(1)){
         std::stringstream msg;
@@ -144,7 +144,7 @@ template<>
 template<>
 StridedMatrix<double, Kokkos::HostSpace> ConditionalMapBase<Kokkos::HostSpace>::LogDeterminantParamGrad(StridedMatrix<const double, Kokkos::HostSpace> const& pts)
 {
-    this->CheckCoefficients("LogDeterminantParamGrad");
+    this->CheckParameters("LogDeterminantParamGrad");
     Kokkos::View<double**, Kokkos::HostSpace> output("LogDeterminantParamGrad", this->numCoeffs, pts.extent(1));
     LogDeterminantParamGradImpl(pts,output);
     return output;
@@ -153,7 +153,7 @@ StridedMatrix<double, Kokkos::HostSpace> ConditionalMapBase<Kokkos::HostSpace>::
 template<>
 Eigen::RowMatrixXd ConditionalMapBase<Kokkos::HostSpace>::LogDeterminantParamGrad(Eigen::Ref<const Eigen::RowMatrixXd> const& pts)
 {
-    this->CheckCoefficients("LogDeterminantCoeffGrad");
+    this->CheckParameters("LogDeterminantCoeffGrad");
     StridedMatrix<const double, Kokkos::HostSpace> ptsView = ConstRowMatToKokkos<double,Kokkos::HostSpace>(pts);
 
     Kokkos::View<double**,Kokkos::LayoutRight,Kokkos::HostSpace> outView = LogDeterminantParamGrad(ptsView);
@@ -167,7 +167,7 @@ template<>
 template<>
 StridedMatrix<double, mpart::DeviceSpace> ConditionalMapBase<mpart::DeviceSpace>::LogDeterminantParamGrad(StridedMatrix<const double, mpart::DeviceSpace> const& pts)
 {
-    this->CheckCoefficients("LogDeterminantCoeffGrad");
+    this->CheckParameters("LogDeterminantCoeffGrad");
     Kokkos::View<double**, mpart::DeviceSpace> output("LogDeterminantParamGrad", this->numCoeffs, pts.extent(1));
     LogDeterminantParamGradImpl(pts,output);
     return output;
@@ -205,7 +205,7 @@ StridedMatrix<double, mpart::DeviceSpace> ConditionalMapBase<Kokkos::HostSpace>:
 template<>
 Eigen::RowMatrixXd ConditionalMapBase<mpart::DeviceSpace>::LogDeterminantParamGrad(Eigen::Ref<const Eigen::RowMatrixXd> const& pts)
 {
-    CheckCoefficients("LogDeterminantParamGrad");
+    CheckParameters("LogDeterminantParamGrad");
 
     Eigen::RowMatrixXd output(outputDim, pts.cols());
     StridedMatrix<const double, mpart::DeviceSpace> ptsView = ToDevice<mpart::DeviceSpace>( ConstRowMatToKokkos<double,Kokkos::HostSpace>(pts));
@@ -220,7 +220,7 @@ template<>
 template<>
 StridedMatrix<double, Kokkos::HostSpace> ConditionalMapBase<Kokkos::HostSpace>::LogDeterminantInputGrad(StridedMatrix<const double, Kokkos::HostSpace> const& pts)
 {
-    this->CheckCoefficients("LogDeterminantInputGrad");
+    this->CheckParameters("LogDeterminantInputGrad");
 
     Kokkos::View<double**, Kokkos::HostSpace> output("LogDeterminantInputGrad", pts.extent(0), pts.extent(1));
     LogDeterminantInputGradImpl(pts, output);
@@ -230,7 +230,7 @@ StridedMatrix<double, Kokkos::HostSpace> ConditionalMapBase<Kokkos::HostSpace>::
 template<>
 Eigen::RowMatrixXd ConditionalMapBase<Kokkos::HostSpace>::LogDeterminantInputGrad(Eigen::Ref<const Eigen::RowMatrixXd> const& pts)
 {
-    this->CheckCoefficients("LogDeterminantInputGrad");
+    this->CheckParameters("LogDeterminantInputGrad");
     StridedMatrix<const double, Kokkos::HostSpace> ptsView = ConstRowMatToKokkos<double,Kokkos::HostSpace>(pts);
 
     Kokkos::View<double**,Kokkos::LayoutRight,Kokkos::HostSpace> outView = LogDeterminantInputGrad(ptsView);
@@ -244,7 +244,7 @@ template<>
 template<>
 StridedMatrix<double, mpart::DeviceSpace> ConditionalMapBase<mpart::DeviceSpace>::LogDeterminantInputGrad(StridedMatrix<const double, mpart::DeviceSpace> const& pts)
 {
-    this->CheckCoefficients("LogDeterminantInputGrad");
+    this->CheckParameters("LogDeterminantInputGrad");
     Kokkos::View<double**, mpart::DeviceSpace> output("LogDeterminantInputGrad", pts.extent(0), pts.extent(1));
     LogDeterminantInputGradImpl(pts,output);
     return output;
@@ -283,7 +283,7 @@ StridedMatrix<double, mpart::DeviceSpace> ConditionalMapBase<Kokkos::HostSpace>:
 template<>
 Eigen::RowMatrixXd ConditionalMapBase<mpart::DeviceSpace>::LogDeterminantInputGrad(Eigen::Ref<const Eigen::RowMatrixXd> const& pts)
 {
-    CheckCoefficients("LogDeterminantInputGrad");
+    CheckParameters("LogDeterminantInputGrad");
 
     Eigen::RowMatrixXd output(outputDim, pts.cols());
     StridedMatrix<const double, mpart::DeviceSpace> ptsView = ToDevice<mpart::DeviceSpace>( ConstRowMatToKokkos<double,Kokkos::HostSpace>(pts));

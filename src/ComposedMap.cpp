@@ -162,7 +162,7 @@ ComposedMap<MemorySpace>::ComposedMap(std::vector<std::shared_ptr<ConditionalMap
 
         for(unsigned int i=0; i<maps_.size(); ++i){
 
-            if(!maps_.at(i)->CheckCoefficients()){
+            if(!maps_.at(i)->CheckParameters()){
                 std::stringstream msg;
                 msg << "In ComposedMap constructor, moveCoeffs set to true, but map " << i <<" doesn't have coeffs set";
                 throw std::invalid_argument(msg.str());
@@ -356,7 +356,7 @@ void ComposedMap<MemorySpace>::InverseImpl(StridedMatrix<const double, MemorySpa
 }
 
 template<typename MemorySpace>
-void ComposedMap<MemorySpace>::CoeffGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
+void ComposedMap<MemorySpace>::ParamGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
                                              StridedMatrix<const double, MemorySpace> const& sens,
                                              StridedMatrix<double, MemorySpace>              output)
 {
