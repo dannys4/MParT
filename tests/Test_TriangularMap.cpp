@@ -17,12 +17,12 @@ TEST_CASE( "Testing 3d triangular map from MonotoneComponents with moveParams=fa
     unsigned int maxDegree = 2;
     unsigned int extraInputs = 1;
 
-    unsigned int coeffSize = 0;
+    unsigned int paramSize = 0;
 
     std::vector<std::shared_ptr<ConditionalMapBase<MemorySpace>>> blocks(numBlocks);
     for(unsigned int i=0;i<numBlocks;++i){
         FixedMultiIndexSet<MemorySpace> mset(i+extraInputs+1,maxDegree);
-        coeffSize += mset.Size();
+        paramSize += mset.Size();
 
         blocks.at(i) = MapFactory::CreateComponent<MemorySpace>(mset, options);
     }
@@ -31,25 +31,25 @@ TEST_CASE( "Testing 3d triangular map from MonotoneComponents with moveParams=fa
 
     CHECK(triMap->outputDim == numBlocks);
     CHECK(triMap->inputDim == numBlocks+extraInputs);
-    CHECK(triMap->numParams == coeffSize);
+    CHECK(triMap->numParams == paramSize);
 
 
-    Kokkos::View<double*,Kokkos::HostSpace> params("Coefficients", triMap->numParams);
+    Kokkos::View<double*,Kokkos::HostSpace> params("Parameters", triMap->numParams);
     for(unsigned int i=0; i<triMap->numParams; ++i)
         params(i) = 0.1*(i+1);
 
-    SECTION("Coefficients"){
+    SECTION("Parameters"){
 
-        // Set the coefficients of the triangular map
+        // Set the parameters of the triangular map
         triMap->SetParams(params);
 
-        // Now make sure that the coefficients of each block were set
-        unsigned int cumCoeffInd = 0;
+        // Now make sure that the parameters of each block were set
+        unsigned int cumParamInd = 0;
         for(unsigned int i=0; i<numBlocks; ++i){
             for(unsigned int j=0; j<blocks.at(i)->numParams; ++j){
-                CHECK(blocks.at(i)->Params()(j) == params(cumCoeffInd)); // Values of coefficients should be equal
-                CHECK(&blocks.at(i)->Params()(j) == &triMap->Params()(cumCoeffInd)); // Memory location should also be the same (no copy)
-                cumCoeffInd++;
+                CHECK(blocks.at(i)->Params()(j) == params(cumParamInd)); // Values of parameters should be equal
+                CHECK(&blocks.at(i)->Params()(j) == &triMap->Params()(cumParamInd)); // Memory location should also be the same (no copy)
+                cumParamInd++;
             }
         }
     }
@@ -120,10 +120,10 @@ TEST_CASE( "Testing 3d triangular map from MonotoneComponents with moveParams=fa
         Kokkos::View<double**,Kokkos::HostSpace> evals = triMap->Evaluate(in);
         Kokkos::View<double**,Kokkos::HostSpace> evals2;
 
-        Kokkos::View<double**,Kokkos::HostSpace> coeffGrad = triMap->ParamGrad(in, sens);
+        Kokkos::View<double**,Kokkos::HostSpace> paramGrad = triMap->ParamGrad(in, sens);
 
-        REQUIRE(coeffGrad.extent(0)==triMap->numParams);
-        REQUIRE(coeffGrad.extent(1)==numSamps);
+        REQUIRE(paramGrad.extent(0)==triMap->numParams);
+        REQUIRE(paramGrad.extent(1)==numSamps);
 
         // Compare with finite differences
         double fdstep = 1e-5;
@@ -139,7 +139,7 @@ TEST_CASE( "Testing 3d triangular map from MonotoneComponents with moveParams=fa
                 for(unsigned int j=0; j<triMap->outputDim; ++j)
                     fdDeriv += sens(j,ptInd) * (evals2(j,ptInd)-evals(j,ptInd))/fdstep;
 
-                CHECK( coeffGrad(i,ptInd) == Approx(fdDeriv).margin(1e-3));
+                CHECK( paramGrad(i,ptInd) == Approx(fdDeriv).margin(1e-3));
             }
             params(i) -= fdstep;
         }
@@ -230,7 +230,7 @@ TEST_CASE( "Testing 3d triangular map from MonotoneComponents with moveParams=tr
     unsigned int maxDegree = 2;
     unsigned int extraInputs = 1;
 
-    unsigned int coeffSize = 0;
+    unsigned int paramSize = 0;
 
 
 
@@ -239,11 +239,11 @@ TEST_CASE( "Testing 3d triangular map from MonotoneComponents with moveParams=tr
     for(unsigned int i=0;i<numBlocks;++i){
 
         FixedMultiIndexSet<MemorySpace> mset(i+extraInputs+1,maxDegree);
-        coeffSize += mset.Size();
+        paramSize += mset.Size();
 
         blocks.at(i) = MapFactory::CreateComponent<MemorySpace>(mset, options);
 
-        params_.at(i) = Kokkos::View<double*,Kokkos::HostSpace>("Coefficients", blocks.at(i)->numParams);
+        params_.at(i) = Kokkos::View<double*,Kokkos::HostSpace>("Parameters", blocks.at(i)->numParams);
 
         for(unsigned int j=0; j<blocks.at(i)->numParams; ++j)
             params_.at(i)(j) = 0.1*(j+1);
@@ -256,21 +256,21 @@ TEST_CASE( "Testing 3d triangular map from MonotoneComponents with moveParams=tr
 
     CHECK(triMap->outputDim == numBlocks);
     CHECK(triMap->inputDim == numBlocks+extraInputs);
-    CHECK(triMap->numParams == coeffSize);
+    CHECK(triMap->numParams == paramSize);
 
     Kokkos::View<double*,Kokkos::HostSpace> params(triMap->Params().data(), triMap->numParams);
 
-    SECTION("Coefficients"){
+    SECTION("Parameters"){
 
 
-        // Now make sure that the coefficients of each block were set
-        unsigned int cumCoeffInd = 0;
+        // Now make sure that the parameters of each block were set
+        unsigned int cumParamInd = 0;
         for(unsigned int i=0; i<numBlocks; ++i){
             for(unsigned int j=0; j<blocks.at(i)->numParams; ++j){
-                CHECK(blocks.at(i)->Params()(j) == params(cumCoeffInd)); // Values of coefficients should be equal
+                CHECK(blocks.at(i)->Params()(j) == params(cumParamInd)); // Values of parameters should be equal
                 CHECK(blocks.at(i)->Params()(j) == params_.at(i)(j));
-                CHECK(&blocks.at(i)->Params()(j) == &params(cumCoeffInd)); // Memory location should also be the same (no copy)
-                cumCoeffInd++;
+                CHECK(&blocks.at(i)->Params()(j) == &params(cumParamInd)); // Memory location should also be the same (no copy)
+                cumParamInd++;
             }
         }
     }
@@ -297,32 +297,32 @@ TEST_CASE( "Testing TriangularMap made from smaller TriangularMaps with movePara
     blocks.at(0) = MapFactory::CreateTriangular<MemorySpace>(dim1, dim1, maxDegree, options);
     blocks.at(1) = MapFactory::CreateTriangular<MemorySpace>(dim1+dim2, dim2, maxDegree, options);
     blocks.at(2) = MapFactory::CreateTriangular<MemorySpace>(dim1+dim2+dim3, dim3, maxDegree, options);
-    unsigned int coeffSize = blocks.at(0)->numParams + blocks.at(1)->numParams + blocks.at(2)->numParams;
+    unsigned int paramSize = blocks.at(0)->numParams + blocks.at(1)->numParams + blocks.at(2)->numParams;
 
     std::shared_ptr<ConditionalMapBase<MemorySpace>> triMap = std::make_shared<TriangularMap<MemorySpace>>(blocks);
 
     CHECK(triMap->outputDim == dim);
     CHECK(triMap->inputDim == dim);
-    CHECK(triMap->numParams == coeffSize);
+    CHECK(triMap->numParams == paramSize);
 
 
 
-    Kokkos::View<double*,Kokkos::HostSpace> params("Coefficients", triMap->numParams);
+    Kokkos::View<double*,Kokkos::HostSpace> params("Parameters", triMap->numParams);
     for(unsigned int i=0; i<triMap->numParams; ++i)
         params(i) = 0.1*(i+1);
 
-    SECTION("Coefficients"){
+    SECTION("Parameters"){
 
-        // Set the coefficients of the triangular map
+        // Set the parameters of the triangular map
         triMap->SetParams(params);
 
-        // Now make sure that the coefficients of each block were set
-        unsigned int cumCoeffInd = 0;
+        // Now make sure that the parameters of each block were set
+        unsigned int cumParamInd = 0;
         for(unsigned int i=0; i<numBlocks; ++i){
             for(unsigned int j=0; j<blocks.at(i)->numParams; ++j){
-                CHECK(blocks.at(i)->Params()(j) == params(cumCoeffInd)); // Values of coefficients should be equal
-                CHECK(&blocks.at(i)->Params()(j) == &triMap->Params()(cumCoeffInd)); // Memory location should also be the same (no copy)
-                cumCoeffInd++;
+                CHECK(blocks.at(i)->Params()(j) == params(cumParamInd)); // Values of parameters should be equal
+                CHECK(&blocks.at(i)->Params()(j) == &triMap->Params()(cumParamInd)); // Memory location should also be the same (no copy)
+                cumParamInd++;
             }
         }
     }
@@ -403,10 +403,10 @@ TEST_CASE( "Testing TriangularMap made from smaller TriangularMaps with movePara
         Kokkos::View<double**,Kokkos::HostSpace> evals = triMap->Evaluate(in);
         Kokkos::View<double**,Kokkos::HostSpace> evals2;
 
-        Kokkos::View<double**,Kokkos::HostSpace> coeffGrad = triMap->ParamGrad(in, sens);
+        Kokkos::View<double**,Kokkos::HostSpace> paramGrad = triMap->ParamGrad(in, sens);
 
-        REQUIRE(coeffGrad.extent(0)==triMap->numParams);
-        REQUIRE(coeffGrad.extent(1)==numSamps);
+        REQUIRE(paramGrad.extent(0)==triMap->numParams);
+        REQUIRE(paramGrad.extent(1)==numSamps);
 
         // Compare with finite differences
         double fdstep = 1e-5;
@@ -422,7 +422,7 @@ TEST_CASE( "Testing TriangularMap made from smaller TriangularMaps with movePara
                 for(unsigned int j=0; j<triMap->outputDim; ++j)
                     fdDeriv += sens(j,ptInd) * (evals2(j,ptInd)-evals(j,ptInd))/fdstep;
 
-                CHECK( coeffGrad(i,ptInd) == Approx(fdDeriv).margin(1e-3));
+                CHECK( paramGrad(i,ptInd) == Approx(fdDeriv).margin(1e-3));
             }
             params(i) -= fdstep;
         }
@@ -522,10 +522,10 @@ TEST_CASE( "Testing TriangularMap made from smaller TriangularMaps with movePara
     blocks.at(0) = MapFactory::CreateTriangular<MemorySpace>(dim1, dim1, maxDegree, options);
     blocks.at(1) = MapFactory::CreateTriangular<MemorySpace>(dim1+dim2, dim2, maxDegree, options);
     blocks.at(2) = MapFactory::CreateTriangular<MemorySpace>(dim1+dim2+dim3, dim3, maxDegree, options);
-    unsigned int coeffSize = blocks.at(0)->numParams + blocks.at(1)->numParams + blocks.at(2)->numParams;
+    unsigned int paramSize = blocks.at(0)->numParams + blocks.at(1)->numParams + blocks.at(2)->numParams;
 
     for(unsigned int i=0; i<3; ++i){
-        params_.at(i) = Kokkos::View<double*,Kokkos::HostSpace>("Coefficients", blocks.at(i)->numParams);
+        params_.at(i) = Kokkos::View<double*,Kokkos::HostSpace>("Parameters", blocks.at(i)->numParams);
         for(unsigned int j=0; j<blocks.at(i)->numParams; ++j)
             params_.at(i)(j) = 0.1*(j+1);
         blocks.at(i)->SetParams(params_.at(i));
@@ -536,18 +536,18 @@ TEST_CASE( "Testing TriangularMap made from smaller TriangularMaps with movePara
 
     CHECK(triMap->outputDim == dim);
     CHECK(triMap->inputDim == dim);
-    CHECK(triMap->numParams == coeffSize);
+    CHECK(triMap->numParams == paramSize);
 
-    SECTION("Coefficients"){
+    SECTION("Parameters"){
 
-        // Now make sure that the coefficients of each block were set
-        unsigned int cumCoeffInd = 0;
+        // Now make sure that the parameters of each block were set
+        unsigned int cumParamInd = 0;
         for(unsigned int i=0; i<numBlocks; ++i){
             for(unsigned int j=0; j<blocks.at(i)->numParams; ++j){
-                CHECK(blocks.at(i)->Params()(j) == triMap->Params()(cumCoeffInd)); // Values of coefficients should be equal
+                CHECK(blocks.at(i)->Params()(j) == triMap->Params()(cumParamInd)); // Values of parameters should be equal
                 CHECK(blocks.at(i)->Params()(j) == params_.at(i)(j));
-                CHECK(&blocks.at(i)->Params()(j) == &triMap->Params()(cumCoeffInd)); // Memory location should also be the same (no copy)
-                cumCoeffInd++;
+                CHECK(&blocks.at(i)->Params()(j) == &triMap->Params()(cumParamInd)); // Memory location should also be the same (no copy)
+                cumParamInd++;
             }
         }
     }
@@ -579,12 +579,12 @@ TEST_CASE( "Testing TriangularMap made using CreateSingleEntryMap", "[Triangular
 
     SECTION("Parameters"){
 
-        // Set the coefficients of the triangular map
+        // Set the parameters of the triangular map
         triMap->SetParams(params);
 
-        // Now make sure that the coefficients of each block were set
+        // Now make sure that the parameters of each block were set
         for(unsigned int i=0; i<triMap->numParams; ++i){
-                CHECK(comp->Params()(i) == triMap->Params()(i)); // Values of coefficients should be equal
+                CHECK(comp->Params()(i) == triMap->Params()(i)); // Values of parameters should be equal
                 CHECK(&comp->Params()(i) == &triMap->Params()(i)); // Memory location should also be the same (no copy)
         }
 
@@ -663,10 +663,10 @@ TEST_CASE( "Testing TriangularMap made using CreateSingleEntryMap", "[Triangular
         Kokkos::View<double**,Kokkos::HostSpace> evals = triMap->Evaluate(in);
         Kokkos::View<double**,Kokkos::HostSpace> evals2;
 
-        Kokkos::View<double**,Kokkos::HostSpace> coeffGrad = triMap->ParamGrad(in, sens);
+        Kokkos::View<double**,Kokkos::HostSpace> paramGrad = triMap->ParamGrad(in, sens);
 
-        REQUIRE(coeffGrad.extent(0)==triMap->numParams);
-        REQUIRE(coeffGrad.extent(1)==numSamps);
+        REQUIRE(paramGrad.extent(0)==triMap->numParams);
+        REQUIRE(paramGrad.extent(1)==numSamps);
 
         // Compare with finite differences
         double fdstep = 1e-5;
@@ -682,7 +682,7 @@ TEST_CASE( "Testing TriangularMap made using CreateSingleEntryMap", "[Triangular
                 for(unsigned int j=0; j<triMap->outputDim; ++j)
                     fdDeriv += sens(j,ptInd) * (evals2(j,ptInd)-evals(j,ptInd))/fdstep;
 
-                CHECK( coeffGrad(i,ptInd) == Approx(fdDeriv).margin(1e-3));
+                CHECK( paramGrad(i,ptInd) == Approx(fdDeriv).margin(1e-3));
             }
             params(i) -= fdstep;
         }

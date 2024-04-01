@@ -18,39 +18,39 @@ TEST_CASE( "Testing 2 layer composed map with moveParams=false", "[ShallowCompos
     unsigned int dim = 2;
     unsigned int numMaps = 2;
     unsigned int order = 2;
-    unsigned int coeffSize = 0;
+    unsigned int paramSize = 0;
 
 
     std::vector<std::shared_ptr<ConditionalMapBase<MemorySpace>>> maps(numMaps);
     for(unsigned int i=0;i<numMaps;++i){
 
         maps.at(i) = MapFactory::CreateTriangular<Kokkos::HostSpace>(dim, dim, order, options);
-        coeffSize += maps.at(i)->numParams;
+        paramSize += maps.at(i)->numParams;
     }
 
     std::shared_ptr<ConditionalMapBase<MemorySpace>> composedMap = std::make_shared<ComposedMap<MemorySpace>>(maps);
 
     CHECK(composedMap->outputDim == dim);
     CHECK(composedMap->inputDim == dim);
-    CHECK(composedMap->numParams == coeffSize);
+    CHECK(composedMap->numParams == paramSize);
 
 
     Eigen::RowVectorXd params(composedMap->numParams);
     for(unsigned int i=0; i<composedMap->numParams; ++i)
         params(i) = 0.1*(i+1);
 
-    SECTION("Coefficients"){
+    SECTION("Parameters"){
 
-        // Set the coefficients of the triangular map
+        // Set the parameters of the triangular map
         composedMap->SetParams(params);
 
-        // Now make sure that the coefficients of each block were set
-        unsigned int cumCoeffInd = 0;
+        // Now make sure that the parameters of each block were set
+        unsigned int cumParamInd = 0;
         for(unsigned int i=0; i<numMaps; ++i){
             for(unsigned int j=0; j<maps.at(i)->numParams; ++j){
-                CHECK(maps.at(i)->Params()(j) == params(cumCoeffInd)); // Values of coefficients should be equal
-                CHECK(&maps.at(i)->Params()(j) == &composedMap->Params()(cumCoeffInd)); // Memory location should also be the same (no copy)
-                cumCoeffInd++;
+                CHECK(maps.at(i)->Params()(j) == params(cumParamInd)); // Values of parameters should be equal
+                CHECK(&maps.at(i)->Params()(j) == &composedMap->Params()(cumParamInd)); // Memory location should also be the same (no copy)
+                cumParamInd++;
             }
         }
     }
@@ -123,10 +123,10 @@ TEST_CASE( "Testing 2 layer composed map with moveParams=false", "[ShallowCompos
         Kokkos::View<double**,Kokkos::HostSpace> evals = composedMap->Evaluate(in);
         Kokkos::View<double**,Kokkos::HostSpace> evals2;
 
-        Kokkos::View<double**,Kokkos::HostSpace> coeffGrad = composedMap->ParamGrad(in, sens);
+        Kokkos::View<double**,Kokkos::HostSpace> paramGrad = composedMap->ParamGrad(in, sens);
 
-        REQUIRE(coeffGrad.extent(0)==composedMap->numParams);
-        REQUIRE(coeffGrad.extent(1)==numSamps);
+        REQUIRE(paramGrad.extent(0)==composedMap->numParams);
+        REQUIRE(paramGrad.extent(1)==numSamps);
 
         // Compare with finite differences
         double fdstep = 1e-5;
@@ -142,7 +142,7 @@ TEST_CASE( "Testing 2 layer composed map with moveParams=false", "[ShallowCompos
                 for(unsigned int j=0; j<composedMap->outputDim; ++j)
                     fdDeriv += sens(j,ptInd) * (evals2(j,ptInd)-evals(j,ptInd))/fdstep;
 
-                CHECK( coeffGrad(i,ptInd) == Approx(fdDeriv).margin(1e-3));
+                CHECK( paramGrad(i,ptInd) == Approx(fdDeriv).margin(1e-3));
             }
             params(i) -= fdstep;
         }
@@ -257,7 +257,7 @@ TEST_CASE( "Testing 2 layer composed map with moveParams=true", "[ShallowCompose
     unsigned int dim = 2;
     unsigned int numMaps = 2;
     unsigned int order = 2;
-    unsigned int coeffSize = 0;
+    unsigned int paramSize = 0;
 
 
     std::vector<std::shared_ptr<ConditionalMapBase<MemorySpace>>> maps(numMaps);
@@ -265,9 +265,9 @@ TEST_CASE( "Testing 2 layer composed map with moveParams=true", "[ShallowCompose
     for(unsigned int i=0;i<numMaps;++i){
 
         maps.at(i) = MapFactory::CreateTriangular<Kokkos::HostSpace>(dim, dim, order, options);
-        coeffSize += maps.at(i)->numParams;
+        paramSize += maps.at(i)->numParams;
 
-        params_.at(i) = Kokkos::View<double*,Kokkos::HostSpace>("Coefficients", maps.at(i)->numParams);
+        params_.at(i) = Kokkos::View<double*,Kokkos::HostSpace>("Parameters", maps.at(i)->numParams);
 
         for(unsigned int j=0; j<maps.at(i)->numParams; ++j)
             params_.at(i)(j) = 0.1*(j+1);
@@ -279,20 +279,20 @@ TEST_CASE( "Testing 2 layer composed map with moveParams=true", "[ShallowCompose
 
     CHECK(composedMap->outputDim == dim);
     CHECK(composedMap->inputDim == dim);
-    CHECK(composedMap->numParams == coeffSize);
+    CHECK(composedMap->numParams == paramSize);
 
     Kokkos::View<double*,Kokkos::HostSpace> params(composedMap->Params().data(), composedMap->numParams);
 
-    SECTION("Coefficients"){
+    SECTION("Parameters"){
 
-        // Now make sure that the coefficients of each block were set
-        unsigned int cumCoeffInd = 0;
+        // Now make sure that the parameters of each block were set
+        unsigned int cumParamInd = 0;
         for(unsigned int i=0; i<numMaps; ++i){
             for(unsigned int j=0; j<maps.at(i)->numParams; ++j){
-                CHECK(maps.at(i)->Params()(j) == params(cumCoeffInd)); // Values of coefficients should be equal
+                CHECK(maps.at(i)->Params()(j) == params(cumParamInd)); // Values of parameters should be equal
                 CHECK(maps.at(i)->Params()(j) == params_.at(i)(j));
-                CHECK(&maps.at(i)->Params()(j) == &params(cumCoeffInd));// Memory location should also be the same (no copy)
-                cumCoeffInd++;
+                CHECK(&maps.at(i)->Params()(j) == &params(cumParamInd));// Memory location should also be the same (no copy)
+                cumParamInd++;
             }
         }
     }
@@ -364,10 +364,10 @@ TEST_CASE( "Testing 2 layer composed map with moveParams=true", "[ShallowCompose
         Kokkos::View<double**,Kokkos::HostSpace> evals = composedMap->Evaluate(in);
         Kokkos::View<double**,Kokkos::HostSpace> evals2;
 
-        Kokkos::View<double**,Kokkos::HostSpace> coeffGrad = composedMap->ParamGrad(in, sens);
+        Kokkos::View<double**,Kokkos::HostSpace> paramGrad = composedMap->ParamGrad(in, sens);
 
-        REQUIRE(coeffGrad.extent(0)==composedMap->numParams);
-        REQUIRE(coeffGrad.extent(1)==numSamps);
+        REQUIRE(paramGrad.extent(0)==composedMap->numParams);
+        REQUIRE(paramGrad.extent(1)==numSamps);
 
         // Compare with finite differences
         double fdstep = 1e-5;
@@ -383,7 +383,7 @@ TEST_CASE( "Testing 2 layer composed map with moveParams=true", "[ShallowCompose
                 for(unsigned int j=0; j<composedMap->outputDim; ++j)
                     fdDeriv += sens(j,ptInd) * (evals2(j,ptInd)-evals(j,ptInd))/fdstep;
 
-                CHECK( coeffGrad(i,ptInd) == Approx(fdDeriv).margin(1e-3));
+                CHECK( paramGrad(i,ptInd) == Approx(fdDeriv).margin(1e-3));
             }
             params(i) -= fdstep;
         }
@@ -497,14 +497,14 @@ TEST_CASE( "Testing 5 layer composed map with moveParams=false", "[DeepComposedM
     unsigned int dim = 2;
     unsigned int numMaps = 5;
     unsigned int order = 1;
-    unsigned int coeffSize = 0;
+    unsigned int paramSize = 0;
     int numChecks = 3; // number of checkpoints to use (including storing initial points)
 
     std::vector<std::shared_ptr<ConditionalMapBase<MemorySpace>>> maps(numMaps);
     for(unsigned int i=0;i<numMaps;++i){
 
         maps.at(i) = MapFactory::CreateTriangular<Kokkos::HostSpace>(dim, dim, order, options);
-        coeffSize += maps.at(i)->numParams;
+        paramSize += maps.at(i)->numParams;
     }
 
     std::shared_ptr<ConditionalMapBase<MemorySpace>> composedMap = std::make_shared<ComposedMap<MemorySpace>>(maps, numChecks);
@@ -571,10 +571,10 @@ TEST_CASE( "Testing 5 layer composed map with moveParams=false", "[DeepComposedM
         Kokkos::View<double**,Kokkos::HostSpace> evals = composedMap->Evaluate(in);
         Kokkos::View<double**,Kokkos::HostSpace> evals2;
 
-        Kokkos::View<double**,Kokkos::HostSpace> coeffGrad = composedMap->ParamGrad(in, sens);
+        Kokkos::View<double**,Kokkos::HostSpace> paramGrad = composedMap->ParamGrad(in, sens);
 
-        REQUIRE(coeffGrad.extent(0)==composedMap->numParams);
-        REQUIRE(coeffGrad.extent(1)==numSamps);
+        REQUIRE(paramGrad.extent(0)==composedMap->numParams);
+        REQUIRE(paramGrad.extent(1)==numSamps);
 
         // Compare with finite differences
         double fdstep = 1e-5;
@@ -590,7 +590,7 @@ TEST_CASE( "Testing 5 layer composed map with moveParams=false", "[DeepComposedM
                 for(unsigned int j=0; j<composedMap->outputDim; ++j)
                     fdDeriv += sens(j,ptInd) * (evals2(j,ptInd)-evals(j,ptInd))/fdstep;
 
-                CHECK( coeffGrad(i,ptInd) == Approx(fdDeriv).margin(1e-3));
+                CHECK( paramGrad(i,ptInd) == Approx(fdDeriv).margin(1e-3));
             }
             params(i) -= fdstep;
         }
@@ -704,7 +704,7 @@ TEST_CASE( "Testing 8 layer composed map with moveParams=true", "[DeepComposedMa
     unsigned int dim = 2;
     unsigned int numMaps = 8;
     unsigned int order = 1;
-    unsigned int coeffSize = 0;
+    unsigned int paramSize = 0;
     int numChecks = 3; // number of checkpoints to use (including storing initial points)
 
 
@@ -713,9 +713,9 @@ TEST_CASE( "Testing 8 layer composed map with moveParams=true", "[DeepComposedMa
     for(unsigned int i=0;i<numMaps;++i){
 
         maps.at(i) = MapFactory::CreateTriangular<Kokkos::HostSpace>(dim, dim, order, options);
-        coeffSize += maps.at(i)->numParams;
+        paramSize += maps.at(i)->numParams;
 
-        params_.at(i) = Kokkos::View<double*,Kokkos::HostSpace>("Coefficients", maps.at(i)->numParams);
+        params_.at(i) = Kokkos::View<double*,Kokkos::HostSpace>("Parameters", maps.at(i)->numParams);
 
         for(unsigned int j=0; j<maps.at(i)->numParams; ++j)
             params_.at(i)(j) = 0.1*(j+1);
@@ -727,20 +727,20 @@ TEST_CASE( "Testing 8 layer composed map with moveParams=true", "[DeepComposedMa
 
     CHECK(composedMap->outputDim == dim);
     CHECK(composedMap->inputDim == dim);
-    CHECK(composedMap->numParams == coeffSize);
+    CHECK(composedMap->numParams == paramSize);
 
     Kokkos::View<double*,Kokkos::HostSpace> params(composedMap->Params().data(), composedMap->numParams);
 
-    SECTION("Coefficients"){
+    SECTION("Parameters"){
 
-        // Now make sure that the coefficients of each block were set
-        unsigned int cumCoeffInd = 0;
+        // Now make sure that the parameters of each block were set
+        unsigned int cumParamInd = 0;
         for(unsigned int i=0; i<numMaps; ++i){
             for(unsigned int j=0; j<maps.at(i)->numParams; ++j){
-                CHECK(maps.at(i)->Params()(j) == params(cumCoeffInd)); // Values of coefficients should be equal
+                CHECK(maps.at(i)->Params()(j) == params(cumParamInd)); // Values of parameters should be equal
                 CHECK(maps.at(i)->Params()(j) == params_.at(i)(j));
-                CHECK(&maps.at(i)->Params()(j) == &params(cumCoeffInd));// Memory location should also be the same (no copy)
-                cumCoeffInd++;
+                CHECK(&maps.at(i)->Params()(j) == &params(cumParamInd));// Memory location should also be the same (no copy)
+                cumParamInd++;
             }
         }
     }
@@ -802,10 +802,10 @@ TEST_CASE( "Testing 8 layer composed map with moveParams=true", "[DeepComposedMa
         Kokkos::View<double**,Kokkos::HostSpace> evals = composedMap->Evaluate(in);
         Kokkos::View<double**,Kokkos::HostSpace> evals2;
 
-        Kokkos::View<double**,Kokkos::HostSpace> coeffGrad = composedMap->ParamGrad(in, sens);
+        Kokkos::View<double**,Kokkos::HostSpace> paramGrad = composedMap->ParamGrad(in, sens);
 
-        REQUIRE(coeffGrad.extent(0)==composedMap->numParams);
-        REQUIRE(coeffGrad.extent(1)==numSamps);
+        REQUIRE(paramGrad.extent(0)==composedMap->numParams);
+        REQUIRE(paramGrad.extent(1)==numSamps);
 
         // Compare with finite differences
         double fdstep = 1e-5;
@@ -821,7 +821,7 @@ TEST_CASE( "Testing 8 layer composed map with moveParams=true", "[DeepComposedMa
                 for(unsigned int j=0; j<composedMap->outputDim; ++j)
                     fdDeriv += sens(j,ptInd) * (evals2(j,ptInd)-evals(j,ptInd))/fdstep;
 
-                CHECK( coeffGrad(i,ptInd) == Approx(fdDeriv).margin(1e-3));
+                CHECK( paramGrad(i,ptInd) == Approx(fdDeriv).margin(1e-3));
             }
             params(i) -= fdstep;
         }

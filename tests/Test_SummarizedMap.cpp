@@ -31,14 +31,14 @@ TEST_CASE( "SummarizedMap", "[SummarizedMap_MonotoneComponent]" ) {
     CHECK(sumMap->numParams == comp->numParams);
 
 
-    Kokkos::View<double*,Kokkos::HostSpace> coeffs("Coefficients", sumMap->numParams);
+    Kokkos::View<double*,Kokkos::HostSpace> params("Parameters", sumMap->numParams);
     for(unsigned int i=0; i<sumMap->numParams; ++i)
-        coeffs(i) = 0.1*(i+1);
+        params(i) = 0.1*(i+1);
         
-    SECTION("Coefficients"){
+    SECTION("Parameters"){
         
         // Set the coefficients of the triangular map
-        sumMap->SetParams(coeffs);
+        sumMap->SetParams(params);
 
         // Now make sure that the coefficients of each block were set
         for(unsigned int i=0; i<sumMap->numParams; ++i){
@@ -65,7 +65,7 @@ TEST_CASE( "SummarizedMap", "[SummarizedMap_MonotoneComponent]" ) {
         }
     }
 
-    sumMap->SetParams(coeffs);
+    sumMap->SetParams(params);
     Kokkos::View<double**, Kokkos::HostSpace> out = sumMap->Evaluate(in);
     
     SECTION("Evaluation"){
@@ -145,9 +145,9 @@ TEST_CASE( "SummarizedMap", "[SummarizedMap_MonotoneComponent]" ) {
         // Compare with finite differences
         double fdstep = 1e-5;
         for(unsigned int i=0; i<sumMap->numParams; ++i){
-            coeffs(i) += fdstep;
+            params(i) += fdstep;
 
-            sumMap->SetParams(coeffs);
+            sumMap->SetParams(params);
             evals2 = sumMap->Evaluate(in);
 
             for(unsigned int ptInd=0; ptInd<numSamps; ++ptInd){
@@ -158,7 +158,7 @@ TEST_CASE( "SummarizedMap", "[SummarizedMap_MonotoneComponent]" ) {
 
                 CHECK( coeffGrad(i,ptInd) == Approx(fdDeriv).margin(1e-4)); 
             }
-            coeffs(i) -= fdstep;
+            params(i) -= fdstep;
         }
         
     }
@@ -217,15 +217,15 @@ TEST_CASE( "SummarizedMap", "[SummarizedMap_MonotoneComponent]" ) {
         // Compare with finite differences
         double fdstep = 1e-5;
         for(unsigned int i=0; i<sumMap->numParams; ++i){
-            coeffs(i) += fdstep;
+            params(i) += fdstep;
 
-            sumMap->SetParams(coeffs);
+            sumMap->SetParams(params);
             logDet2 = sumMap->LogDeterminant(in);
 
             for(unsigned int ptInd=0; ptInd<numSamps; ++ptInd)
                 CHECK( detGrad(i,ptInd) == Approx((logDet2(ptInd)-logDet(ptInd))/fdstep).margin(1e-4)); 
             
-            coeffs(i) -= fdstep;
+            params(i) -= fdstep;
         }
 
     }

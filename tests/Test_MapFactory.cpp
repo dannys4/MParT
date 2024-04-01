@@ -96,7 +96,7 @@ TEST_CASE( "Testing map component factory with linearized basis", "[MapFactoryLi
         REQUIRE(linearized_map!=nullptr);
         REQUIRE(map!=nullptr);
 
-        Kokkos::View<double*,MemorySpace> params("Coefficients", map->numParams);
+        Kokkos::View<double*,MemorySpace> params("Parameters", map->numParams);
         for(unsigned int i=0; i<map->numParams; ++i)
             params(i) = 1.0;
         map->SetParams(params);

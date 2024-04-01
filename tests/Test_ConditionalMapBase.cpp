@@ -54,7 +54,7 @@ public:
 };
 
 
-TEST_CASE( "Testing coefficient functions of conditional map base class", "[ConditionalMapBaseParams]" ) {
+TEST_CASE( "Testing parameter functions of conditional map base class", "[ConditionalMapBaseParams]" ) {
 
     unsigned int numParams = 10;
     MyIdentityMap map(4,numParams);
@@ -77,12 +77,12 @@ TEST_CASE( "Testing coefficient functions of conditional map base class", "[Cond
         params(0) = 100;
         CHECK(map.Params()(0) != params(0));
 
-        // Now check using a slice of the coefficients
+        // Now check using a slice of the parameters
         unsigned int start = 2;
         unsigned int end = 4;
-        auto coeffSlice = Kokkos::subview(params, std::make_pair(start, end));
+        auto paramSlice = Kokkos::subview(params, std::make_pair(start, end));
 
-        map.Params() = coeffSlice;
+        map.Params() = paramSlice;
         CHECK(params.extent(0) == numParams);
         CHECK(map.Params().extent(0)==(end-start));
 

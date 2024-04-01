@@ -152,14 +152,14 @@ TEST_CASE( "Test InnerMarginalAffineMap", "[InnerMarginalAffineMap]") {
         }
 
         // LogDeterminantParamGrad test
-        StridedMatrix<double, MemorySpace> logdet_coeff_grad = map->LogDeterminantParamGrad(pts);
-        Kokkos::View<double**, MemorySpace> exp_logdet_coeff_grad_map("exp_logdet_coeff_grad_map", trimap->numParams, numPts);
+        StridedMatrix<double, MemorySpace> logdet_param_grad = map->LogDeterminantParamGrad(pts);
+        Kokkos::View<double**, MemorySpace> exp_logdet_param_grad_map("exp_logdet_param_grad_map", trimap->numParams, numPts);
         for(int k = 0; k < trimap->numParams; k++) {
             for(int j = 0; j < numPts; j++) {
                 trimap->Params()(k) += fd_step;
                 StridedVector<double,MemorySpace> exp_logdet_map_fd = trimap->LogDeterminant(appliedPts);
                 for(int j = 0; j < numPts; j++) {
-                    exp_logdet_coeff_grad_map(k,j) = (exp_logdet_map_fd(j) - exp_logdet_map(j))/fd_step;
+                    exp_logdet_param_grad_map(k,j) = (exp_logdet_map_fd(j) - exp_logdet_map(j))/fd_step;
                 }
                 trimap->Params()(k) -= fd_step;
             }
@@ -167,7 +167,7 @@ TEST_CASE( "Test InnerMarginalAffineMap", "[InnerMarginalAffineMap]") {
 
         for(unsigned int k=0; k<trimap->numParams; ++k){
             for(unsigned int j=0; j<numPts; ++j){
-                REQUIRE_THAT(logdet_coeff_grad(k,j), WithinRel(exp_logdet_coeff_grad_map(k,j), 20*fd_step));
+                REQUIRE_THAT(logdet_param_grad(k,j), WithinRel(exp_logdet_param_grad_map(k,j), 20*fd_step));
             }
         }
 
@@ -202,22 +202,22 @@ TEST_CASE( "Test InnerMarginalAffineMap", "[InnerMarginalAffineMap]") {
         }
 
         // ParamGrad test
-        Kokkos::View<double**, MemorySpace> coeff_grad = map->ParamGrad(pts, sens);
-        Kokkos::View<double**, MemorySpace> exp_coeff_grad_map("exp_coeff_grad_map", trimap->numParams, numPts);
+        Kokkos::View<double**, MemorySpace> param_grad = map->ParamGrad(pts, sens);
+        Kokkos::View<double**, MemorySpace> exp_param_grad_map("exp_param_grad_map", trimap->numParams, numPts);
         for(int i = 0; i < trimap->numParams; i++) {
             trimap->Params()(i) += fd_step;
             StridedMatrix<double,MemorySpace> exp_output_fd = trimap->Evaluate(appliedPts);
             trimap->Params()(i) -= fd_step;
             for(int j = 0; j < numPts; j++) {
-                exp_coeff_grad_map(i,j) = 0.;
+                exp_param_grad_map(i,j) = 0.;
                 for(int k = 0; k < outputDim; k++) {
-                    exp_coeff_grad_map(i,j) += sens(k,j)*(exp_output_fd(k,j) - exp_output(k,j))/fd_step;
+                    exp_param_grad_map(i,j) += sens(k,j)*(exp_output_fd(k,j) - exp_output(k,j))/fd_step;
                 }
             }
         }
         for(unsigned int i=0; i<trimap->numParams; ++i){
             for(unsigned int j=0; j<numPts; ++j){
-                REQUIRE_THAT(coeff_grad(i,j), WithinRel(exp_coeff_grad_map(i,j), 20*fd_step) || WithinAbs(exp_coeff_grad_map(i,j), 1e-8));
+                REQUIRE_THAT(param_grad(i,j), WithinRel(exp_param_grad_map(i,j), 20*fd_step) || WithinAbs(exp_param_grad_map(i,j), 1e-8));
             }
         }
     }
