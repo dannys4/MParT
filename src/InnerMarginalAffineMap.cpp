@@ -89,7 +89,7 @@ void InnerMarginalAffineMap<MemorySpace>::InverseImpl(StridedMatrix<const double
 
 
 template<typename MemorySpace>
-void InnerMarginalAffineMap<MemorySpace>::LogDeterminantCoeffGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
+void InnerMarginalAffineMap<MemorySpace>::LogDeterminantParamGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
                                                          StridedMatrix<double, MemorySpace>              output)
 {
     int n1 = pts.extent(0), n2 = pts.extent(1);
@@ -98,7 +98,7 @@ void InnerMarginalAffineMap<MemorySpace>::LogDeterminantCoeffGradImpl(StridedMat
     Kokkos::parallel_for(policy, KOKKOS_CLASS_LAMBDA(const int& i, const int& j) {
         tmp(i,j) = pts(i,j)*scale_(i) + shift_(i);
     });
-    map_->LogDeterminantCoeffGradImpl(tmp, output);
+    map_->LogDeterminantParamGradImpl(tmp, output);
 }
 
 template<typename MemorySpace>

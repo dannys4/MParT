@@ -115,31 +115,74 @@ namespace mpart {
                                  StridedMatrix<const double, MemorySpace> const& r,
                                  StridedMatrix<double, MemorySpace>              output) = 0;
         /**
-           @brief Computes the gradient of the log determinant with respect to the map coefficients.
-           @details For a map \f$T(x; w) : \mathbb{R}^N \rightarrow \mathbb{R}^M\f$ parameterized by coefficients \f$w\in\mathbb{R}^K\f$,
+           @brief Computes the gradient of the log determinant with respect to the map parameters.
+           @details For a map \f$T(x; w) : \mathbb{R}^N \rightarrow \mathbb{R}^M\f$ parameterized by \f$w\in\mathbb{R}^K\f$,
            this function computes
            \f[
             \nabla_w \det{\nabla_x T(x_i; w)},
           \f]
            at multiple points \f$x_i\f$.
-           @param pts A collection of points where we want to evaluate the gradient.  Each column corresponds to a point.
-           @return A matrix containing the coefficient gradient at each input point.  The \f$i^{th}\f$ column  contains \f$\nabla_w \det{\nabla_x T(x_i; w)}\f$.
+           @param pts A collection of points where we want to evaluate the gradient. Each column corresponds to a point.
+           @return A matrix containing the parameter gradient at each input point. The \f$i^{th}\f$ column contains \f$\nabla_w \det{\nabla_x T(x_i; w)}\f$.
         */
         template<typename AnyMemorySpace>
-        StridedMatrix<double, AnyMemorySpace> LogDeterminantCoeffGrad(StridedMatrix<const double, AnyMemorySpace> const& pts);
+        StridedMatrix<double, AnyMemorySpace> LogDeterminantParamGrad(StridedMatrix<const double, AnyMemorySpace> const& pts);
+
+        /**
+         * @brief Same as LogDeterminantParamGrad
+         * @deprecated
+         * 
+         * @tparam AnyMemorySpace 
+         * @param pts 
+         * @return StridedMatrix<double, AnyMemorySpace> 
+         */
+        template<typename AnyMemorySpace>
+        StridedMatrix<double, AnyMemorySpace> LogDeterminantCoeffGrad(StridedMatrix<const double, AnyMemorySpace> const& pts) {
+            // TODO: Warn that this function is deprecated.
+            return this->LogDeterminantParamGrad(pts);
+        }
 
         /** Include conversion between general view type and Strided matrix. */
         template<typename ViewType>
-        StridedMatrix<double, typename ViewType::memory_space> LogDeterminantCoeffGrad(ViewType pts){
+        StridedMatrix<double, typename ViewType::memory_space> LogDeterminantParamGrad(ViewType pts){
             StridedMatrix<const double, typename ViewType::memory_space> newpts(pts);
-            return  this->LogDeterminantCoeffGrad(newpts);
+            return this->LogDeterminantParamGrad(newpts);
         }
 
-        /** Evaluation with additional conversion of Eigen matrix to Kokkos unmanaged view. */
-        Eigen::RowMatrixXd LogDeterminantCoeffGrad(Eigen::Ref<const Eigen::RowMatrixXd> const& pts);
+        /**
+         * @brief Same as LogDeterminantParamGrad
+         * @deprecated
+        */
+        template<typename ViewType>
+        StridedMatrix<double, typename ViewType::memory_space> LogDeterminantCoeffGrad(ViewType pts){
+            // TODO: Warn that this function is deprecated.
+            return this->LogDeterminantParamGrad(pts);
+        }
 
-        virtual void LogDeterminantCoeffGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
+
+        /** Evaluation with additional conversion of Eigen matrix to Kokkos unmanaged view. */
+        Eigen::RowMatrixXd LogDeterminantParamGrad(Eigen::Ref<const Eigen::RowMatrixXd> const& pts);
+
+        /**
+         * @brief Same as LogDeterminantCoeffGrad
+         * @deprecated
+         * 
+         * @param pts 
+         * @return Eigen::RowMatrixXd 
+         */
+        Eigen::RowMatrixXd LogDeterminantCoeffGrad(Eigen::Ref<const Eigen::RowMatrixXd> const& pts) {
+            // TODO: Warn that this function is deprecated.
+            return LogDeterminantParamGrad(pts);
+        }
+
+        virtual void LogDeterminantParamGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
                                                  StridedMatrix<double, MemorySpace>              output) = 0;
+
+        void LogDeterminantCoeffGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
+                                         StridedMatrix<double, MemorySpace>              output) {
+            // TODO: Warn that this function is deprecated.
+            LogDeterminantParamGradImpl(pts, output);
+        }
 
 
         template<typename AnyMemorySpace>

@@ -189,7 +189,7 @@ void SummarizedMap<MemorySpace>::CoeffGradImpl(StridedMatrix<const double, Memor
 }
 
 template<typename MemorySpace>
-void SummarizedMap<MemorySpace>::LogDeterminantCoeffGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
+void SummarizedMap<MemorySpace>::LogDeterminantParamGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
                                                              StridedMatrix<double, MemorySpace>              output)
 {
     // Create a view to hold summarized pts
@@ -199,7 +199,7 @@ void SummarizedMap<MemorySpace>::LogDeterminantCoeffGradImpl(StridedMatrix<const
     this->SummarizePts(pts, summarizedPts);
 
     // CoeffGradImpl of map
-    comp_->LogDeterminantCoeffGradImpl(summarizedPts, output);
+    comp_->LogDeterminantParamGradImpl(summarizedPts, output);
 }
 
 template<typename MemorySpace>

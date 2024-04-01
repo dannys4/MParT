@@ -76,7 +76,7 @@ where the function \f$s:\mathbb{R}^{N-1}\rightarrow \mathbb{R}^{r}\f$ is a funct
                        StridedMatrix<double, MemorySpace>              output) override;
 
 
-    void LogDeterminantCoeffGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
+    void LogDeterminantParamGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
                                      StridedMatrix<double, MemorySpace>              output) override;
 
     void LogDeterminantInputGradImpl(StridedMatrix<const double, MemorySpace> const& pts,

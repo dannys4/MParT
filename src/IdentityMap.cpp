@@ -77,7 +77,7 @@ void IdentityMap<MemorySpace>::GradientImpl(StridedMatrix<const double, MemorySp
 }
 
 template<typename MemorySpace>
-void IdentityMap<MemorySpace>::LogDeterminantCoeffGradImpl(StridedMatrix<const double, MemorySpace> const& pts, 
+void IdentityMap<MemorySpace>::LogDeterminantParamGradImpl(StridedMatrix<const double, MemorySpace> const& pts, 
                                                              StridedMatrix<double, MemorySpace>              output)
 {
     assert(false);

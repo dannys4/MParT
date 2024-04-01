@@ -92,7 +92,7 @@ public:
                        StridedMatrix<double, MemorySpace>              output) override;
 
 
-    void LogDeterminantCoeffGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
+    void LogDeterminantParamGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
                                      StridedMatrix<double, MemorySpace>              output) override;
 
 

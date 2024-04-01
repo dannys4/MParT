@@ -398,7 +398,7 @@ void ComposedMap<MemorySpace>::CoeffGradImpl(StridedMatrix<const double, MemoryS
 
 
 template<typename MemorySpace>
-void ComposedMap<MemorySpace>::LogDeterminantCoeffGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
+void ComposedMap<MemorySpace>::LogDeterminantParamGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
                                                            StridedMatrix<double, MemorySpace>              output)
 {
     StridedMatrix<double, MemorySpace> subOut;
@@ -415,7 +415,7 @@ void ComposedMap<MemorySpace>::LogDeterminantCoeffGradImpl(StridedMatrix<const d
     subOut = Kokkos::subview(output,
                                  std::make_pair(int(endParamDim-maps_.back()->numCoeffs), endParamDim),
                                  Kokkos::ALL());
-    maps_.back()->LogDeterminantCoeffGradImpl(input, subOut);
+    maps_.back()->LogDeterminantParamGradImpl(input, subOut);
 
     // Get the sensitivity of this log determinant term wrt changes in the input
     maps_.back()->LogDeterminantInputGradImpl(input, intSens1);
@@ -432,7 +432,7 @@ void ComposedMap<MemorySpace>::LogDeterminantCoeffGradImpl(StridedMatrix<const d
                                  std::make_pair(int(endParamDim-maps_.at(i)->numCoeffs), endParamDim),
                                  Kokkos::ALL());
 
-        maps_.at(i)->LogDeterminantCoeffGradImpl(input, subOut);
+        maps_.at(i)->LogDeterminantParamGradImpl(input, subOut);
 
         // Gradient of later log determinant terms on the coefficients of this layer
         Kokkos::View<double**, Kokkos::LayoutLeft, MemorySpace> subOut2("temp", maps_.at(i)->numCoeffs, pts.extent(1));

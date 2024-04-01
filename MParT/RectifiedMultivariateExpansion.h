@@ -371,7 +371,7 @@ namespace mpart{
             Kokkos::fence();
         }
 
-        void LogDeterminantCoeffGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
+        void LogDeterminantParamGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
                                          StridedMatrix<double, MemorySpace>              output) override
         {
             // Take logdetcoeffgrad of diagonal expansion, output to bottom block

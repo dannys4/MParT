@@ -129,7 +129,7 @@ void AffineMap<MemorySpace>::InverseImpl(StridedMatrix<const double, MemorySpace
 
 
 template<typename MemorySpace>
-void AffineMap<MemorySpace>::LogDeterminantCoeffGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
+void AffineMap<MemorySpace>::LogDeterminantParamGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
                                                          StridedMatrix<double, MemorySpace>              output)
 {
     return;

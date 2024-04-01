@@ -182,7 +182,7 @@ public:
     }
 
 
-    void LogDeterminantCoeffGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
+    void LogDeterminantParamGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
                                      StridedMatrix<double, MemorySpace>              output) override
     {
         Kokkos::View<double*,MemorySpace> derivs("Diagonal Derivative", pts.extent(1));

@@ -142,21 +142,21 @@ Eigen::RowMatrixXd ConditionalMapBase<mpart::DeviceSpace>::Inverse(Eigen::Ref<co
 
 template<>
 template<>
-StridedMatrix<double, Kokkos::HostSpace> ConditionalMapBase<Kokkos::HostSpace>::LogDeterminantCoeffGrad(StridedMatrix<const double, Kokkos::HostSpace> const& pts)
+StridedMatrix<double, Kokkos::HostSpace> ConditionalMapBase<Kokkos::HostSpace>::LogDeterminantParamGrad(StridedMatrix<const double, Kokkos::HostSpace> const& pts)
 {
-    this->CheckCoefficients("LogDeterminantCoeffGrad");
-    Kokkos::View<double**, Kokkos::HostSpace> output("LogDeterminantCoeffGrad", this->numCoeffs, pts.extent(1));
-    LogDeterminantCoeffGradImpl(pts,output);
+    this->CheckCoefficients("LogDeterminantParamGrad");
+    Kokkos::View<double**, Kokkos::HostSpace> output("LogDeterminantParamGrad", this->numCoeffs, pts.extent(1));
+    LogDeterminantParamGradImpl(pts,output);
     return output;
 }
 
 template<>
-Eigen::RowMatrixXd ConditionalMapBase<Kokkos::HostSpace>::LogDeterminantCoeffGrad(Eigen::Ref<const Eigen::RowMatrixXd> const& pts)
+Eigen::RowMatrixXd ConditionalMapBase<Kokkos::HostSpace>::LogDeterminantParamGrad(Eigen::Ref<const Eigen::RowMatrixXd> const& pts)
 {
     this->CheckCoefficients("LogDeterminantCoeffGrad");
     StridedMatrix<const double, Kokkos::HostSpace> ptsView = ConstRowMatToKokkos<double,Kokkos::HostSpace>(pts);
 
-    Kokkos::View<double**,Kokkos::LayoutRight,Kokkos::HostSpace> outView = LogDeterminantCoeffGrad(ptsView);
+    Kokkos::View<double**,Kokkos::LayoutRight,Kokkos::HostSpace> outView = LogDeterminantParamGrad(ptsView);
 
     return KokkosToMat(outView);
 }
@@ -165,23 +165,23 @@ Eigen::RowMatrixXd ConditionalMapBase<Kokkos::HostSpace>::LogDeterminantCoeffGra
 
 template<>
 template<>
-StridedMatrix<double, mpart::DeviceSpace> ConditionalMapBase<mpart::DeviceSpace>::LogDeterminantCoeffGrad(StridedMatrix<const double, mpart::DeviceSpace> const& pts)
+StridedMatrix<double, mpart::DeviceSpace> ConditionalMapBase<mpart::DeviceSpace>::LogDeterminantParamGrad(StridedMatrix<const double, mpart::DeviceSpace> const& pts)
 {
     this->CheckCoefficients("LogDeterminantCoeffGrad");
-    Kokkos::View<double**, mpart::DeviceSpace> output("LogDeterminantCoeffGrad", this->numCoeffs, pts.extent(1));
-    LogDeterminantCoeffGradImpl(pts,output);
+    Kokkos::View<double**, mpart::DeviceSpace> output("LogDeterminantParamGrad", this->numCoeffs, pts.extent(1));
+    LogDeterminantParamGradImpl(pts,output);
     return output;
 }
 
 template<>
 template<>
-StridedMatrix<double, Kokkos::HostSpace> ConditionalMapBase<mpart::DeviceSpace>::LogDeterminantCoeffGrad(StridedMatrix<const double, Kokkos::HostSpace> const& pts)
+StridedMatrix<double, Kokkos::HostSpace> ConditionalMapBase<mpart::DeviceSpace>::LogDeterminantParamGrad(StridedMatrix<const double, Kokkos::HostSpace> const& pts)
 {
     // Copy the points to the device space
     StridedMatrix<const double, mpart::DeviceSpace> pts_device = ToDevice<mpart::DeviceSpace>(pts);
 
     // Evaluate on the device space
-    StridedMatrix<double, mpart::DeviceSpace> evals_device = this->LogDeterminantCoeffGrad(pts_device);
+    StridedMatrix<double, mpart::DeviceSpace> evals_device = this->LogDeterminantParamGrad(pts_device);
 
     // Copy back to the host space
     return ToHost(evals_device);
@@ -189,13 +189,13 @@ StridedMatrix<double, Kokkos::HostSpace> ConditionalMapBase<mpart::DeviceSpace>:
 
 template<>
 template<>
-StridedMatrix<double, mpart::DeviceSpace> ConditionalMapBase<Kokkos::HostSpace>::LogDeterminantCoeffGrad(StridedMatrix<const double, mpart::DeviceSpace> const& pts)
+StridedMatrix<double, mpart::DeviceSpace> ConditionalMapBase<Kokkos::HostSpace>::LogDeterminantParamGrad(StridedMatrix<const double, mpart::DeviceSpace> const& pts)
 {
     // Copy the points to the host
     StridedMatrix<const double, Kokkos::HostSpace> pts_host = ToHost(pts);
 
     // Evaluate on the host
-    StridedMatrix<double, Kokkos::HostSpace> evals_host = this->LogDeterminantCoeffGrad(pts_host);
+    StridedMatrix<double, Kokkos::HostSpace> evals_host = this->LogDeterminantParamGrad(pts_host);
 
     // Copy back to the device
     return ToDevice<mpart::DeviceSpace>(evals_host);
@@ -203,13 +203,13 @@ StridedMatrix<double, mpart::DeviceSpace> ConditionalMapBase<Kokkos::HostSpace>:
 
 
 template<>
-Eigen::RowMatrixXd ConditionalMapBase<mpart::DeviceSpace>::LogDeterminantCoeffGrad(Eigen::Ref<const Eigen::RowMatrixXd> const& pts)
+Eigen::RowMatrixXd ConditionalMapBase<mpart::DeviceSpace>::LogDeterminantParamGrad(Eigen::Ref<const Eigen::RowMatrixXd> const& pts)
 {
-    CheckCoefficients("LogDeterminantCoeffGrad");
+    CheckCoefficients("LogDeterminantParamGrad");
 
     Eigen::RowMatrixXd output(outputDim, pts.cols());
     StridedMatrix<const double, mpart::DeviceSpace> ptsView = ToDevice<mpart::DeviceSpace>( ConstRowMatToKokkos<double,Kokkos::HostSpace>(pts));
-    return KokkosToMat( ToHost(this->LogDeterminantCoeffGrad(ptsView)));
+    return KokkosToMat( ToHost(this->LogDeterminantParamGrad(ptsView)));
 }
 
 
