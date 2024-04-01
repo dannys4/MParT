@@ -42,7 +42,7 @@ TEST_CASE( "Testing 2 layer composed map with moveCoeffs=false", "[ShallowCompos
     SECTION("Coefficients"){
 
         // Set the coefficients of the triangular map
-        composedMap->SetCoeffs(coeffs);
+        composedMap->SetParams(coeffs);
 
         // Now make sure that the coefficients of each block were set
         unsigned int cumCoeffInd = 0;
@@ -65,7 +65,7 @@ TEST_CASE( "Testing 2 layer composed map with moveCoeffs=false", "[ShallowCompos
         }
     }
 
-    composedMap->SetCoeffs(coeffs);
+    composedMap->SetParams(coeffs);
     auto out = composedMap->Evaluate(in);
 
     SECTION("Evaluate"){
@@ -133,7 +133,7 @@ TEST_CASE( "Testing 2 layer composed map with moveCoeffs=false", "[ShallowCompos
         for(unsigned int i=0; i<composedMap->numParams; ++i){
             coeffs(i) += fdstep;
 
-            composedMap->SetCoeffs(coeffs);
+            composedMap->SetParams(coeffs);
             evals2 = composedMap->Evaluate(in);
 
             for(unsigned int ptInd=0; ptInd<numSamps; ++ptInd){
@@ -204,7 +204,7 @@ TEST_CASE( "Testing 2 layer composed map with moveCoeffs=false", "[ShallowCompos
         for(unsigned int i=0; i<composedMap->numParams; ++i){
             coeffs(i) += fdstep;
 
-            composedMap->SetCoeffs(coeffs);
+            composedMap->SetParams(coeffs);
             logDet2 = composedMap->LogDeterminant(in);
 
             for(unsigned int ptInd=0; ptInd<numSamps; ++ptInd){
@@ -272,7 +272,7 @@ TEST_CASE( "Testing 2 layer composed map with moveCoeffs=true", "[ShallowCompose
         for(unsigned int j=0; j<maps.at(i)->numParams; ++j)
             coeffs_.at(i)(j) = 0.1*(j+1);
 
-        maps.at(i)->SetCoeffs(coeffs_.at(i));
+        maps.at(i)->SetParams(coeffs_.at(i));
     }
     bool moveCoeffs=true;
     std::shared_ptr<ConditionalMapBase<MemorySpace>> composedMap = std::make_shared<ComposedMap<MemorySpace>>(maps,moveCoeffs);
@@ -374,7 +374,7 @@ TEST_CASE( "Testing 2 layer composed map with moveCoeffs=true", "[ShallowCompose
         for(unsigned int i=0; i<composedMap->numParams; ++i){
             coeffs(i) += fdstep;
 
-            composedMap->SetCoeffs(coeffs);
+            composedMap->SetParams(coeffs);
             evals2 = composedMap->Evaluate(in);
 
             for(unsigned int ptInd=0; ptInd<numSamps; ++ptInd){
@@ -445,7 +445,7 @@ TEST_CASE( "Testing 2 layer composed map with moveCoeffs=true", "[ShallowCompose
         for(unsigned int i=0; i<composedMap->numParams; ++i){
             coeffs(i) += fdstep;
 
-            composedMap->SetCoeffs(coeffs);
+            composedMap->SetParams(coeffs);
             logDet2 = composedMap->LogDeterminant(in);
 
             for(unsigned int ptInd=0; ptInd<numSamps; ++ptInd){
@@ -523,7 +523,7 @@ TEST_CASE( "Testing 5 layer composed map with moveCoeffs=false", "[DeepComposedM
         }
     }
 
-    composedMap->SetCoeffs(coeffs);
+    composedMap->SetParams(coeffs);
     auto out = composedMap->Evaluate(in);
 
     SECTION("Evaluate"){
@@ -581,7 +581,7 @@ TEST_CASE( "Testing 5 layer composed map with moveCoeffs=false", "[DeepComposedM
         for(unsigned int i=0; i<composedMap->numParams; ++i){
             coeffs(i) += fdstep;
 
-            composedMap->SetCoeffs(coeffs);
+            composedMap->SetParams(coeffs);
             evals2 = composedMap->Evaluate(in);
 
             for(unsigned int ptInd=0; ptInd<numSamps; ++ptInd){
@@ -652,7 +652,7 @@ TEST_CASE( "Testing 5 layer composed map with moveCoeffs=false", "[DeepComposedM
         for(unsigned int i=0; i<composedMap->numParams; ++i){
             coeffs(i) += fdstep;
 
-            composedMap->SetCoeffs(coeffs);
+            composedMap->SetParams(coeffs);
             logDet2 = composedMap->LogDeterminant(in);
 
             for(unsigned int ptInd=0; ptInd<numSamps; ++ptInd){
@@ -720,7 +720,7 @@ TEST_CASE( "Testing 8 layer composed map with moveCoeffs=true", "[DeepComposedMa
         for(unsigned int j=0; j<maps.at(i)->numParams; ++j)
             coeffs_.at(i)(j) = 0.1*(j+1);
 
-        maps.at(i)->SetCoeffs(coeffs_.at(i));
+        maps.at(i)->SetParams(coeffs_.at(i));
     }
     bool moveCoeffs=true;
     std::shared_ptr<ConditionalMapBase<MemorySpace>> composedMap = std::make_shared<ComposedMap<MemorySpace>>(maps,moveCoeffs,numChecks);
@@ -812,7 +812,7 @@ TEST_CASE( "Testing 8 layer composed map with moveCoeffs=true", "[DeepComposedMa
         for(unsigned int i=0; i<composedMap->numParams; ++i){
             coeffs(i) += fdstep;
 
-            composedMap->SetCoeffs(coeffs);
+            composedMap->SetParams(coeffs);
             evals2 = composedMap->Evaluate(in);
 
             for(unsigned int ptInd=0; ptInd<numSamps; ++ptInd){
@@ -883,7 +883,7 @@ TEST_CASE( "Testing 8 layer composed map with moveCoeffs=true", "[DeepComposedMa
         for(unsigned int i=0; i<composedMap->numParams; ++i){
             coeffs(i) += fdstep;
 
-            composedMap->SetCoeffs(coeffs);
+            composedMap->SetParams(coeffs);
             logDet2 = composedMap->LogDeterminant(in);
 
             for(unsigned int ptInd=0; ptInd<numSamps; ++ptInd){

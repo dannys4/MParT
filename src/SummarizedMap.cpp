@@ -27,41 +27,41 @@ SummarizedMap<MemorySpace>::SummarizedMap(std::shared_ptr<ParameterizedFunctionB
 }
 
 template<typename MemorySpace>
-void SummarizedMap<MemorySpace>::SetCoeffs(Kokkos::View<const double*, MemorySpace> coeffs)
+void SummarizedMap<MemorySpace>::SetParams(Kokkos::View<const double*, MemorySpace> coeffs)
 {
-    // First, call the ConditionalMapBase version of this function to copy the view into the savedCoeffs member variable
-    ConditionalMapBase<MemorySpace>::SetCoeffs(coeffs);
-    comp_->WrapCoeffs(this->savedCoeffs);
+    // First, call the ConditionalMapBase version of this function to copy the view into the savedParams member variable
+    ConditionalMapBase<MemorySpace>::SetParams(coeffs);
+    comp_->WrapParams(this->savedParams);
 }
 
 template<typename MemorySpace>
-void SummarizedMap<MemorySpace>::WrapCoeffs(Kokkos::View<double*, MemorySpace> coeffs)
+void SummarizedMap<MemorySpace>::WrapParams(Kokkos::View<double*, MemorySpace> coeffs)
 {
 
-    // First, call the ConditionalMapBase version of this function to copy the view into the savedCoeffs member variable
-    ConditionalMapBase<MemorySpace>::WrapCoeffs(coeffs);
-    comp_->WrapCoeffs(coeffs);
+    // First, call the ConditionalMapBase version of this function to copy the view into the savedParams member variable
+    ConditionalMapBase<MemorySpace>::WrapParams(coeffs);
+    comp_->WrapParams(coeffs);
 
 }
 
 #if defined(MPART_ENABLE_GPU)
 template<>
-void SummarizedMap<Kokkos::HostSpace>::SetCoeffs(Kokkos::View<const double*, Kokkos::DefaultExecutionSpace::memory_space> coeffs)
+void SummarizedMap<Kokkos::HostSpace>::SetParams(Kokkos::View<const double*, Kokkos::DefaultExecutionSpace::memory_space> coeffs)
 {
 
-        // First, call the ConditionalMapBase version of this function to copy the view into the savedCoeffs member variable
-    ConditionalMapBase<Kokkos::HostSpace>::SetCoeffs(coeffs);
-    comp_->WrapCoeffs(this->savedCoeffs);
+        // First, call the ConditionalMapBase version of this function to copy the view into the savedParams member variable
+    ConditionalMapBase<Kokkos::HostSpace>::SetParams(coeffs);
+    comp_->WrapParams(this->savedParams);
 
 }
 template<>
-void SummarizedMap<mpart::DeviceSpace>::SetCoeffs(Kokkos::View<const double*, Kokkos::HostSpace> coeffs)
+void SummarizedMap<mpart::DeviceSpace>::SetParams(Kokkos::View<const double*, Kokkos::HostSpace> coeffs)
 
 {
 
-        // First, call the ConditionalMapBase version of this function to copy the view into the savedCoeffs member variable
-    ConditionalMapBase<mpart::DeviceSpace>::SetCoeffs(coeffs);
-    comp_->WrapCoeffs(this->savedCoeffs);
+        // First, call the ConditionalMapBase version of this function to copy the view into the savedParams member variable
+    ConditionalMapBase<mpart::DeviceSpace>::SetParams(coeffs);
+    comp_->WrapParams(this->savedParams);
 
 }
 #endif

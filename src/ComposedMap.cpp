@@ -173,39 +173,39 @@ ComposedMap<MemorySpace>::ComposedMap(std::vector<std::shared_ptr<ConditionalMap
             cumNumCoeffs += maps_.at(i)->numParams;
         }
 
-        this->WrapCoeffs(coeffs);
+        this->WrapParams(coeffs);
     }
 }
 
 template<typename MemorySpace>
-void ComposedMap<MemorySpace>::SetCoeffs(Kokkos::View<const double*, MemorySpace> coeffs)
+void ComposedMap<MemorySpace>::SetParams(Kokkos::View<const double*, MemorySpace> coeffs)
 {
-    // First, call the ConditionalMapBase version of this function to copy the view into the savedCoeffs member variable
-    ConditionalMapBase<MemorySpace>::SetCoeffs(coeffs);
+    // First, call the ConditionalMapBase version of this function to copy the view into the savedParams member variable
+    ConditionalMapBase<MemorySpace>::SetParams(coeffs);
 
     // Now create subviews for each of the maps
     unsigned int cumNumCoeffs = 0;
     for(unsigned int i=0; i<maps_.size(); ++i){
-        assert(cumNumCoeffs+maps_.at(i)->numParams <= this->savedCoeffs.size());
+        assert(cumNumCoeffs+maps_.at(i)->numParams <= this->savedParams.size());
 
-        maps_.at(i)->WrapCoeffs(Kokkos::subview(this->savedCoeffs,
+        maps_.at(i)->WrapParams(Kokkos::subview(this->savedParams,
             std::make_pair(cumNumCoeffs, cumNumCoeffs+maps_.at(i)->numParams)));
         cumNumCoeffs += maps_.at(i)->numParams;
     }
 }
 
 template<typename MemorySpace>
-void ComposedMap<MemorySpace>::WrapCoeffs(Kokkos::View<double*, MemorySpace> coeffs)
+void ComposedMap<MemorySpace>::WrapParams(Kokkos::View<double*, MemorySpace> coeffs)
 {
-    // First, call the ConditionalMapBase version of this function to copy the view into the savedCoeffs member variable
-    ConditionalMapBase<MemorySpace>::WrapCoeffs(coeffs);
+    // First, call the ConditionalMapBase version of this function to copy the view into the savedParams member variable
+    ConditionalMapBase<MemorySpace>::WrapParams(coeffs);
 
     // Now create subviews for each of the components
     unsigned int cumNumCoeffs = 0;
     for(unsigned int i=0; i<maps_.size(); ++i){
-        assert(cumNumCoeffs+maps_.at(i)->numParams <= this->savedCoeffs.size());
+        assert(cumNumCoeffs+maps_.at(i)->numParams <= this->savedParams.size());
 
-        maps_.at(i)->WrapCoeffs( Kokkos::subview(this->savedCoeffs,
+        maps_.at(i)->WrapParams( Kokkos::subview(this->savedParams,
             std::make_pair(cumNumCoeffs, cumNumCoeffs+maps_.at(i)->numParams)));
         cumNumCoeffs += maps_.at(i)->numParams;
     }
@@ -213,34 +213,34 @@ void ComposedMap<MemorySpace>::WrapCoeffs(Kokkos::View<double*, MemorySpace> coe
 
 #if defined(MPART_ENABLE_GPU)
 template<>
-void ComposedMap<Kokkos::HostSpace>::SetCoeffs(Kokkos::View<const double*, mpart::DeviceSpace> coeffs)
+void ComposedMap<Kokkos::HostSpace>::SetParams(Kokkos::View<const double*, mpart::DeviceSpace> coeffs)
 {
-    // First, call the ConditionalMapBase version of this function to copy the view into the savedCoeffs member variable
-     ConditionalMapBase<Kokkos::HostSpace>::SetCoeffs(coeffs);
+    // First, call the ConditionalMapBase version of this function to copy the view into the savedParams member variable
+     ConditionalMapBase<Kokkos::HostSpace>::SetParams(coeffs);
 
     // Now create subviews for each of the maps
     unsigned int cumNumCoeffs = 0;
     for(unsigned int i=0; i<maps_.size(); ++i){
-        assert(cumNumCoeffs+maps_.at(i)->numParams <= this->savedCoeffs.size());
+        assert(cumNumCoeffs+maps_.at(i)->numParams <= this->savedParams.size());
 
-        maps_.at(i)->WrapCoeffs(Kokkos::subview(this->savedCoeffs,
+        maps_.at(i)->WrapParams(Kokkos::subview(this->savedParams,
             std::make_pair(cumNumCoeffs, cumNumCoeffs+maps_.at(i)->numParams)));
         cumNumCoeffs += maps_.at(i)->numParams;
     }
 }
 
 template<>
-void ComposedMap<mpart::DeviceSpace>::SetCoeffs(Kokkos::View<const double*, Kokkos::HostSpace> coeffs)
+void ComposedMap<mpart::DeviceSpace>::SetParams(Kokkos::View<const double*, Kokkos::HostSpace> coeffs)
 {
-    // First, call the ConditionalMapBase version of this function to copy the view into the savedCoeffs member variable
-     ConditionalMapBase<mpart::DeviceSpace>::SetCoeffs(coeffs);
+    // First, call the ConditionalMapBase version of this function to copy the view into the savedParams member variable
+     ConditionalMapBase<mpart::DeviceSpace>::SetParams(coeffs);
 
     // Now create subviews for each of the maps
     unsigned int cumNumCoeffs = 0;
     for(unsigned int i=0; i<maps_.size(); ++i){
-        assert(cumNumCoeffs+maps_.at(i)->numParams <= this->savedCoeffs.size());
+        assert(cumNumCoeffs+maps_.at(i)->numParams <= this->savedParams.size());
 
-        maps_.at(i)->WrapCoeffs(Kokkos::subview(this->savedCoeffs,
+        maps_.at(i)->WrapParams(Kokkos::subview(this->savedParams,
             std::make_pair(cumNumCoeffs, cumNumCoeffs+maps_.at(i)->numParams)));
         cumNumCoeffs += maps_.at(i)->numParams;
     }

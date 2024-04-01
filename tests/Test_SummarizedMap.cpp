@@ -38,7 +38,7 @@ TEST_CASE( "SummarizedMap", "[SummarizedMap_MonotoneComponent]" ) {
     SECTION("Coefficients"){
         
         // Set the coefficients of the triangular map
-        sumMap->SetCoeffs(coeffs);
+        sumMap->SetParams(coeffs);
 
         // Now make sure that the coefficients of each block were set
         for(unsigned int i=0; i<sumMap->numParams; ++i){
@@ -65,7 +65,7 @@ TEST_CASE( "SummarizedMap", "[SummarizedMap_MonotoneComponent]" ) {
         }
     }
 
-    sumMap->SetCoeffs(coeffs);
+    sumMap->SetParams(coeffs);
     Kokkos::View<double**, Kokkos::HostSpace> out = sumMap->Evaluate(in);
     
     SECTION("Evaluation"){
@@ -147,7 +147,7 @@ TEST_CASE( "SummarizedMap", "[SummarizedMap_MonotoneComponent]" ) {
         for(unsigned int i=0; i<sumMap->numParams; ++i){
             coeffs(i) += fdstep;
 
-            sumMap->SetCoeffs(coeffs);
+            sumMap->SetParams(coeffs);
             evals2 = sumMap->Evaluate(in);
 
             for(unsigned int ptInd=0; ptInd<numSamps; ++ptInd){
@@ -219,7 +219,7 @@ TEST_CASE( "SummarizedMap", "[SummarizedMap_MonotoneComponent]" ) {
         for(unsigned int i=0; i<sumMap->numParams; ++i){
             coeffs(i) += fdstep;
 
-            sumMap->SetCoeffs(coeffs);
+            sumMap->SetParams(coeffs);
             logDet2 = sumMap->LogDeterminant(in);
 
             for(unsigned int ptInd=0; ptInd<numSamps; ++ptInd)

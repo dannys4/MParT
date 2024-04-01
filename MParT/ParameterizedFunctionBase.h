@@ -44,40 +44,79 @@ namespace mpart {
 
             @return A reference to the Kokkos::View containing the coefficients.
         */
-        virtual Kokkos::View<double*, MemorySpace>& Coeffs(){return this->savedCoeffs;};
+        virtual Kokkos::View<double*, MemorySpace>& Params(){return this->savedParams;};
+        /**
+         * @brief Deprecated function. Use the Params function instead.
+         * @deprecated
+         * 
+         * @return Kokkos::View<double*, MemorySpace>& 
+         */
+        Kokkos::View<double*, MemorySpace>& Coeffs(){
+            // TODO: Warn that this is deprecated
+            return Params();
+        };
 
-        /** @brief Set the internally stored view of coefficients.
-            @details Performs a deep copy of the input coefficients to the internally stored coefficients.
-            @param coeffs A view containing the coefficients to copy.
+        /** @brief Set the internally stored view of parameters.
+            @details Performs a deep copy of the input parameters to the internally stored parameters.
+            @param params A view containing the parameters to copy.
         */
-       virtual void SetCoeffs(Kokkos::View<const double*, MemorySpace> coeffs);
-               void SetCoeffs(Kokkos::View<      double*, MemorySpace> coeffs);
+       virtual void SetParams(Kokkos::View<const double*, MemorySpace> params);
+               void SetParams(Kokkos::View<      double*, MemorySpace> params);
 
+        /**
+         * @brief Deprecated function.  Use the SetParams function instead.
+         * @deprecated
+         * 
+         * @param coeffs 
+         */
+        template<typename CoeffType>
+        void SetCoeffs(CoeffType coeffs) {
+            // TODO: Warn that this is deprecated
+            SetParams(coeffs);
+        }
 
-        /** @brief Wrap the internal coefficient view around another view.
-            @details Performs a shallow copy of the input coefficients to the internally stored coefficients.
+        /** @brief Wrap the internal parameter view around another view.
+            @details Performs a shallow copy of the input parameters to the internally stored parameters.
             If values in the view passed to this function are changed, the values will also change in the
             internally stored view.
-            @param coeffs A view containing the coefficients we want to wrap.
+            @param params A view containing the parameters we want to wrap.
         */
-        virtual void WrapCoeffs(Kokkos::View<double*, MemorySpace> coeffs);
+        virtual void WrapParams(Kokkos::View<double*, MemorySpace> params);
+        /**
+         * @brief Deprecated function. Use the WrapParams function instead.
+         * 
+         * @param params 
+         */
+        template<typename CoeffType>
+        void WrapCoeffs(CoeffType params){
+            // TODO: Warn that this is deprecated
+            WrapParams(params);
+        }
 
         #if defined(MPART_ENABLE_GPU)
-        virtual void SetCoeffs(Kokkos::View<const double*, std::conditional_t<std::is_same_v<Kokkos::HostSpace,MemorySpace>, mpart::DeviceSpace, Kokkos::HostSpace>> coeffs);
-	            void SetCoeffs(Kokkos::View<      double*, std::conditional_t<std::is_same_v<Kokkos::HostSpace,MemorySpace>, mpart::DeviceSpace, Kokkos::HostSpace>> coeffs);
+        virtual void SetParams(Kokkos::View<const double*, std::conditional_t<std::is_same_v<Kokkos::HostSpace,MemorySpace>, mpart::DeviceSpace, Kokkos::HostSpace>> params);
+	            void SetParams(Kokkos::View<      double*, std::conditional_t<std::is_same_v<Kokkos::HostSpace,MemorySpace>, mpart::DeviceSpace, Kokkos::HostSpace>> params);
 	    #endif
 
-        /** SetCoeffs function with conversion from Eigen to Kokkos vector types.*/
-        virtual void SetCoeffs(Eigen::Ref<Eigen::VectorXd> coeffs);
-        void WrapCoeffs(Eigen::Ref<Eigen::VectorXd> coeffs);
+        /** SetParams function with conversion from Eigen to Kokkos vector types.*/
+        virtual void SetParams(Eigen::Ref<Eigen::VectorXd> coeffs);
+        void WrapParams(Eigen::Ref<Eigen::VectorXd> coeffs);
 
         /** Returns an eigen map wrapping around the coefficient vector, which is stored in a Kokkos::View.  Updating the
             components of this map should also update the view.
         */
-        virtual Eigen::Map<Eigen::VectorXd> CoeffMap();
+        virtual Eigen::Map<Eigen::VectorXd> ParamMap();
+        Eigen::Map<Eigen::VectorXd> CoeffMap() {
+            // TODO: Warn that this is deprecated
+            return ParamMap();
+        };
 
         /** Const version of the Coeffs() function. */
-        virtual Kokkos::View<const double*, MemorySpace> Coeffs() const{return this->savedCoeffs;};
+        virtual Kokkos::View<const double*, MemorySpace> Params() const{return this->savedParams;};
+        Kokkos::View<const double*, MemorySpace> Coeffs() const{
+            // TODO: Warn that this is deprecated
+            return Params();
+        };
 
         /** Evaluate function with conversion between default view layout and const strided matrix. */
         template<typename ViewType>
@@ -87,7 +126,7 @@ namespace mpart {
         Eigen::RowMatrixXd Evaluate(Eigen::Ref<const Eigen::RowMatrixXd> const& pts);
 
         /** @brief Evaluate the function at multiple points.
-        @details Computes \f$\mathbf{y}^{(i)}=T(\mathbf{x}^{(i)}; \mathbf{w})\f$ for \f$N\f$ points \f$\{\mathbf{x}^{(1)},\ldots,\mathbf{x}^{(N)}\}\f$.  The parameters \f$\mathbf{w}\f$ are defined by the :code:`SetCoeffs` function.
+        @details Computes \f$\mathbf{y}^{(i)}=T(\mathbf{x}^{(i)}; \mathbf{w})\f$ for \f$N\f$ points \f$\{\mathbf{x}^{(1)},\ldots,\mathbf{x}^{(N)}\}\f$.  The parameters \f$\mathbf{w}\f$ are defined by the :code:`SetParams` function.
         @param pts A \f$d_{in}\times N\f$ matrix containining \f$N\f$ points in \f$\mathbb{R}^d\f$ where this function be evaluated.  Each column is a point.
         @return A \f$d_{out}\times N\f$ matrix containing evaluations of this function.
         */
@@ -293,7 +332,7 @@ namespace mpart {
         /** Checks to see if the coefficients have been initialized yet. If not, an exception is thrown. */
         void CheckParameters(std::string const& functionName) const;
 
-        Kokkos::View<double*, MemorySpace> savedCoeffs;
+        Kokkos::View<double*, MemorySpace> savedParams;
         
     }; // class ParameterizedFunctionBase
 }

@@ -68,7 +68,7 @@ TEST_CASE( "Testing coefficient functions of conditional map base class", "[Cond
         for(unsigned int i=0; i<numParams; ++i)
             coeffs(i) = i;
 
-        map.SetCoeffs(coeffs);
+        map.SetParams(coeffs);
         CHECK(map.Coeffs().extent(0) == numParams);
 
         for(unsigned int i=0; i<numParams; ++i)
@@ -111,14 +111,14 @@ TEST_CASE( "Testing coefficient functions of conditional map base class", "[Cond
             CHECK(map.Coeffs()(i) != coeffs(i));
         }
 
-        map.SetCoeffs(coeffs);
+        map.SetParams(coeffs);
         for(unsigned int i=0; i<numParams; ++i){
             CHECK(map.Coeffs()(i) == coeffs(i));
             coeffs(i)++;
             CHECK(map.Coeffs()(i) != coeffs(i));
         }
 
-        map.SetCoeffs(coeffs);
+        map.SetParams(coeffs);
         for(unsigned int i=0; i<numParams; ++i){
             CHECK(map.Coeffs()(i) == coeffs(i));
             coeffs(i)++;

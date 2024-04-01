@@ -68,7 +68,7 @@ double mpart::TrainMap(std::shared_ptr<ConditionalMapBase<Kokkos::HostSpace>> ma
             coeffs(i) = 1.;
         });
 	Kokkos::View<const double*, Kokkos::HostSpace> constCoeffs = coeffs;
-        map->SetCoeffs(constCoeffs);
+        map->SetParams(constCoeffs);
     }
     nlopt::opt opt = SetupOptimization(map->numParams, options);
 
@@ -84,9 +84,9 @@ double mpart::TrainMap(std::shared_ptr<ConditionalMapBase<Kokkos::HostSpace>> ma
     double error;
     nlopt::result res = opt.optimize(mapCoeffsStd, error);
 
-    // Set the coefficients using SetCoeffs
+    // Set the coefficients using SetParams
     Kokkos::View<const double*, Kokkos::HostSpace> mapCoeffsView = VecToKokkos<double,Kokkos::HostSpace>(mapCoeffsStd);
-    map->SetCoeffs(mapCoeffsView);
+    map->SetParams(mapCoeffsView);
 
     // Print a warning if something goes wrong with NLOpt
     if(res < 0) {

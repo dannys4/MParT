@@ -36,9 +36,9 @@ InnerMarginalAffineMap<MemorySpace>::InnerMarginalAffineMap(StridedVector<double
         ProcAgnosticError<std::runtime_error>("InnerMarginalAffineMap: scale and shift must have the same size as the input dimension of the map");
 
     logDet_ = CalculateLogDet(scale);
-    this->SetCoeffs(map->Coeffs());
+    this->SetParams(map->Coeffs());
     if (moveCoeffs) {
-        map->WrapCoeffs(this->savedCoeffs);
+        map->WrapParams(this->savedParams);
     }
 }
 

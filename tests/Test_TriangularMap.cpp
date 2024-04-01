@@ -41,7 +41,7 @@ TEST_CASE( "Testing 3d triangular map from MonotoneComponents with moveCoeffs=fa
     SECTION("Coefficients"){
 
         // Set the coefficients of the triangular map
-        triMap->SetCoeffs(coeffs);
+        triMap->SetParams(coeffs);
 
         // Now make sure that the coefficients of each block were set
         unsigned int cumCoeffInd = 0;
@@ -63,7 +63,7 @@ TEST_CASE( "Testing 3d triangular map from MonotoneComponents with moveCoeffs=fa
         }
     }
 
-    triMap->SetCoeffs(coeffs);
+    triMap->SetParams(coeffs);
     auto out = triMap->Evaluate(in);
 
     SECTION("Evaluation"){
@@ -130,7 +130,7 @@ TEST_CASE( "Testing 3d triangular map from MonotoneComponents with moveCoeffs=fa
         for(unsigned int i=0; i<triMap->numParams; ++i){
             coeffs(i) += fdstep;
 
-            triMap->SetCoeffs(coeffs);
+            triMap->SetParams(coeffs);
             evals2 = triMap->Evaluate(in);
 
             for(unsigned int ptInd=0; ptInd<numSamps; ++ptInd){
@@ -208,7 +208,7 @@ TEST_CASE( "Testing 3d triangular map from MonotoneComponents with moveCoeffs=fa
         for(unsigned int i=0; i<triMap->numParams; ++i){
             coeffs(i) += fdstep;
 
-            triMap->SetCoeffs(coeffs);
+            triMap->SetParams(coeffs);
             logDet2 = triMap->LogDeterminant(in);
 
             for(unsigned int ptInd=0; ptInd<numSamps; ++ptInd)
@@ -248,7 +248,7 @@ TEST_CASE( "Testing 3d triangular map from MonotoneComponents with moveCoeffs=tr
         for(unsigned int j=0; j<blocks.at(i)->numParams; ++j)
             coeffs_.at(i)(j) = 0.1*(j+1);
 
-        blocks.at(i)->SetCoeffs(coeffs_.at(i));
+        blocks.at(i)->SetParams(coeffs_.at(i));
 
     }
     bool moveCoeffs=true;
@@ -314,7 +314,7 @@ TEST_CASE( "Testing TriangularMap made from smaller TriangularMaps with moveCoef
     SECTION("Coefficients"){
 
         // Set the coefficients of the triangular map
-        triMap->SetCoeffs(coeffs);
+        triMap->SetParams(coeffs);
 
         // Now make sure that the coefficients of each block were set
         unsigned int cumCoeffInd = 0;
@@ -336,7 +336,7 @@ TEST_CASE( "Testing TriangularMap made from smaller TriangularMaps with moveCoef
         }
     }
 
-    triMap->SetCoeffs(coeffs);
+    triMap->SetParams(coeffs);
     auto out = triMap->Evaluate(in);
 
     SECTION("Evaluation"){
@@ -413,7 +413,7 @@ TEST_CASE( "Testing TriangularMap made from smaller TriangularMaps with moveCoef
         for(unsigned int i=0; i<triMap->numParams; ++i){
             coeffs(i) += fdstep;
 
-            triMap->SetCoeffs(coeffs);
+            triMap->SetParams(coeffs);
             evals2 = triMap->Evaluate(in);
 
             for(unsigned int ptInd=0; ptInd<numSamps; ++ptInd){
@@ -491,7 +491,7 @@ TEST_CASE( "Testing TriangularMap made from smaller TriangularMaps with moveCoef
         for(unsigned int i=0; i<triMap->numParams; ++i){
             coeffs(i) += fdstep;
 
-            triMap->SetCoeffs(coeffs);
+            triMap->SetParams(coeffs);
             logDet2 = triMap->LogDeterminant(in);
 
             for(unsigned int ptInd=0; ptInd<numSamps; ++ptInd)
@@ -528,7 +528,7 @@ TEST_CASE( "Testing TriangularMap made from smaller TriangularMaps with moveCoef
         coeffs_.at(i) = Kokkos::View<double*,Kokkos::HostSpace>("Coefficients", blocks.at(i)->numParams);
         for(unsigned int j=0; j<blocks.at(i)->numParams; ++j)
             coeffs_.at(i)(j) = 0.1*(j+1);
-        blocks.at(i)->SetCoeffs(coeffs_.at(i));
+        blocks.at(i)->SetParams(coeffs_.at(i));
     }
 
     bool moveCoeffs = true;
@@ -580,7 +580,7 @@ TEST_CASE( "Testing TriangularMap made using CreateSingleEntryMap", "[Triangular
     SECTION("Coefficients"){
 
         // Set the coefficients of the triangular map
-        triMap->SetCoeffs(coeffs);
+        triMap->SetParams(coeffs);
 
         // Now make sure that the coefficients of each block were set
         for(unsigned int i=0; i<triMap->numParams; ++i){
@@ -598,7 +598,7 @@ TEST_CASE( "Testing TriangularMap made using CreateSingleEntryMap", "[Triangular
         }
     }
 
-    triMap->SetCoeffs(coeffs);
+    triMap->SetParams(coeffs);
     auto out = triMap->Evaluate(in);
 
     SECTION("Evaluation"){
@@ -673,7 +673,7 @@ TEST_CASE( "Testing TriangularMap made using CreateSingleEntryMap", "[Triangular
         for(unsigned int i=0; i<triMap->numParams; ++i){
             coeffs(i) += fdstep;
 
-            triMap->SetCoeffs(coeffs);
+            triMap->SetParams(coeffs);
             evals2 = triMap->Evaluate(in);
 
             for(unsigned int ptInd=0; ptInd<numSamps; ++ptInd){
@@ -751,7 +751,7 @@ TEST_CASE( "Testing TriangularMap made using CreateSingleEntryMap", "[Triangular
         for(unsigned int i=0; i<triMap->numParams; ++i){
             coeffs(i) += fdstep;
 
-            triMap->SetCoeffs(coeffs);
+            triMap->SetParams(coeffs);
             logDet2 = triMap->LogDeterminant(in);
 
             for(unsigned int ptInd=0; ptInd<numSamps; ++ptInd)

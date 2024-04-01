@@ -99,8 +99,8 @@ TEST_CASE( "Testing map component factory with linearized basis", "[MapFactoryLi
         Kokkos::View<double*,MemorySpace> coeffs("Coefficients", map->numParams);
         for(unsigned int i=0; i<map->numParams; ++i)
             coeffs(i) = 1.0;
-        map->SetCoeffs(coeffs);
-        linearized_map->SetCoeffs(coeffs);
+        map->SetParams(coeffs);
+        linearized_map->SetParams(coeffs);
 
         unsigned int numPts = 5;
         Kokkos::View<double**,MemorySpace> pts("Points", dim, numPts);

@@ -38,8 +38,8 @@ TEST_CASE("RectifiedMultivariateExpansion, Unrectified", "[RMVE_NoRect]") {
     Kokkos::View<double*, MemorySpace> coeffs("Input", mve.numParams);
     Kokkos::deep_copy(coeffs, 0.1);
 
-    mve.WrapCoeffs(coeffs);
-    rect_mve.SetCoeffs(coeffs);
+    mve.WrapParams(coeffs);
+    rect_mve.SetParams(coeffs);
 
     unsigned int numPts = 20;
     Kokkos::View<double**, MemorySpace> points("Input", dim, numPts);
@@ -190,7 +190,7 @@ TEMPLATE_TEST_CASE("Single Sigmoid RectifiedMultivariateExpansion","[single_sigm
     // Initialize Points and Coeffs
     Kokkos::View<double*, MemorySpace> coeffs("Input", expansion.numParams);
     Kokkos::deep_copy(coeffs, 0.0); // Initialize to 0
-    expansion.WrapCoeffs(coeffs);
+    expansion.WrapParams(coeffs);
     int numPts = 20;
     Kokkos::View<double**, MemorySpace> points("Input", dim, numPts+1);
     for(int i = 0; i < numPts; i++) {
@@ -315,7 +315,7 @@ TEMPLATE_TEST_CASE("Multiple Sigmoid RectifiedMultivariateExpansion","[multi_sig
     // Setup coeffs
     Kokkos::View<double*, MemorySpace> coeffs("Input", expansion.numParams);
     for(int c = 0; c < expansion.numParams; c++) coeffs(c) = 1.-double(c)/expansion.numParams;
-    expansion.WrapCoeffs(coeffs);
+    expansion.WrapParams(coeffs);
     // Setup points
     unsigned int numPts = 20;
     Kokkos::View<double**, MemorySpace> points("Input", dim, numPts);

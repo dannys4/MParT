@@ -32,7 +32,7 @@ class UnivariateExpansion: public ConditionalMapBase<MemorySpace>{
         StridedMatrix<double, MemorySpace> out) override {
         auto point_slice = Kokkos::subview(points, 0, Kokkos::ALL());
         auto out_slice = Kokkos::subview(out, 0, Kokkos::ALL());
-        StridedVector<const double, MemorySpace> coeffs = this->savedCoeffs;
+        StridedVector<const double, MemorySpace> coeffs = this->savedParams;
         unsigned int numPts = points.extent(1);
         unsigned int cacheSize = maxOrder_ + 1;
 
@@ -66,7 +66,7 @@ class UnivariateExpansion: public ConditionalMapBase<MemorySpace>{
         auto point_slice = Kokkos::subview(points, 0, Kokkos::ALL());
         auto sens_slice = Kokkos::subview(sens, 0, Kokkos::ALL());
         auto out_slice = Kokkos::subview(out, 0, Kokkos::ALL());
-        StridedVector<const double, MemorySpace> coeffs = this->savedCoeffs;
+        StridedVector<const double, MemorySpace> coeffs = this->savedParams;
         unsigned int numPts = points.extent(1);
         unsigned int cacheSize = maxOrder_ + 1;
 
@@ -124,7 +124,7 @@ class UnivariateExpansion: public ConditionalMapBase<MemorySpace>{
     void LogDeterminantImpl(StridedMatrix<const double, MemorySpace> const& points,
         StridedVector<double, MemorySpace> out) override {
         auto point_slice = Kokkos::subview(points, 0, Kokkos::ALL());
-        StridedVector<const double, MemorySpace> coeffs = this->savedCoeffs;
+        StridedVector<const double, MemorySpace> coeffs = this->savedParams;
         unsigned int numPts = points.extent(1);
         unsigned int cacheSize = maxOrder_ + 1;
 
@@ -156,7 +156,7 @@ class UnivariateExpansion: public ConditionalMapBase<MemorySpace>{
         StridedMatrix<double, MemorySpace> out) override {
         auto point_slice = Kokkos::subview(points, 0, Kokkos::ALL());
         auto out_slice = Kokkos::subview(out, 0, Kokkos::ALL());
-        StridedVector<const double, MemorySpace> coeffs = this->savedCoeffs;
+        StridedVector<const double, MemorySpace> coeffs = this->savedParams;
         unsigned int numPts = points.extent(1);
         unsigned int numParams = this->numParams;
         unsigned int cacheSize = numParams*3;
@@ -191,7 +191,7 @@ class UnivariateExpansion: public ConditionalMapBase<MemorySpace>{
     void LogDeterminantParamGradImpl(StridedMatrix<const double, MemorySpace> const& points,
         StridedMatrix<double, MemorySpace> out) override {
         auto point_slice = Kokkos::subview(points, 0, Kokkos::ALL());
-        StridedVector<const double, MemorySpace> coeffs = this->savedCoeffs;
+        StridedVector<const double, MemorySpace> coeffs = this->savedParams;
         unsigned int numPts = points.extent(1);
         unsigned int numParams = this->numParams;
         unsigned int cacheSize = 2*numParams;
@@ -231,7 +231,7 @@ class UnivariateExpansion: public ConditionalMapBase<MemorySpace>{
         StridedVector<double, MemorySpace> out_slice = Kokkos::subview(out, 0, Kokkos::ALL());
         StridedVector<const double, MemorySpace> r_slice = Kokkos::subview(r, 0, Kokkos::ALL());
 
-        StridedVector<const double, MemorySpace> coeff = this->savedCoeffs;
+        StridedVector<const double, MemorySpace> coeff = this->savedParams;
         const unsigned int numPts = r.extent(1);
 
         // Figure out how much memory we'll need in the cache

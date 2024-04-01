@@ -56,41 +56,41 @@ TriangularMap<MemorySpace>::TriangularMap(std::vector<std::shared_ptr<Conditiona
             cumNumCoeffs += comps_.at(i)->numParams;
         }
 
-        this->WrapCoeffs(coeffs);
+        this->WrapParams(coeffs);
     }
 }
 
 
 
 template<typename MemorySpace>
-void TriangularMap<MemorySpace>::SetCoeffs(Kokkos::View<const double*, MemorySpace> coeffs)
+void TriangularMap<MemorySpace>::SetParams(Kokkos::View<const double*, MemorySpace> coeffs)
 {
-    // First, call the ConditionalMapBase version of this function to copy the view into the savedCoeffs member variable
-    ConditionalMapBase<MemorySpace>::SetCoeffs(coeffs);
+    // First, call the ConditionalMapBase version of this function to copy the view into the savedParams member variable
+    ConditionalMapBase<MemorySpace>::SetParams(coeffs);
 
     // Now create subviews for each of the components
     unsigned int cumNumCoeffs = 0;
     for(unsigned int i=0; i<comps_.size(); ++i){
-        assert(cumNumCoeffs+comps_.at(i)->numParams <= this->savedCoeffs.size());
+        assert(cumNumCoeffs+comps_.at(i)->numParams <= this->savedParams.size());
 
-        comps_.at(i)->WrapCoeffs( Kokkos::subview(this->savedCoeffs,
+        comps_.at(i)->WrapParams( Kokkos::subview(this->savedParams,
             std::make_pair(cumNumCoeffs, cumNumCoeffs+comps_.at(i)->numParams)));
         cumNumCoeffs += comps_.at(i)->numParams;
     }
 }
 
 template<typename MemorySpace>
-void TriangularMap<MemorySpace>::WrapCoeffs(Kokkos::View<double*, MemorySpace> coeffs)
+void TriangularMap<MemorySpace>::WrapParams(Kokkos::View<double*, MemorySpace> coeffs)
 {
-    // First, call the ConditionalMapBase version of this function to copy the view into the savedCoeffs member variable
-    ConditionalMapBase<MemorySpace>::WrapCoeffs(coeffs);
+    // First, call the ConditionalMapBase version of this function to copy the view into the savedParams member variable
+    ConditionalMapBase<MemorySpace>::WrapParams(coeffs);
 
     // Now create subviews for each of the components
     unsigned int cumNumCoeffs = 0;
     for(unsigned int i=0; i<comps_.size(); ++i){
-        assert(cumNumCoeffs+comps_.at(i)->numParams <= this->savedCoeffs.size());
+        assert(cumNumCoeffs+comps_.at(i)->numParams <= this->savedParams.size());
 
-        comps_.at(i)->WrapCoeffs( Kokkos::subview(this->savedCoeffs,
+        comps_.at(i)->WrapParams( Kokkos::subview(this->savedParams,
             std::make_pair(cumNumCoeffs, cumNumCoeffs+comps_.at(i)->numParams)));
         cumNumCoeffs += comps_.at(i)->numParams;
     }

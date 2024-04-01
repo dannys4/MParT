@@ -121,7 +121,7 @@ std::shared_ptr<ConditionalMapBase<Kokkos::HostSpace>> mpart::TrainMapAdaptive(s
     for(int i = 0; i < mapCoeffs.extent(0); i++) {
         mapCoeffs(i) = 0.;
     }
-    map->WrapCoeffs(mapCoeffs);
+    map->WrapParams(mapCoeffs);
 
     if(options.verbose) {
         std::cout << "Initial map:" << std::endl;
@@ -159,7 +159,7 @@ std::shared_ptr<ConditionalMapBase<Kokkos::HostSpace>> mpart::TrainMapAdaptive(s
                     oldIdx++;
                 }
             }
-            comp_i->WrapCoeffs(coeffsFrontier);
+            comp_i->WrapParams(coeffsFrontier);
             // Set the new component
             mapBlocksTmp[i] = comp_i;
         }

@@ -74,7 +74,7 @@ namespace mpart{
                     for(unsigned int d=0; d<this->outputDim; ++d){
 
                         // Extract the coefficients for this output dimension
-                        auto coeffs = Kokkos::subview(this->savedCoeffs, std::make_pair(coeffStartInd, coeffStartInd+worker.NumCoeffs()));
+                        auto coeffs = Kokkos::subview(this->savedParams, std::make_pair(coeffStartInd, coeffStartInd+worker.NumCoeffs()));
                          
                         // Evaluate the expansion
                         output(d,ptInd) = worker.Evaluate(cache.data(), coeffs);
@@ -129,7 +129,7 @@ namespace mpart{
                     for(unsigned int d=0; d<this->outputDim; ++d){
 
                         // Extract the coefficients for this output dimension
-                        auto coeffs = Kokkos::subview(this->savedCoeffs, std::make_pair(coeffStartInd, coeffStartInd+worker.NumCoeffs()));
+                        auto coeffs = Kokkos::subview(this->savedParams, std::make_pair(coeffStartInd, coeffStartInd+worker.NumCoeffs()));
                          
                         // Evaluate the expansion
                         worker.InputDerivative(cache.data(), coeffs, grad);
@@ -188,7 +188,7 @@ namespace mpart{
                     for(unsigned int d=0; d<this->outputDim; ++d){
 
                         // Extract the coefficients for this output dimension
-                        auto coeffs = Kokkos::subview(this->savedCoeffs, std::make_pair(coeffStartInd, coeffStartInd+worker.NumCoeffs()));
+                        auto coeffs = Kokkos::subview(this->savedParams, std::make_pair(coeffStartInd, coeffStartInd+worker.NumCoeffs()));
                          
                         // Evaluate the expansion
                         worker.CoeffDerivative(cache.data(), coeffs, grad);

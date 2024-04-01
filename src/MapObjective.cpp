@@ -7,7 +7,7 @@ double MapObjective<MemorySpace>::operator()(unsigned int n, const double* coeff
 
     Kokkos::View<const double*, MemorySpace> coeffView = ToConstKokkos<double,MemorySpace>(coeffs, n);
     StridedVector<double, MemorySpace> gradView = ToKokkos<double,MemorySpace>(grad, n);
-    map->SetCoeffs(coeffView);
+    map->SetParams(coeffView);
     return ObjectivePlusCoeffGradImpl(train_, gradView, map);
 }
 

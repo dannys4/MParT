@@ -449,8 +449,8 @@ namespace mpart{
         DiagWorker_T worker_diag;
         const unsigned int setSize_off;
         const unsigned int setSize_diag;
-        StridedVector<const double, MemorySpace> CoeffOff() const { return Kokkos::subview(this->savedCoeffs, std::make_pair(0u, setSize_off)); }
-        StridedVector<const double, MemorySpace> CoeffDiag() const { return Kokkos::subview(this->savedCoeffs, std::make_pair(setSize_off, setSize_off+setSize_diag)); }
+        StridedVector<const double, MemorySpace> CoeffOff() const { return Kokkos::subview(this->savedParams, std::make_pair(0u, setSize_off)); }
+        StridedVector<const double, MemorySpace> CoeffDiag() const { return Kokkos::subview(this->savedParams, std::make_pair(setSize_off, setSize_off+setSize_diag)); }
     }; // class RectifiedMultivariateExpansion
 }
 

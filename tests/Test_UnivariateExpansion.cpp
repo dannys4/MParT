@@ -17,7 +17,7 @@ TEST_CASE("UnivariateExpansion") {
     REQUIRE(expansion.outputDim == 1);
     Kokkos::View<double*, MemorySpace> coeffs("coeffs", maxOrder + 1);
     Kokkos::deep_copy(coeffs, 0.0);
-    expansion.WrapCoeffs(coeffs);
+    expansion.WrapParams(coeffs);
     unsigned int numPts = 20;
     Kokkos::View<double**, MemorySpace> points("points", 1, numPts);
     Kokkos::View<double**, MemorySpace> sens("sens", 1, numPts);
@@ -141,7 +141,7 @@ TEST_CASE("UnivariateExpansion Inverse") {
     Basis_T basis(centers, widths);
     UnivariateExpansion<MemorySpace, Basis_T> expansion(maxOrder, basis);
     Kokkos::deep_copy(coeffs, 1.0);
-    expansion.WrapCoeffs(coeffs);
+    expansion.WrapParams(coeffs);
     unsigned int numPts = 100;
     Kokkos::View<double**, MemorySpace> points("points", 1, numPts);
     double grid = double(numPts)/2;

@@ -27,7 +27,7 @@ std::shared_ptr<ConditionalMapBase<MemorySpace>> CreateComponentImpl_LinPhys_ACC
     output = std::make_shared<MonotoneComponent<decltype(expansion), PosFuncType, decltype(quad), MemorySpace>>(expansion, quad, opts.contDeriv, opts.nugget);
 
     Kokkos::View<const double*,MemorySpace> coeffs = Kokkos::View<double*,MemorySpace>("Component Coefficients", mset.Size());
-    output->SetCoeffs(coeffs);
+    output->SetParams(coeffs);
 
     return output;
 }

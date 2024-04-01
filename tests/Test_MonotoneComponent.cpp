@@ -820,7 +820,7 @@ TEST_CASE("Testing MonotoneComponent CoeffGrad and LogDeterminantCoeffGrad", "[M
     for(unsigned int i=0; i<coeffs.extent(0); ++i)
         coeffs(i) = 0.1*std::cos( 0.01*i );
 
-    comp.SetCoeffs(coeffs);
+    comp.SetParams(coeffs);
 
     SECTION("CoeffGrad"){
 
@@ -858,7 +858,7 @@ TEST_CASE("Testing MonotoneComponent CoeffGrad and LogDeterminantCoeffGrad", "[M
         for(unsigned int i=0; i<coeffs.extent(0); ++i){
             coeffs(i) += fdstep;
 
-            comp.SetCoeffs(coeffs);
+            comp.SetParams(coeffs);
             logDets2 = comp.LogDeterminant(evalPts);
             for(unsigned int ptInd=0; ptInd<numPts; ++ptInd)
                 CHECK( grads(i,ptInd) == Approx((logDets2(ptInd)-logDets(ptInd))/fdstep).epsilon(1e-5));

@@ -31,7 +31,7 @@ TEST_CASE( "Testing multivariate expansion", "[MultivariateExpansion]") {
     for(unsigned int i=0; i<func.numParams; ++i)
         coeffs(i) = 0.01;
         
-    func.SetCoeffs(coeffs);
+    func.SetParams(coeffs);
 
     
     StridedMatrix<double, Kokkos::HostSpace> pts = Kokkos::View<double**,Kokkos::HostSpace>("Points",inDim,numPts);
@@ -150,9 +150,9 @@ TEST_CASE( "Testing multivariate expansion", "[MultivariateExpansion]") {
     }
 
 
-    SECTION("WrapCoeffs"){
+    SECTION("WrapParams"){
         Eigen::VectorXd newCoeffs = Eigen::VectorXd::Random(func.numParams);
-        func.WrapCoeffs(newCoeffs);
+        func.WrapParams(newCoeffs);
 
         StridedMatrix<double,Kokkos::HostSpace> evals1 = func.Evaluate(pts);
 

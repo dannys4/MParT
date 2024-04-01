@@ -90,7 +90,7 @@ public:
                       StridedMatrix<double, MemorySpace>              output) override
     {
         StridedVector<double,MemorySpace> outputSlice = Kokkos::subview(output, 0, Kokkos::ALL());
-        EvaluateImpl(pts, this->savedCoeffs, outputSlice);
+        EvaluateImpl(pts, this->savedParams, outputSlice);
     }
 
     void InverseImpl(StridedMatrix<const double, MemorySpace> const& x1,
@@ -99,7 +99,7 @@ public:
     {
         auto rSlice = Kokkos::subview(r,0,Kokkos::ALL());
         auto outputSlice = Kokkos::subview(output, 0, Kokkos::ALL());
-        InverseImpl(x1, rSlice, this->savedCoeffs, outputSlice);
+        InverseImpl(x1, rSlice, this->savedParams, outputSlice);
     }
 
     void LogDeterminantImpl(StridedMatrix<const double, MemorySpace> const& pts,
@@ -107,10 +107,10 @@ public:
     {
         // First, get the diagonal derivative
         if(useContDeriv_){
-            ContinuousDerivative(pts, this->savedCoeffs, output);
+            ContinuousDerivative(pts, this->savedParams, output);
         }else{
             Kokkos::View<double*,MemorySpace> evals("Evaluations", pts.extent(1));
-            DiscreteDerivative(pts, this->savedCoeffs, evals, output);
+            DiscreteDerivative(pts, this->savedParams, evals, output);
         }
 
         // Now take the log
@@ -153,7 +153,7 @@ public:
 
         Kokkos::View<double*,MemorySpace> evals("Map output", pts.extent(1));
 
-        InputJacobian(pts, this->savedCoeffs, evals, output);
+        InputJacobian(pts, this->savedParams, evals, output);
 
         // Scale each column by the sensitivity
         auto policy = Kokkos::RangePolicy<typename MemoryToExecution<MemorySpace>::Space>(0,pts.extent(1));
@@ -171,7 +171,7 @@ public:
 
         Kokkos::View<double*,MemorySpace> evals("Map output", pts.extent(1));
 
-        CoeffJacobian(pts, this->savedCoeffs, evals, output);
+        CoeffJacobian(pts, this->savedParams, evals, output);
 
         // Scale each column by the sensitivity
         auto policy = Kokkos::RangePolicy<typename MemoryToExecution<MemorySpace>::Space>(0,pts.extent(1));
@@ -189,12 +189,12 @@ public:
 
         // First, get the diagonal derivative
         if(useContDeriv_){
-            ContinuousMixedJacobian(pts,this->savedCoeffs, output);
-            ContinuousDerivative(pts, this->savedCoeffs, derivs);
+            ContinuousMixedJacobian(pts,this->savedParams, output);
+            ContinuousDerivative(pts, this->savedParams, derivs);
         }else{
             Kokkos::View<double*,MemorySpace> evals("Evaluations", pts.extent(1));
-            DiscreteMixedJacobian(pts,this->savedCoeffs, output);
-            DiscreteDerivative(pts, this->savedCoeffs, evals, derivs);
+            DiscreteMixedJacobian(pts,this->savedParams, output);
+            DiscreteDerivative(pts, this->savedParams, evals, derivs);
         }
 
         // Now take the log
@@ -212,12 +212,12 @@ public:
 
         // First, get the diagonal derivative
         if(useContDeriv_){
-            ContinuousMixedInputJacobian(pts,this->savedCoeffs, output);
-            ContinuousDerivative(pts, this->savedCoeffs, derivs);
+            ContinuousMixedInputJacobian(pts,this->savedParams, output);
+            ContinuousDerivative(pts, this->savedParams, derivs);
         }else{
             // Kokkos::View<double*,MemorySpace> evals("Evaluations", pts.extent(1));
-            // DiscreteMixedJacobian(pts,this->savedCoeffs, output);
-            // DiscreteDerivative(pts, this->savedCoeffs, evals, derivs);
+            // DiscreteMixedJacobian(pts,this->savedParams, output);
+            // DiscreteDerivative(pts, this->savedParams, evals, derivs);
             std::stringstream msg;
             msg << "Discrete derivative version is not implemented yet (To Do)";
             throw std::invalid_argument(msg.str());
@@ -1039,7 +1039,7 @@ public:
     {   
         ar( cereal::base_class<ConditionalMapBase<MemorySpace>>( this )); 
         ar( expansion_, quad_, useContDeriv_, nugget_);
-        ar( this->savedCoeffs );
+        ar( this->savedParams );
     }
 
     template <class Archive>

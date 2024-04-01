@@ -323,7 +323,7 @@ TEST_CASE("Test serialization of monotone component.", "[Serialization]"){
 
         //std::shared_ptr<ParameterizedFunctionBase<Kokkos::HostSpace>>
         std::shared_ptr<mpart::ParameterizedFunctionBase<Kokkos::HostSpace>> comp = std::make_shared<MonotoneComponent<decltype(expansion), Exp, AdaptiveSimpson<Kokkos::HostSpace>, Kokkos::HostSpace>>(expansion, quad);
-        comp->SetCoeffs(coeffs);
+        comp->SetParams(coeffs);
 
         output1 = comp->Evaluate(evalPts);
 
@@ -372,7 +372,7 @@ TEST_CASE("Test serialization of triangular map.", "[Serialization]"){
     Kokkos::View<double*,Kokkos::HostSpace> coeffs1("Coefficients", triMap1->numParams);
     for(unsigned int i=0; i<triMap1->numParams; ++i)
         coeffs1(i) = 0.1*(i+1);
-    triMap1->SetCoeffs(coeffs1);
+    triMap1->SetParams(coeffs1);
 
     std::stringstream ss;
 
