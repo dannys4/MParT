@@ -69,7 +69,7 @@ TEST_CASE( "Test InnerMarginalAffineMap", "[InnerMarginalAffineMap]") {
                 sens(i,j) = i+j;
             }
         }
-        StridedMatrix<double, MemorySpace> grad = map->Gradient(pts, sens);
+        StridedMatrix<double, MemorySpace> grad = map->InputGrad(pts, sens);
         for (unsigned int i = 0; i < dim; i++) {
             for (unsigned int j = 0; j < N_pts; j++) {
                 REQUIRE_THAT(grad(i,j), WithinRel(sens(i,j)*scale(i), 1e-14));
@@ -178,7 +178,7 @@ TEST_CASE( "Test InnerMarginalAffineMap", "[InnerMarginalAffineMap]") {
             }
         }
         // Gradient test (using fd)
-        StridedMatrix<double, MemorySpace> grad = map->Gradient(pts, sens);
+        StridedMatrix<double, MemorySpace> grad = map->InputGrad(pts, sens);
         Kokkos::View<double**, MemorySpace> exp_grad_map("exp_grad_map", inputDim, numPts);
         for(int i = 0; i < inputDim; i++) {
             for(int j = 0; j < numPts; j++) {

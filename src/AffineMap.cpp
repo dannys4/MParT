@@ -180,7 +180,7 @@ void AffineMap<MemorySpace>::LogDeterminantInputGradImpl(StridedMatrix<const dou
 }
 
 template<typename MemorySpace>
-void AffineMap<MemorySpace>::GradientImpl(StridedMatrix<const double, MemorySpace> const& pts,
+void AffineMap<MemorySpace>::InputGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
                                           StridedMatrix<const double, MemorySpace> const& sens,
                                           StridedMatrix<double, MemorySpace>              output)
 {

@@ -141,19 +141,49 @@ namespace mpart {
                                   StridedMatrix<double, MemorySpace>              output) = 0;
 
 
-        /** Evaluate the gradient of the function with conversion between default view layout and const strided matrix. */
+        /** Evaluate the gradient of the function wrt function input with conversion between default view layout and const strided matrix. */
         template<typename ViewType1, typename ViewType2>
-        StridedMatrix<double, typename ViewType1::memory_space> Gradient(ViewType1 pts, ViewType2 sens){
+        StridedMatrix<double, typename ViewType1::memory_space> InputGrad(ViewType1 pts, ViewType2 sens){
             StridedMatrix<const double, typename ViewType1::memory_space> newpts(pts);
             StridedMatrix<const double, typename ViewType1::memory_space> newSens(sens);
-            return this->Gradient(newpts, newSens);
+            return this->InputGrad(newpts, newSens);
         }
 
-        /** Evaluate the gradient of the function with conversion from Eigen to Kokkos (and possibly copy to/from device.) */
-        Eigen::RowMatrixXd Gradient(Eigen::Ref<const Eigen::RowMatrixXd> const& pts,
-                                    Eigen::Ref<const Eigen::RowMatrixXd> const& sens);
+        /**
+         * @brief Deprecated function. Use the InputGrad function instead.
+         * @deprecated
+         * 
+         * @tparam ViewType1 
+         * @tparam ViewType2 
+         * @param pts 
+         * @param sens 
+         * @return StridedMatrix<double, typename ViewType1::memory_space> 
+         */
+        template<typename ViewType1, typename ViewType2>
+        StridedMatrix<double, typename ViewType1::memory_space> Gradient(ViewType1 pts, ViewType2 sens){
+            // TODO: Warn that this is deprecated
+            return this->InputGrad(pts, sens);
+        }
 
-        /** @brief Evaluate the gradient of the function at multiple points.
+        /** Evaluate the gradient of the input of the function with conversion from Eigen to Kokkos (and possibly copy to/from device.) */
+        Eigen::RowMatrixXd InputGrad(Eigen::Ref<const Eigen::RowMatrixXd> const& pts,
+                                     Eigen::Ref<const Eigen::RowMatrixXd> const& sens);
+
+        /**
+         * @brief Deprecated function. Use the InputGrad function instead.
+         * @deprecated
+         * 
+         * @param pts 
+         * @param sens 
+         * @return Eigen::RowMatrixXd 
+         */
+        Eigen::RowMatrixXd Gradient(Eigen::Ref<const Eigen::RowMatrixXd> const& pts,
+                                    Eigen::Ref<const Eigen::RowMatrixXd> const& sens) {
+            // TODO: Warn that this is deprecated
+            return InputGrad(pts,sens);
+        }
+
+        /** @brief Evaluate the gradient of the function at multiple points with respect to the function input.
         @details For input points \f$x^{(i)}\f$ and sensitivity vectors \f$s^{(i)}\f$, this function computes
                  \f[
                     g^{(i)} = \left[s^{(i)}\right]^T\nabla_x T(x^{(i)}; w),
@@ -168,13 +198,28 @@ namespace mpart {
         @return A \f$d_{in}\times N\f$ matrix containing the gradient of vectors.  Each column corresponds to the gradient at a particular point and sensitivity.
         */
         template<typename AnyMemorySpace>
-        StridedMatrix<double, AnyMemorySpace> Gradient(StridedMatrix<const double, AnyMemorySpace> const& pts,
-                                                       StridedMatrix<const double, AnyMemorySpace> const& sens);
+        StridedMatrix<double, AnyMemorySpace> InputGrad(StridedMatrix<const double, AnyMemorySpace> const& pts,
+                                                        StridedMatrix<const double, AnyMemorySpace> const& sens);
 
 
-        virtual void GradientImpl(StridedMatrix<const double, MemorySpace> const& pts,
-                                  StridedMatrix<const double, MemorySpace> const& sens,
-                                  StridedMatrix<double, MemorySpace>              output) = 0;
+        virtual void InputGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
+                                   StridedMatrix<const double, MemorySpace> const& sens,
+                                   StridedMatrix<double, MemorySpace>              output) = 0;
+
+        /**
+         * @brief Deprecated function. Use the InputGradImpl function instead.
+         * @deprecated
+         * 
+         * @param pts 
+         * @param sens 
+         * @param output 
+         */
+        void GradientImpl(StridedMatrix<const double, MemorySpace> const& pts,
+                          StridedMatrix<const double, MemorySpace> const& sens,
+                          StridedMatrix<double, MemorySpace>              output) {
+            // TODO: Warn that this is deprecated
+            InputGradImpl(pts,sens,output);
+        }
 
 
         /** @brief Computes the gradient of the map output with respect to the map coefficients.

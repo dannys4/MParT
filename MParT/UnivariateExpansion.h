@@ -59,7 +59,7 @@ class UnivariateExpansion: public ConditionalMapBase<MemorySpace>{
         Kokkos::fence();
     }
 
-    void GradientImpl(StridedMatrix<const double, MemorySpace> const& points,
+    void InputGradImpl(StridedMatrix<const double, MemorySpace> const& points,
         StridedMatrix<const double, MemorySpace> const& sens,
         StridedMatrix<double, MemorySpace> out) override {
 

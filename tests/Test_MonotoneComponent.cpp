@@ -724,12 +724,12 @@ TEST_CASE( "Testing monotone component derivative", "[MonotoneComponentDerivativ
 
     }
 
-    SECTION("GradientImpl") {
+    SECTION("InputGradImpl") {
 
             Kokkos::View<double**, HostSpace> evals("Evaluations", 1, numPts);
 
             Kokkos::View<double**, HostSpace> sens("Jacobian", dim+1, numPts);
-            REQUIRE_THROWS_AS(comp.GradientImpl(evalPts, sens, evals), std::invalid_argument);
+            REQUIRE_THROWS_AS(comp.InputGradImpl(evalPts, sens, evals), std::invalid_argument);
 
     }
 }

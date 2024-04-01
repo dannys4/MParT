@@ -242,7 +242,7 @@ TEST_CASE( "Testing factory method for Sigmoid Component", "[MapFactorySigmoidCo
         Kokkos::parallel_for("fill sensitivities", policy_pts, KOKKOS_LAMBDA(const int i){
             sens(0,i) = 1.0;
         });
-        Kokkos::View<double**, MemorySpace> grad = func->Gradient(pts, sens);
+        Kokkos::View<double**, MemorySpace> grad = func->InputGrad(pts, sens);
         CHECK(grad.extent(0)==inputDim);
         CHECK(grad.extent(1)==numPts);
         double fd_step = 1e-6;

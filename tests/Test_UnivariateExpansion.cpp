@@ -44,7 +44,7 @@ TEST_CASE("UnivariateExpansion") {
     SECTION("Gradient") {
         for(int order = 0; order <= maxOrder; order++) {
             coeffs(order) = 1.0;
-            StridedMatrix<double, MemorySpace> grad = expansion.Gradient(points, sens);
+            StridedMatrix<double, MemorySpace> grad = expansion.InputGrad(points, sens);
             REQUIRE(grad.extent(0) == 1);
             REQUIRE(grad.extent(1) == numPts);
             for(int i = 0; i < numPts; i++) {

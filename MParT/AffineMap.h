@@ -53,7 +53,7 @@ public:
                        StridedMatrix<const double, MemorySpace> const& sens,
                        StridedMatrix<double, MemorySpace>              output) override;
 
-    void GradientImpl(StridedMatrix<const double, MemorySpace> const& pts,
+    void InputGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
                       StridedMatrix<const double, MemorySpace> const& sens,
                       StridedMatrix<double, MemorySpace>              output) override;
 

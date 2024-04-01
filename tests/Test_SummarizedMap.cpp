@@ -176,7 +176,7 @@ TEST_CASE( "SummarizedMap", "[SummarizedMap_MonotoneComponent]" ) {
         Kokkos::View<double**,Kokkos::HostSpace> evals = sumMap->Evaluate(in);
         Kokkos::View<double**,Kokkos::HostSpace> evals2;
 
-        Kokkos::View<double**,Kokkos::HostSpace> inputGrad = sumMap->Gradient(in, sens);
+        Kokkos::View<double**,Kokkos::HostSpace> inputGrad = sumMap->InputGrad(in, sens);
 
         REQUIRE(inputGrad.extent(0)==sumMap->inputDim);
         REQUIRE(inputGrad.extent(1)==numSamps);

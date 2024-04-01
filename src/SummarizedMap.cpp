@@ -140,7 +140,7 @@ void SummarizedMap<MemorySpace>::InverseImpl(StridedMatrix<const double, MemoryS
 
 
 template<typename MemorySpace>
-void SummarizedMap<MemorySpace>::GradientImpl(StridedMatrix<const double, MemorySpace> const& pts,
+void SummarizedMap<MemorySpace>::InputGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
                                               StridedMatrix<const double, MemorySpace> const& sens,
                                               StridedMatrix<double, MemorySpace>              output)
 {
@@ -154,19 +154,19 @@ void SummarizedMap<MemorySpace>::GradientImpl(StridedMatrix<const double, Memory
     // Create a view for the gradient of comp_ wrt s(x_1) and x_2
     Kokkos::View<double**, MemorySpace> outputForSummaryAndX2("outputForSummaryAndX2", comp_->inputDim, pts.extent(1));
 
-    // GradientImpl of map
-    comp_->GradientImpl(summarizedPts, sens, outputForSummaryAndX2);
+    // InputGradImpl of map
+    comp_->InputGradImpl(summarizedPts, sens, outputForSummaryAndX2);
 
     // Split outputForSummaryAndX2 into summary and x2 parts
     Kokkos::View<double**, MemorySpace> outputForSummary = Kokkos::subview(outputForSummaryAndX2, std::make_pair(0,int(sumFunc_->outputDim)), Kokkos::ALL());
     Kokkos::View<double**, MemorySpace> outputForX2 = Kokkos::subview(outputForSummaryAndX2, std::make_pair(int(sumFunc_->outputDim),int(sumFunc_->outputDim+1)), Kokkos::ALL());
 
-    // GradientImpl of summary using outputForSummary as the sens. vectors (from chain-rule)
+    // InputGradImpl of summary using outputForSummary as the sens. vectors (from chain-rule)
     StridedMatrix<const double, MemorySpace>  x1 = Kokkos::subview(pts, std::make_pair(0,int(sumFunc_->inputDim)), Kokkos::ALL());
 
     // Copy results over to the output
     Kokkos::View<double**, MemorySpace> outputSubX1 = Kokkos::subview(output, std::make_pair(0,int(sumFunc_->inputDim)), Kokkos::ALL());
-    sumFunc_->GradientImpl(x1, outputForSummary, outputSubX1);
+    sumFunc_->InputGradImpl(x1, outputForSummary, outputSubX1);
 
     Kokkos::View<double**, MemorySpace> outputSubX2 = Kokkos::subview(output, std::make_pair(int(sumFunc_->inputDim),int(sumFunc_->inputDim+1)), Kokkos::ALL());
     Kokkos::deep_copy(outputSubX2, outputForX2);
@@ -215,7 +215,7 @@ void SummarizedMap<MemorySpace>::LogDeterminantInputGradImpl(StridedMatrix<const
     // Create a view for the gradient of comp_ wrt s(x_1) and x_2
     Kokkos::View<double**, MemorySpace> outputForSummaryAndX2("outputForSummaryAndX2", comp_->inputDim, pts.extent(1));
 
-    // GradientImpl of map
+    // InputGradImpl of map
     comp_->LogDeterminantInputGradImpl(summarizedPts, outputForSummaryAndX2);
 
     // Split outputForSummaryAndX2 into summary and x2 parts
@@ -225,9 +225,9 @@ void SummarizedMap<MemorySpace>::LogDeterminantInputGradImpl(StridedMatrix<const
     // Create a view for the gradient of comp_ wrt x_1
     Kokkos::View<double**, MemorySpace> outputForX1("outputForX1", sumFunc_->inputDim, pts.extent(1));
 
-    // GradientImpl of summary using outputForSummary as the sens. vectors (from chain-rule)
+    // InputGradImpl of summary using outputForSummary as the sens. vectors (from chain-rule)
     StridedMatrix<const double, MemorySpace>  x1 = Kokkos::subview(pts, std::make_pair(0,int(sumFunc_->inputDim)), Kokkos::ALL());
-    sumFunc_->GradientImpl(x1, outputForSummary, outputForX1);
+    sumFunc_->InputGradImpl(x1, outputForSummary, outputForX1);
 
     // Copy results over to the output
     Kokkos::View<double**, MemorySpace> outputSubX1 = Kokkos::subview(output, std::make_pair(0,int(sumFunc_->inputDim)), Kokkos::ALL());

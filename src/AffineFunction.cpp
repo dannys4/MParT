@@ -78,7 +78,7 @@ void AffineFunction<MemorySpace>::ParamGradImpl(StridedMatrix<const double, Memo
 }
     
 template<typename MemorySpace>
-void AffineFunction<MemorySpace>::GradientImpl(StridedMatrix<const double, MemorySpace> const& pts,  
+void AffineFunction<MemorySpace>::InputGradImpl(StridedMatrix<const double, MemorySpace> const& pts,  
                                           StridedMatrix<const double, MemorySpace> const& sens,
                                           StridedMatrix<double, MemorySpace>              output)
 {

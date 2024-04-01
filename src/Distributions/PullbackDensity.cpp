@@ -22,7 +22,7 @@ template<typename MemorySpace>
 void PullbackDensity<MemorySpace>::LogDensityInputGradImpl(StridedMatrix<const double, MemorySpace> const &pts, StridedMatrix<double, MemorySpace> output) {
     StridedMatrix<const double, MemorySpace> mappedPts = map_->Evaluate(pts);
     StridedMatrix<double, MemorySpace> sens_map = density_->LogDensityInputGrad(mappedPts);
-    map_->GradientImpl(pts, sens_map, output);
+    map_->InputGradImpl(pts, sens_map, output);
     StridedMatrix<double, MemorySpace> gradLogJacobian = map_->LogDeterminantInputGrad(pts);
     output += gradLogJacobian;
 }

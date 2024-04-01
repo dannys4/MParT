@@ -159,7 +159,7 @@ TEST_CASE( "Testing 3d triangular map from MonotoneComponents with moveParams=fa
         Kokkos::View<double**,Kokkos::HostSpace> evals = triMap->Evaluate(in);
         Kokkos::View<double**,Kokkos::HostSpace> evals2;
 
-        Kokkos::View<double**,Kokkos::HostSpace> inputGrad = triMap->Gradient(in, sens);
+        Kokkos::View<double**,Kokkos::HostSpace> inputGrad = triMap->InputGrad(in, sens);
 
         REQUIRE(inputGrad.extent(0)==triMap->inputDim);
         REQUIRE(inputGrad.extent(1)==numSamps);
@@ -442,7 +442,7 @@ TEST_CASE( "Testing TriangularMap made from smaller TriangularMaps with movePara
         Kokkos::View<double**,Kokkos::HostSpace> evals = triMap->Evaluate(in);
         Kokkos::View<double**,Kokkos::HostSpace> evals2;
 
-        Kokkos::View<double**,Kokkos::HostSpace> inputGrad = triMap->Gradient(in, sens);
+        Kokkos::View<double**,Kokkos::HostSpace> inputGrad = triMap->InputGrad(in, sens);
 
         REQUIRE(inputGrad.extent(0)==triMap->inputDim);
         REQUIRE(inputGrad.extent(1)==numSamps);
@@ -702,7 +702,7 @@ TEST_CASE( "Testing TriangularMap made using CreateSingleEntryMap", "[Triangular
         Kokkos::View<double**,Kokkos::HostSpace> evals = triMap->Evaluate(in);
         Kokkos::View<double**,Kokkos::HostSpace> evals2;
 
-        Kokkos::View<double**,Kokkos::HostSpace> inputGrad = triMap->Gradient(in, sens);
+        Kokkos::View<double**,Kokkos::HostSpace> inputGrad = triMap->InputGrad(in, sens);
 
         REQUIRE(inputGrad.extent(0)==triMap->inputDim);
         REQUIRE(inputGrad.extent(1)==numSamps);

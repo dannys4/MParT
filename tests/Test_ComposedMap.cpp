@@ -162,7 +162,7 @@ TEST_CASE( "Testing 2 layer composed map with moveParams=false", "[ShallowCompos
         Kokkos::View<double**,Kokkos::HostSpace> evals = composedMap->Evaluate(in);
         Kokkos::View<double**,Kokkos::HostSpace> evals2;
 
-        Kokkos::View<double**,Kokkos::HostSpace> inputGrad = composedMap->Gradient(in, sens);
+        Kokkos::View<double**,Kokkos::HostSpace> inputGrad = composedMap->InputGrad(in, sens);
 
         REQUIRE(inputGrad.extent(0)==composedMap->inputDim);
         REQUIRE(inputGrad.extent(1)==numSamps);
@@ -403,7 +403,7 @@ TEST_CASE( "Testing 2 layer composed map with moveParams=true", "[ShallowCompose
         Kokkos::View<double**,Kokkos::HostSpace> evals = composedMap->Evaluate(in);
         Kokkos::View<double**,Kokkos::HostSpace> evals2;
 
-        Kokkos::View<double**,Kokkos::HostSpace> inputGrad = composedMap->Gradient(in, sens);
+        Kokkos::View<double**,Kokkos::HostSpace> inputGrad = composedMap->InputGrad(in, sens);
 
         REQUIRE(inputGrad.extent(0)==composedMap->inputDim);
         REQUIRE(inputGrad.extent(1)==numSamps);
@@ -610,7 +610,7 @@ TEST_CASE( "Testing 5 layer composed map with moveParams=false", "[DeepComposedM
         Kokkos::View<double**,Kokkos::HostSpace> evals = composedMap->Evaluate(in);
         Kokkos::View<double**,Kokkos::HostSpace> evals2;
 
-        Kokkos::View<double**,Kokkos::HostSpace> inputGrad = composedMap->Gradient(in, sens);
+        Kokkos::View<double**,Kokkos::HostSpace> inputGrad = composedMap->InputGrad(in, sens);
 
         REQUIRE(inputGrad.extent(0)==composedMap->inputDim);
         REQUIRE(inputGrad.extent(1)==numSamps);
@@ -841,7 +841,7 @@ TEST_CASE( "Testing 8 layer composed map with moveParams=true", "[DeepComposedMa
         Kokkos::View<double**,Kokkos::HostSpace> evals = composedMap->Evaluate(in);
         Kokkos::View<double**,Kokkos::HostSpace> evals2;
 
-        Kokkos::View<double**,Kokkos::HostSpace> inputGrad = composedMap->Gradient(in, sens);
+        Kokkos::View<double**,Kokkos::HostSpace> inputGrad = composedMap->InputGrad(in, sens);
 
         REQUIRE(inputGrad.extent(0)==composedMap->inputDim);
         REQUIRE(inputGrad.extent(1)==numSamps);

@@ -300,7 +300,7 @@ void ComposedMap<MemorySpace>::EvaluateImpl(StridedMatrix<const double, MemorySp
 }
 
 template<typename MemorySpace>
-void ComposedMap<MemorySpace>::GradientImpl(StridedMatrix<const double, MemorySpace> const& pts,
+void ComposedMap<MemorySpace>::InputGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
                                             StridedMatrix<const double, MemorySpace> const& sens,
                                             StridedMatrix<double, MemorySpace>              output)
 {
@@ -323,7 +323,7 @@ void ComposedMap<MemorySpace>::GradientImpl(StridedMatrix<const double, MemorySp
         auto input = checker.GetLayerInput(i);
 
         //s_{i-1}^T = s_{i}^T J_i(x*)
-        maps_.at(i)->GradientImpl(input, intSens1, intSens2);
+        maps_.at(i)->InputGradImpl(input, intSens1, intSens2);
         simple_swap<decltype(intSens1)>(intSens1, intSens2);
     }
 
@@ -388,7 +388,7 @@ void ComposedMap<MemorySpace>::ParamGradImpl(StridedMatrix<const double, MemoryS
         // increment sens to for next iteration
         //s_{i-1}^T = s_{i}^T J_i(x*)
         if(i>0){
-            maps_.at(i)->GradientImpl(input, intSens1, intSens2);
+            maps_.at(i)->InputGradImpl(input, intSens1, intSens2);
             simple_swap<decltype(intSens1)>(intSens1,intSens2);
         }
         endParamDim -= maps_.at(i)->numParams;
@@ -441,7 +441,7 @@ void ComposedMap<MemorySpace>::LogDeterminantParamGradImpl(StridedMatrix<const d
 
         if(i>0){
             // Gradient wrt input
-            maps_.at(i)->GradientImpl(input, intSens1, intSens2);
+            maps_.at(i)->InputGradImpl(input, intSens1, intSens2);
             simple_swap<decltype(intSens1)>(intSens1, intSens2);
 
             // Add sensitivity of log determinant to input
@@ -474,7 +474,7 @@ void ComposedMap<MemorySpace>::LogDeterminantInputGradImpl(StridedMatrix<const d
         input = checker.GetLayerInput(i);
 
         //s_{i-1}^T = s_{i}^T J_i(x*)
-        maps_.at(i)->GradientImpl(input, intSens1, intSens2);
+        maps_.at(i)->InputGradImpl(input, intSens1, intSens2);
         simple_swap<decltype(intSens1)>(intSens1, intSens2);
 
         maps_.at(i)->LogDeterminantInputGradImpl(input, intSens2);

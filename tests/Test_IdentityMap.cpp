@@ -101,7 +101,7 @@ TEST_CASE( "Testing identity map", "[IdentityMap]" ) {
         Kokkos::View<double**,Kokkos::HostSpace> evals = map->Evaluate(pts);
         Kokkos::View<double**,Kokkos::HostSpace> evals2;
 
-        Kokkos::View<double**,Kokkos::HostSpace> inputGrad = map->Gradient(pts, sens);
+        Kokkos::View<double**,Kokkos::HostSpace> inputGrad = map->InputGrad(pts, sens);
 
         REQUIRE(inputGrad.extent(0)==map->inputDim);
         REQUIRE(inputGrad.extent(1)==numPts);

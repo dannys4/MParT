@@ -61,8 +61,8 @@ TEST_CASE("RectifiedMultivariateExpansion, Unrectified", "[RMVE_NoRect]") {
     for(int i = 0; i < numPts; i++) sens(0,i) = i % 3 ? 0.5 : -0.5;
 
     SECTION("Gradient") {
-        StridedMatrix<double, MemorySpace> grad_ref = mve.Gradient(points, sens);
-        StridedMatrix<double, MemorySpace> grad_rect = rect_mve.Gradient(points, sens);
+        StridedMatrix<double, MemorySpace> grad_ref = mve.InputGrad(points, sens);
+        StridedMatrix<double, MemorySpace> grad_rect = rect_mve.InputGrad(points, sens);
         REQUIRE(grad_rect.extent(0) == dim);
         REQUIRE(grad_rect.extent(1) == numPts);
         for(int i = 0; i < numPts; i++) {
@@ -333,7 +333,7 @@ TEMPLATE_TEST_CASE("Multiple Sigmoid RectifiedMultivariateExpansion","[multi_sig
     StridedMatrix<double, MemorySpace> eval = expansion.Evaluate(points);
     double fd_step = 1e-6;
     SECTION("Gradient") {
-        StridedMatrix<double, MemorySpace> grad_rect = expansion.Gradient(points, sens);
+        StridedMatrix<double, MemorySpace> grad_rect = expansion.InputGrad(points, sens);
         Kokkos::View<double**, MemorySpace> eval_fd ("EvaluateImpl storage", 1, numPts);
         REQUIRE(grad_rect.extent(0) == dim);
         REQUIRE(grad_rect.extent(1) == numPts);

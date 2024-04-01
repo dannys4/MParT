@@ -113,7 +113,7 @@ TEST_CASE( "Testing multivariate expansion", "[MultivariateExpansion]") {
                 sens(d,ptInd) = 1.0;
 
             // Evaluate the gradient
-            grads = func.Gradient(pts,sens);
+            grads = func.InputGrad(pts,sens);
 
             REQUIRE(grads.extent(0)==inDim);
             REQUIRE(grads.extent(1)==numPts);

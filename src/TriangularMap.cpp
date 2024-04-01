@@ -185,7 +185,7 @@ void TriangularMap<MemorySpace>::InverseInplace(StridedMatrix<double, MemorySpac
 
 
 template<typename MemorySpace>
-void TriangularMap<MemorySpace>::GradientImpl(StridedMatrix<const double, MemorySpace> const& pts,
+void TriangularMap<MemorySpace>::InputGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
                                               StridedMatrix<const double, MemorySpace> const& sens,
                                               StridedMatrix<double, MemorySpace>              output)
 {
@@ -210,7 +210,7 @@ void TriangularMap<MemorySpace>::GradientImpl(StridedMatrix<const double, Memory
         subSens = Kokkos::subview(sens, std::make_pair(startOutDim,int(startOutDim+comps_.at(i)->outputDim)), Kokkos::ALL());
 
         Kokkos::View<double**, MemorySpace> subOut("Component Jacobian", comps_.at(i)->inputDim, pts.extent(1));
-        comps_.at(i)->GradientImpl(subPts, subSens, subOut);
+        comps_.at(i)->InputGradImpl(subPts, subSens, subOut);
 
         dim = comps_.at(i)->inputDim;
         Kokkos::parallel_for(policy, KOKKOS_LAMBDA(const int& ptInd){

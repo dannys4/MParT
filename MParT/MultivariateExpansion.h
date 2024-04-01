@@ -93,7 +93,7 @@ namespace mpart{
             Kokkos::fence();
         }
 
-        virtual void GradientImpl(StridedMatrix<const double, MemorySpace> const& pts,  
+        virtual void InputGradImpl(StridedMatrix<const double, MemorySpace> const& pts,  
                                   StridedMatrix<const double, MemorySpace> const& sens,
                                   StridedMatrix<double, MemorySpace>              output) override
         {

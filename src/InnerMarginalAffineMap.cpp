@@ -149,7 +149,7 @@ void InnerMarginalAffineMap<MemorySpace>::LogDeterminantInputGradImpl(StridedMat
 }
 
 template<typename MemorySpace>
-void InnerMarginalAffineMap<MemorySpace>::GradientImpl(StridedMatrix<const double, MemorySpace> const& pts,
+void InnerMarginalAffineMap<MemorySpace>::InputGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
                                           StridedMatrix<const double, MemorySpace> const& sens,
                                           StridedMatrix<double, MemorySpace>              output)
 {
@@ -159,7 +159,7 @@ void InnerMarginalAffineMap<MemorySpace>::GradientImpl(StridedMatrix<const doubl
     Kokkos::parallel_for(policy, KOKKOS_CLASS_LAMBDA(const int& i, const int& j) {
         tmp(i,j) = pts(i,j)*scale_(i) + shift_(i);
     });
-    map_->GradientImpl(tmp, sens, output);
+    map_->InputGradImpl(tmp, sens, output);
     int out_n1 = output.extent(0), out_n2 = output.extent(1);
     Kokkos::MDRangePolicy<Kokkos::Rank<2>, typename MemoryToExecution<MemorySpace>::Space> policy2({0, 0}, {out_n1, out_n2});
     Kokkos::parallel_for("InnerMarginalAffineMap Gradient", policy2, KOKKOS_CLASS_LAMBDA(const int& i, const int& j) {

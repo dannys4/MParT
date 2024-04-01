@@ -57,7 +57,7 @@ void IdentityMap<MemorySpace>::ParamGradImpl(StridedMatrix<const double, MemoryS
 }
 
 template<typename MemorySpace>
-void IdentityMap<MemorySpace>::GradientImpl(StridedMatrix<const double, MemorySpace> const& pts,  
+void IdentityMap<MemorySpace>::InputGradImpl(StridedMatrix<const double, MemorySpace> const& pts,  
                             StridedMatrix<const double, MemorySpace> const& sens,
                             StridedMatrix<double, MemorySpace>              output)
 {

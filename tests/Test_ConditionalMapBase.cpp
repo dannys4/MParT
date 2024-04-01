@@ -15,7 +15,7 @@ public:
     virtual void EvaluateImpl(StridedMatrix<const double, MemorySpace> const& pts,
                               StridedMatrix<double, MemorySpace>              output) override{Kokkos::deep_copy(output,pts);};
 
-    virtual void GradientImpl(StridedMatrix<const double, MemorySpace> const& pts,  
+    virtual void InputGradImpl(StridedMatrix<const double, MemorySpace> const& pts,  
                                StridedMatrix<const double, MemorySpace> const& sens,
                                StridedMatrix<double, MemorySpace>              output) override
     {
