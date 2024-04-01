@@ -7,7 +7,7 @@
 using namespace mpart;
 
 template<typename MemorySpace>
-TriangularMap<MemorySpace>::TriangularMap(std::vector<std::shared_ptr<ConditionalMapBase<MemorySpace>>> const& components, bool moveCoeffs) : ConditionalMapBase<MemorySpace>(components.back()->inputDim,
+TriangularMap<MemorySpace>::TriangularMap(std::vector<std::shared_ptr<ConditionalMapBase<MemorySpace>>> const& components, bool moveParams) : ConditionalMapBase<MemorySpace>(components.back()->inputDim,
                         std::accumulate(components.begin(), components.end(), 0, [](size_t sum, std::shared_ptr<ConditionalMapBase<MemorySpace>> const& comp){ return sum + comp->outputDim; }),
                         std::accumulate(components.begin(), components.end(), 0, [](size_t sum, std::shared_ptr<ConditionalMapBase<MemorySpace>> const& comp){ return sum + comp->numParams; })),
                         comps_(components)
@@ -37,8 +37,8 @@ TriangularMap<MemorySpace>::TriangularMap(std::vector<std::shared_ptr<Conditiona
     }
 
 
-    // if moveCoeffs is set to true, we check if each component's coeffs are set, and then copy them into the new triangular map's coeffs
-    if(moveCoeffs){
+    // if moveParams is set to true, we check if each component's coeffs are set, and then copy them into the new triangular map's coeffs
+    if(moveParams){
 
         Kokkos::View<double*,MemorySpace> coeffs("coeffs", this->numParams);
         unsigned int cumNumCoeffs = 0;
@@ -47,7 +47,7 @@ TriangularMap<MemorySpace>::TriangularMap(std::vector<std::shared_ptr<Conditiona
 
             if(!comps_.at(i)->CheckParameters()){
                 std::stringstream msg;
-                msg << "In TriangularMap constructor, moveCoeffs set to true, but component " << i <<" doesn't have coeffs set";
+                msg << "In TriangularMap constructor, moveParams set to true, but component " << i <<" doesn't have coeffs set";
                 throw std::invalid_argument(msg.str());
             }
 

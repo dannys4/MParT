@@ -38,11 +38,11 @@ namespace mpart {
          @details Typically the ConditionalMapBase class is not constructed directly.  The preferred way of creating a ConditionalMapBase object is through factory methods in the mpart::MapFactory namespace.
          @param inDim The dimension \f$N\f$ of the input to this map.
          @param outDim The dimension \f$M\f$ of the output from this map.
-         @param nCoeffs The number of coefficients in the map parameterization.
+         @param nParams The number of coefficients in the map parameterization.
          */
-        ConditionalMapBase(unsigned int inDim, unsigned int outDim, unsigned int nCoeffs) : ParameterizedFunctionBase<MemorySpace>(inDim, outDim, nCoeffs){};
+        ConditionalMapBase(unsigned int inDim, unsigned int outDim, unsigned int nParams) : ParameterizedFunctionBase<MemorySpace>(inDim, outDim, nParams){};
 
-        ConditionalMapBase(unsigned int inDim, unsigned int outDim, unsigned int nCoeffs, Kokkos::View<const double*, MemorySpace> coeffsIn) : ParameterizedFunctionBase<MemorySpace>(inDim, outDim, nCoeffs, coeffsIn){};
+        ConditionalMapBase(unsigned int inDim, unsigned int outDim, unsigned int nParams, Kokkos::View<const double*, MemorySpace> coeffsIn) : ParameterizedFunctionBase<MemorySpace>(inDim, outDim, nParams, coeffsIn){};
 
         virtual ~ConditionalMapBase() = default;
 

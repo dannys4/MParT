@@ -22,7 +22,7 @@ template<typename MemorySpace>
 InnerMarginalAffineMap<MemorySpace>::InnerMarginalAffineMap(StridedVector<double,MemorySpace> scale,
                                   StridedVector<double,MemorySpace> shift,
                                   std::shared_ptr<ConditionalMapBase<MemorySpace>> map,
-                                  bool moveCoeffs) :
+                                  bool moveParams) :
                                   ConditionalMapBase<MemorySpace>(map->inputDim, map->outputDim, map->numParams),
                                   scale_("scale", scale.extent(0)),
                                   shift_("shift", shift.extent(0)),
@@ -37,7 +37,7 @@ InnerMarginalAffineMap<MemorySpace>::InnerMarginalAffineMap(StridedVector<double
 
     logDet_ = CalculateLogDet(scale);
     this->SetParams(map->Coeffs());
-    if (moveCoeffs) {
+    if (moveParams) {
         map->WrapParams(this->savedParams);
     }
 }

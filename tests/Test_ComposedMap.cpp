@@ -9,7 +9,7 @@ using namespace mpart;
 using namespace Catch;
 using MemorySpace = Kokkos::HostSpace;
 
-TEST_CASE( "Testing 2 layer composed map with moveCoeffs=false", "[ShallowComposedMap]" ) {
+TEST_CASE( "Testing 2 layer composed map with moveParams=false", "[ShallowComposedMap]" ) {
 
     MapOptions options;
     options.basisType = BasisTypes::ProbabilistHermite;
@@ -248,7 +248,7 @@ TEST_CASE( "Testing 2 layer composed map with moveCoeffs=false", "[ShallowCompos
 
 }
 
-TEST_CASE( "Testing 2 layer composed map with moveCoeffs=true", "[ShallowComposedMap]" ) {
+TEST_CASE( "Testing 2 layer composed map with moveParams=true", "[ShallowComposedMap]" ) {
 
     MapOptions options;
     options.basisType = BasisTypes::ProbabilistHermite;
@@ -274,8 +274,8 @@ TEST_CASE( "Testing 2 layer composed map with moveCoeffs=true", "[ShallowCompose
 
         maps.at(i)->SetParams(coeffs_.at(i));
     }
-    bool moveCoeffs=true;
-    std::shared_ptr<ConditionalMapBase<MemorySpace>> composedMap = std::make_shared<ComposedMap<MemorySpace>>(maps,moveCoeffs);
+    bool moveParams=true;
+    std::shared_ptr<ConditionalMapBase<MemorySpace>> composedMap = std::make_shared<ComposedMap<MemorySpace>>(maps,moveParams);
 
     CHECK(composedMap->outputDim == dim);
     CHECK(composedMap->inputDim == dim);
@@ -489,7 +489,7 @@ TEST_CASE( "Testing 2 layer composed map with moveCoeffs=true", "[ShallowCompose
 
 }
 
-TEST_CASE( "Testing 5 layer composed map with moveCoeffs=false", "[DeepComposedMap]" ) {
+TEST_CASE( "Testing 5 layer composed map with moveParams=false", "[DeepComposedMap]" ) {
 
     MapOptions options;
     options.basisType = BasisTypes::ProbabilistHermite;
@@ -696,7 +696,7 @@ TEST_CASE( "Testing 5 layer composed map with moveCoeffs=false", "[DeepComposedM
 
 }
 
-TEST_CASE( "Testing 8 layer composed map with moveCoeffs=true", "[DeepComposedMap]" ) {
+TEST_CASE( "Testing 8 layer composed map with moveParams=true", "[DeepComposedMap]" ) {
 
     MapOptions options;
     options.basisType = BasisTypes::ProbabilistHermite;
@@ -722,8 +722,8 @@ TEST_CASE( "Testing 8 layer composed map with moveCoeffs=true", "[DeepComposedMa
 
         maps.at(i)->SetParams(coeffs_.at(i));
     }
-    bool moveCoeffs=true;
-    std::shared_ptr<ConditionalMapBase<MemorySpace>> composedMap = std::make_shared<ComposedMap<MemorySpace>>(maps,moveCoeffs,numChecks);
+    bool moveParams=true;
+    std::shared_ptr<ConditionalMapBase<MemorySpace>> composedMap = std::make_shared<ComposedMap<MemorySpace>>(maps,moveParams,numChecks);
 
     CHECK(composedMap->outputDim == dim);
     CHECK(composedMap->inputDim == dim);

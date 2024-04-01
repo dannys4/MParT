@@ -19,7 +19,7 @@ public:
     InnerMarginalAffineMap(StridedVector<double,MemorySpace> scale,
     StridedVector<double,MemorySpace> shift,
     std::shared_ptr<ConditionalMapBase<MemorySpace>> map,
-    bool moveCoeffs = true);
+    bool moveParams = true);
 
     virtual ~InnerMarginalAffineMap() = default;
 

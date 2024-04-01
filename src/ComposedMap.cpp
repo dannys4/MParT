@@ -132,7 +132,7 @@ Kokkos::View<double**, Kokkos::LayoutLeft, MemorySpace> ComposedMap<MemorySpace>
 
 
 template<typename MemorySpace>
-ComposedMap<MemorySpace>::ComposedMap(std::vector<std::shared_ptr<ConditionalMapBase<MemorySpace>>> const& maps, bool moveCoeffs,
+ComposedMap<MemorySpace>::ComposedMap(std::vector<std::shared_ptr<ConditionalMapBase<MemorySpace>>> const& maps, bool moveParams,
                                       int maxChecks) : ConditionalMapBase<MemorySpace>(maps.front()->inputDim,
                                                                                        maps.front()->inputDim,
                                                                                        std::accumulate(maps.begin(), maps.end(), 0, [](size_t sum, std::shared_ptr<ConditionalMapBase<MemorySpace>> const& comp){ return sum + comp->numParams; })),
@@ -154,8 +154,8 @@ ComposedMap<MemorySpace>::ComposedMap(std::vector<std::shared_ptr<ConditionalMap
         throw std::invalid_argument(msg.str());
     }
 
-    // if moveCoeffs is set to true, we check if each map's coeffs are set, and then copy them into the new composed map's coeffs
-    if(moveCoeffs){
+    // if moveParams is set to true, we check if each map's coeffs are set, and then copy them into the new composed map's coeffs
+    if(moveParams){
 
         Kokkos::View<double*,MemorySpace> coeffs("coeffs", this->numParams);
         unsigned int cumNumCoeffs = 0;
@@ -164,7 +164,7 @@ ComposedMap<MemorySpace>::ComposedMap(std::vector<std::shared_ptr<ConditionalMap
 
             if(!maps_.at(i)->CheckParameters()){
                 std::stringstream msg;
-                msg << "In ComposedMap constructor, moveCoeffs set to true, but map " << i <<" doesn't have coeffs set";
+                msg << "In ComposedMap constructor, moveParams set to true, but map " << i <<" doesn't have coeffs set";
                 throw std::invalid_argument(msg.str());
             }
 

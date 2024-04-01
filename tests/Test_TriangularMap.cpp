@@ -7,7 +7,7 @@ using namespace mpart;
 using namespace Catch;
 using MemorySpace = Kokkos::HostSpace;
 
-TEST_CASE( "Testing 3d triangular map from MonotoneComponents with moveCoeffs=false", "[TriangularMap_MonotoneComponents]" ) {
+TEST_CASE( "Testing 3d triangular map from MonotoneComponents with moveParams=false", "[TriangularMap_MonotoneComponents]" ) {
 
     MapOptions options;
     options.basisType = BasisTypes::ProbabilistHermite;
@@ -220,7 +220,7 @@ TEST_CASE( "Testing 3d triangular map from MonotoneComponents with moveCoeffs=fa
     }
 }
 
-TEST_CASE( "Testing 3d triangular map from MonotoneComponents with moveCoeffs=true", "[TriangularMap_MonotoneComponents]" ) {
+TEST_CASE( "Testing 3d triangular map from MonotoneComponents with moveParams=true", "[TriangularMap_MonotoneComponents]" ) {
 
     MapOptions options;
     options.basisType = BasisTypes::ProbabilistHermite;
@@ -251,8 +251,8 @@ TEST_CASE( "Testing 3d triangular map from MonotoneComponents with moveCoeffs=tr
         blocks.at(i)->SetParams(coeffs_.at(i));
 
     }
-    bool moveCoeffs=true;
-    std::shared_ptr<ConditionalMapBase<MemorySpace>> triMap = std::make_shared<TriangularMap<MemorySpace>>(blocks, moveCoeffs);
+    bool moveParams=true;
+    std::shared_ptr<ConditionalMapBase<MemorySpace>> triMap = std::make_shared<TriangularMap<MemorySpace>>(blocks, moveParams);
 
     CHECK(triMap->outputDim == numBlocks);
     CHECK(triMap->inputDim == numBlocks+extraInputs);
@@ -279,7 +279,7 @@ TEST_CASE( "Testing 3d triangular map from MonotoneComponents with moveCoeffs=tr
 
 
 
-TEST_CASE( "Testing TriangularMap made from smaller TriangularMaps with moveCoeffs=false", "[TriangularMap_TriangularMaps]" ) {
+TEST_CASE( "Testing TriangularMap made from smaller TriangularMaps with moveParams=false", "[TriangularMap_TriangularMaps]" ) {
 
     MapOptions options;
     options.basisType = BasisTypes::ProbabilistHermite;
@@ -505,7 +505,7 @@ TEST_CASE( "Testing TriangularMap made from smaller TriangularMaps with moveCoef
 }
 
 
-TEST_CASE( "Testing TriangularMap made from smaller TriangularMaps with moveCoeffs=true", "[TriangularMap_TriangularMaps]" ) {
+TEST_CASE( "Testing TriangularMap made from smaller TriangularMaps with moveParams=true", "[TriangularMap_TriangularMaps]" ) {
 
     MapOptions options;
     unsigned int maxDegree = 2;
@@ -531,8 +531,8 @@ TEST_CASE( "Testing TriangularMap made from smaller TriangularMaps with moveCoef
         blocks.at(i)->SetParams(coeffs_.at(i));
     }
 
-    bool moveCoeffs = true;
-    std::shared_ptr<ConditionalMapBase<MemorySpace>> triMap = std::make_shared<TriangularMap<MemorySpace>>(blocks,moveCoeffs);
+    bool moveParams = true;
+    std::shared_ptr<ConditionalMapBase<MemorySpace>> triMap = std::make_shared<TriangularMap<MemorySpace>>(blocks,moveParams);
 
     CHECK(triMap->outputDim == dim);
     CHECK(triMap->inputDim == dim);

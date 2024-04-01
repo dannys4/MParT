@@ -18,7 +18,7 @@ void mpart::binding::TriangularMapWrapper(py::module &m)
 
     // TriangularMap
     py::class_<TriangularMap<MemorySpace>, ConditionalMapBase<MemorySpace>, ParameterizedFunctionBase<MemorySpace>, std::shared_ptr<TriangularMap<MemorySpace>>>(m, tName.c_str())
-        .def(py::init<std::vector<std::shared_ptr<ConditionalMapBase<MemorySpace>>>, bool>(), py::arg("comps"), py::arg("moveCoeffs") = false)
+        .def(py::init<std::vector<std::shared_ptr<ConditionalMapBase<MemorySpace>>>, bool>(), py::arg("comps"), py::arg("moveParams") = false)
         .def("GetComponent", &TriangularMap<MemorySpace>::GetComponent)
 #if defined(MPART_HAS_CEREAL)
         .def(py::pickle(

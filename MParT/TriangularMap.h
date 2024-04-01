@@ -43,11 +43,11 @@ public:
 
     @param components A vector of ConditionalMapBase objects defining each \f$T_k\f$ in the block triangular map.
                       To maintain the correct block structure, the dimensions of the components must satisfy \f$N_k = N_{k-1}+M_{k}\f$.
-    @param moveCoeffs A boolean to choose whether to keep the coefficients from the maps in `components` or make new ones. If true,
+    @param moveParams A boolean to choose whether to keep the coefficients from the maps in `components` or make new ones. If true,
                       the new object takes ownership of all the coefficients vectors within all the maps in `components` (changing the coefficients
                       in the new map will then change the coefficients in the original maps). If false, no coefficients are copied or created.
     */
-    TriangularMap(std::vector<std::shared_ptr<ConditionalMapBase<MemorySpace>>> const& components, bool moveCoeffs=false);
+    TriangularMap(std::vector<std::shared_ptr<ConditionalMapBase<MemorySpace>>> const& components, bool moveParams=false);
 
     virtual ~TriangularMap() = default;
 
@@ -129,8 +129,8 @@ public:
     {
         ar(cereal::base_class<ConditionalMapBase<MemorySpace>>(this), comps_);
 
-        bool moveCoeffs = (this->savedParams.is_allocated() && (this->savedParams.size()>0));
-        ar(comps_, moveCoeffs);
+        bool moveParams = (this->savedParams.is_allocated() && (this->savedParams.size()>0));
+        ar(comps_, moveParams);
     }
 
     template <class Archive>
@@ -139,10 +139,10 @@ public:
         std::vector<std::shared_ptr<ConditionalMapBase<MemorySpace>>> comps;
         ar(comps);
         
-        bool moveCoeffs;
-        ar(moveCoeffs);
+        bool moveParams;
+        ar(moveParams);
 
-        construct( comps , moveCoeffs);
+        construct( comps , moveParams);
     }
 
 #endif // MPART_HAS_CEREAL
