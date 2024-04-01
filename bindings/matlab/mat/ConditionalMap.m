@@ -125,22 +125,38 @@ methods
   end
 
   function SetCoeffs(this,coeffs)
-    MParT_('ConditionalMap_SetCoeffs',this.id_,coeffs(:));
+    warning("Coeff terminology is deprecated, use SetParams instead")
+    MParT_('ConditionalMap_SetParams',this.id_,coeffs(:));
+  end
+
+  function SetParams(this,coeffs)
+    MParT_('ConditionalMap_SetParams',this.id_,coeffs(:));
   end
 
   function result = Coeffs(this)
-    result = MParT_('ConditionalMap_Coeffs',this.id_);
+    warning("Coeff terminology is deprecated, use Params instead")
+    result = MParT_('ConditionalMap_Params',this.id_);
+  end
+
+  function result = Params(this)
+    result = MParT_('ConditionalMap_Params',this.id_);
   end
 
   function result = CoeffMap(this)
-    result = MParT_('ConditionalMap_CoeffMap',this.id_);
+    warning("Coeff terminology is deprecated, use ParamMap instead")
+    result = MParT_('ConditionalMap_ParamMap',this.id_);
   end
 
-  function result = numParams(this)
-    result = MParT_('ConditionalMap_numParams',this.id_);
+  function result = ParamMap(this)
+    result = MParT_('ConditionalMap_ParamMap',this.id_);
   end
 
   function result = numCoeffs(this)
+    warning("Coeff terminology is deprecated, use numParams instead")
+    result = MParT_('ConditionalMap_numParams',this.id_);
+  end
+
+  function result = numParams(this)
     result = MParT_('ConditionalMap_numParams',this.id_);
   end
 
@@ -160,18 +176,36 @@ methods
   end
 
   function result = CoeffGrad(this,pts,sens)
+    warning("Coeff terminology is deprecated, use ParamGrad instead")
     result = zeros(this.numParams, size(pts,2));
-    MParT_('ConditionalMap_CoeffGrad',this.id_,pts,sens,result);
+    MParT_('ConditionalMap_ParamGrad',this.id_,pts,sens,result);
+  end
+
+  function result = ParamGrad(this,pts,sens)
+    result = zeros(this.numParams, size(pts,2));
+    MParT_('ConditionalMap_ParamGrad',this.id_,pts,sens,result);
   end
 
   function result = Gradient(this,pts,sens)
+    warning("Gradient is deprecated, use InputGrad instead")
     result = zeros(size(pts,1), size(pts,2));
-    MParT_('ConditionalMap_Gradient',this.id_,pts,sens,result);
+    MParT_('ConditionalMap_InputGrad',this.id_,pts,sens,result);
+  end
+
+  function result = InputGrad(this,pts,sens)
+    result = zeros(size(pts,1), size(pts,2));
+    MParT_('ConditionalMap_InputGrad',this.id_,pts,sens,result);
   end
 
   function result = LogDeterminantCoeffGrad(this,pts)
+    warning("Coeff terminology is deprecated, use LogDeterminantParamGrad instead")
     result = zeros(this.numParams, size(pts,2));
-    MParT_('ConditionalMap_LogDeterminantCoeffGrad',this.id_,pts,result);
+    MParT_('ConditionalMap_LogDeterminantParamGrad',this.id_,pts,result);
+  end
+
+  function result = LogDeterminantParamGrad(this,pts)
+    result = zeros(this.numParams, size(pts,2));
+    MParT_('ConditionalMap_LogDeterminantParamGrad',this.id_,pts,result);
   end
 
   function result = LogDeterminantInputGrad(this,pts)

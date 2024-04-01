@@ -56,31 +56,31 @@ MEX_DEFINE(ParameterizedFunction_delete) (int nlhs, mxArray* plhs[],
   Session<ParameterizedFunctionMex>::destroy(input.get(0));
 }
 
-MEX_DEFINE(ParameterizedFunction_SetCoeffs) (int nlhs, mxArray* plhs[],
+MEX_DEFINE(ParameterizedFunction_SetParams) (int nlhs, mxArray* plhs[],
                  int nrhs, const mxArray* prhs[]) {
   InputArguments input(nrhs, prhs, 2);
   OutputArguments output(nlhs, plhs, 0);
   const ParameterizedFunctionMex& parFunc = Session<ParameterizedFunctionMex>::getConst(input.get(0));
-  auto coeffs = MexToKokkos1d(prhs[1]);
-  parFunc.fun_ptr->SetCoeffs(coeffs);
+  auto params = MexToKokkos1d(prhs[1]);
+  parFunc.fun_ptr->SetParams(params);
 }
 
-MEX_DEFINE(ParameterizedFunction_Coeffs) (int nlhs, mxArray* plhs[],
+MEX_DEFINE(ParameterizedFunction_Params) (int nlhs, mxArray* plhs[],
                                   int nrhs, const mxArray* prhs[]) {
   InputArguments input(nrhs, prhs, 1);
   OutputArguments output(nlhs, plhs, 1);
   const ParameterizedFunctionMex& parFunc = Session<ParameterizedFunctionMex>::getConst(input.get(0));
-  auto coeffs = KokkosToVec(parFunc.fun_ptr->Coeffs());
-  output.set(0,coeffs);
+  auto params = KokkosToVec(parFunc.fun_ptr->Params());
+  output.set(0,params);
 }
 
-MEX_DEFINE(ParameterizedFunction_CoeffMap) (int nlhs, mxArray* plhs[],
+MEX_DEFINE(ParameterizedFunction_ParamMap) (int nlhs, mxArray* plhs[],
                  int nrhs, const mxArray* prhs[]) {
   InputArguments input(nrhs, prhs, 1);
   OutputArguments output(nlhs, plhs, 1);
   const ParameterizedFunctionMex& parFunc = Session<ParameterizedFunctionMex>::getConst(input.get(0));
-  auto coeffs = parFunc.fun_ptr->CoeffMap();
-  output.set(0,coeffs);
+  auto params = parFunc.fun_ptr->ParamMap();
+  output.set(0,params);
 }
 
 MEX_DEFINE(ParameterizedFunction_numParams) (int nlhs, mxArray* plhs[],
@@ -88,8 +88,8 @@ MEX_DEFINE(ParameterizedFunction_numParams) (int nlhs, mxArray* plhs[],
   InputArguments input(nrhs, prhs, 1);
   OutputArguments output(nlhs, plhs, 1);
   const ParameterizedFunctionMex& parFunc = Session<ParameterizedFunctionMex>::getConst(input.get(0));
-  auto numcoeffs = parFunc.fun_ptr->numParams;
-  output.set(0,numcoeffs);
+  auto num_params = parFunc.fun_ptr->numParams;
+  output.set(0,num_params);
 }
 
 MEX_DEFINE(ParameterizedFunction_outputDim) (int nlhs, mxArray* plhs[],
@@ -121,7 +121,7 @@ MEX_DEFINE(ParameterizedFunction_Evaluate) (int nlhs, mxArray* plhs[],
   parFunc.fun_ptr->EvaluateImpl(pts, out);
 }
 
-MEX_DEFINE(ParameterizedFunction_CoeffGrad) (int nlhs, mxArray* plhs[],
+MEX_DEFINE(ParameterizedFunction_ParamGrad) (int nlhs, mxArray* plhs[],
                                       int nrhs, const mxArray* prhs[]) {
 
   InputArguments input(nrhs, prhs, 4);
@@ -133,7 +133,7 @@ MEX_DEFINE(ParameterizedFunction_CoeffGrad) (int nlhs, mxArray* plhs[],
   auto sens = MexToKokkos2d(prhs[2]);
   auto out = MexToKokkos2d(prhs[3]);
 
-  parFunc.fun_ptr->CoeffGradImpl(pts,sens,out);
+  parFunc.fun_ptr->ParamGradImpl(pts,sens,out);
 }
 
 MEX_DEFINE(ParameterizedFunction_Gradient) (int nlhs, mxArray* plhs[],
@@ -162,12 +162,12 @@ MEX_DEFINE(ParameterizedFunction_Serialize) (int nlhs, mxArray* plhs[],
   unsigned int inputDim = parFunc.fun_ptr->inputDim;
   unsigned int outputDim = parFunc.fun_ptr->outputDim;
   unsigned int numParams = parFunc.fun_ptr->numParams;
-  auto coeffs = parFunc.fun_ptr->Coeffs();
+  auto params = parFunc.fun_ptr->Params();
   std::string filename = input.get<std::string>(1);
   std::ofstream os(filename);
   cereal::BinaryOutputArchive oarchive(os);
   oarchive(inputDim,outputDim,numParams);
-  oarchive(coeffs);
+  oarchive(params);
 #else
   mexErrMsgIdAndTxt("MParT:NoCereal",
                     "MParT was not compiled with Cereal support.");
@@ -186,11 +186,11 @@ MEX_DEFINE(ParameterizedFunction_DeserializeMap) (int nlhs, mxArray* plhs[],
   cereal::BinaryInputArchive archive(is);
   unsigned int inputDim, outputDim, numParams;
   archive(inputDim, outputDim, numParams);
-  Kokkos::View<double*, Kokkos::HostSpace> coeffs ("Map coeffs", numParams);
-  load(archive, coeffs);
+  Kokkos::View<double*, Kokkos::HostSpace> params ("Map params", numParams);
+  load(archive, params);
   output.set(0,inputDim);
   output.set(1,outputDim);
-  output.set(2,CopyKokkosToVec(coeffs));
+  output.set(2,CopyKokkosToVec(params));
 #else
   mexErrMsgIdAndTxt("MParT:NoCereal",
                     "MParT was not compiled with Cereal support.");

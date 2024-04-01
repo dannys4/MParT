@@ -246,13 +246,13 @@ MEX_DEFINE(ConditionalMap_deleteMap) (int nlhs, mxArray* plhs[],
   Session<ConditionalMapMex>::destroy(input.get(0));
 }
 
-MEX_DEFINE(ConditionalMap_SetCoeffs) (int nlhs, mxArray* plhs[],
+MEX_DEFINE(ConditionalMap_SetParams) (int nlhs, mxArray* plhs[],
                  int nrhs, const mxArray* prhs[]) {
   InputArguments input(nrhs, prhs, 2);
   OutputArguments output(nlhs, plhs, 0);
   const ConditionalMapMex& condMap = Session<ConditionalMapMex>::getConst(input.get(0));
-  auto coeffs = MexToKokkos1d(prhs[1]);
-  condMap.map_ptr->SetCoeffs(coeffs);
+  auto params = MexToKokkos1d(prhs[1]);
+  condMap.map_ptr->SetParams(params);
 }
 
 MEX_DEFINE(ConditionalMap_GetComponent) (int nlhs, mxArray* plhs[],
@@ -281,22 +281,22 @@ MEX_DEFINE(ConditionalMap_GetBaseFunction) (int nlhs, mxArray* plhs[],
   output.set(0, Session<ParameterizedFunctionMex>::create(new ParameterizedFunctionMex(func_ptr)));
 }
 
-MEX_DEFINE(ConditionalMap_Coeffs) (int nlhs, mxArray* plhs[],
+MEX_DEFINE(ConditionalMap_Params) (int nlhs, mxArray* plhs[],
                  int nrhs, const mxArray* prhs[]) {
   InputArguments input(nrhs, prhs, 1);
   OutputArguments output(nlhs, plhs, 1);
   const ConditionalMapMex& condMap = Session<ConditionalMapMex>::getConst(input.get(0));
-  auto coeffs = KokkosToVec(condMap.map_ptr->Coeffs());
-  output.set(0,coeffs);
+  auto params = KokkosToVec(condMap.map_ptr->Params());
+  output.set(0,params);
 }
 
-MEX_DEFINE(ConditionalMap_CoeffMap) (int nlhs, mxArray* plhs[],
+MEX_DEFINE(ConditionalMap_ParamMap) (int nlhs, mxArray* plhs[],
                  int nrhs, const mxArray* prhs[]) {
   InputArguments input(nrhs, prhs, 1);
   OutputArguments output(nlhs, plhs, 1);
   const ConditionalMapMex& condMap = Session<ConditionalMapMex>::getConst(input.get(0));
-  auto coeffs = condMap.map_ptr->CoeffMap();
-  output.set(0,coeffs);
+  auto params = condMap.map_ptr->ParamMap();
+  output.set(0,params);
 }
 
 MEX_DEFINE(ConditionalMap_numParams) (int nlhs, mxArray* plhs[],
@@ -304,8 +304,8 @@ MEX_DEFINE(ConditionalMap_numParams) (int nlhs, mxArray* plhs[],
   InputArguments input(nrhs, prhs, 1);
   OutputArguments output(nlhs, plhs, 1);
   const ConditionalMapMex& condMap = Session<ConditionalMapMex>::getConst(input.get(0));
-  auto numcoeffs = condMap.map_ptr->numParams;
-  output.set(0,numcoeffs);
+  auto num_params = condMap.map_ptr->numParams;
+  output.set(0,num_params);
 }
 
 MEX_DEFINE(ConditionalMap_outputDim) (int nlhs, mxArray* plhs[],
@@ -366,7 +366,7 @@ MEX_DEFINE(ConditionalMap_Inverse) (int nlhs, mxArray* plhs[],
   condMap.map_ptr->InverseImpl(x1,r, inv);
 }
 
-MEX_DEFINE(ConditionalMap_CoeffGrad) (int nlhs, mxArray* plhs[],
+MEX_DEFINE(ConditionalMap_ParamGrad) (int nlhs, mxArray* plhs[],
                                       int nrhs, const mxArray* prhs[]) {
 
   InputArguments input(nrhs, prhs, 4);
@@ -378,7 +378,7 @@ MEX_DEFINE(ConditionalMap_CoeffGrad) (int nlhs, mxArray* plhs[],
   auto sens = MexToKokkos2d(prhs[2]);
   auto out = MexToKokkos2d(prhs[3]);
 
-  condMap.map_ptr->CoeffGradImpl(pts,sens,out);
+  condMap.map_ptr->ParamGradImpl(pts,sens,out);
 }
 
 MEX_DEFINE(ConditionalMap_Gradient) (int nlhs, mxArray* plhs[],
@@ -396,7 +396,7 @@ MEX_DEFINE(ConditionalMap_Gradient) (int nlhs, mxArray* plhs[],
   condMap.map_ptr->GradientImpl(pts,sens,out);
 }
 
-MEX_DEFINE(ConditionalMap_LogDeterminantCoeffGrad) (int nlhs, mxArray* plhs[],
+MEX_DEFINE(ConditionalMap_LogDeterminantParamGrad) (int nlhs, mxArray* plhs[],
                  int nrhs, const mxArray* prhs[]) {
   InputArguments input(nrhs, prhs, 3);
   OutputArguments output(nlhs, plhs, 0);
@@ -406,7 +406,7 @@ MEX_DEFINE(ConditionalMap_LogDeterminantCoeffGrad) (int nlhs, mxArray* plhs[],
   auto pts = MexToKokkos2d(prhs[1]);
   auto out = MexToKokkos2d(prhs[2]);
 
-  condMap.map_ptr->LogDeterminantCoeffGradImpl(pts,out);
+  condMap.map_ptr->LogDeterminantParamGradImpl(pts,out);
 }
 
 MEX_DEFINE(ConditionalMap_LogDeterminantInputGrad) (int nlhs, mxArray* plhs[],
@@ -433,12 +433,12 @@ MEX_DEFINE(ConditionalMap_Serialize) (int nlhs, mxArray* plhs[],
   int inputDim = condMap.map_ptr->inputDim;
   int outputDim = condMap.map_ptr->outputDim;
   int numParams = condMap.map_ptr->numParams;
-  auto coeffs = condMap.map_ptr->Coeffs();
+  auto params = condMap.map_ptr->Params();
   std::string filename = input.get<std::string>(1);
   std::ofstream os(filename);
   cereal::BinaryOutputArchive oarchive(os);
   oarchive(inputDim,outputDim,numParams);
-  oarchive(coeffs);
+  oarchive(params);
 #else
   mexErrMsgIdAndTxt("MParT:NoCereal",
                     "MParT was not compiled with Cereal support.");

@@ -15,25 +15,22 @@ map2 = ConditionalMap(mset2,opts);
 
 triMap = TriangularMap([map1,map2]);
 
-disp(map1.Coeffs)
-coeffs = 0.1*[1 2 3 4 5 6];
-triMap.SetCoeffs(coeffs)
-disp(triMap.Coeffs)
-disp(map1.Coeffs)
+params = 0.1*[1 2 3 4 5 6];
+triMap.SetParams(params)
 
 disp('GetComponent:')
 map1FromTri = triMap.GetComponent(1);
 map2FromTri = triMap.GetComponent(2);
 
-disp(map1FromTri.Coeffs)
-disp(map2FromTri.Coeffs)
+disp(map1FromTri.Params)
+disp(map2FromTri.Params)
 
-% Setting new coeff values
-map1FromTri.SetCoeffs([1 1 1 1])
+% Setting new param values
+map1FromTri.SetParams([1 1 1 1])
 
 disp('GetBaseFunction:')
 parFunc = map1FromTri.GetBaseFunction();
-parFunc.SetCoeffs(map1FromTri.Coeffs);
+parFunc.SetParams(map1FromTri.Params);
 disp(parFunc.Evaluate(randn(1,10)))
 
 
@@ -54,10 +51,10 @@ M3 = CreateTriangular(dim1+dim2+dim3,dim3,maxDegree,opts);
 
 triMap = TriangularMap([M1 M2 M3]);
 
-triMap.SetCoeffs(randn(dim,triMap.numParams));
+triMap.SetParams(randn(dim,triMap.numParams));
 
-disp(['Num coeffs triMap: ',num2str(triMap.numParams)])
-disp(['Sum coeffs maps: ',num2str(M1.numParams+M2.numParams+M3.numParams)])
+disp(['Num params triMap: ',num2str(triMap.numParams)])
+disp(['Sum params maps: ',num2str(M1.numParams+M2.numParams+M3.numParams)])
 
 Y=triMap.Evaluate(randn(dim,10));
 
