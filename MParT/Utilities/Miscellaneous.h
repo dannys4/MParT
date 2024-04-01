@@ -20,15 +20,17 @@ namespace mpart{
                           std::string                                 const& defaultValue);
 
 
-        template<typename ErrorType>
-        KOKKOS_INLINE_FUNCTION void ProcAgnosticError(const char* msg) {
+    template<typename ErrorType>
+    KOKKOS_INLINE_FUNCTION void ProcAgnosticError(const char* msg) {
         KOKKOS_IF_ON_DEVICE(
             Kokkos::abort(msg);
         );
         KOKKOS_IF_ON_HOST(
             throw ErrorType(msg);
         );
-        }
+    }
+
+    void DeprecationWarning(std::string const& deprecated, std::string const& replacement, int const& max_warn = 2);
 
 }
 

@@ -43,19 +43,19 @@ public:
 
     /** @brief Sets the coefficients for all components of the map.
 
-        @details This function will copy the provided coeffs vectors into the savedParams object in the ComposedMap class.   To avoid
+        @details This function will copy the provided params vectors into the savedParams object in the ComposedMap class.   To avoid
         duplicating the coefficients, the savedParams member variable for each component will then be set to a subview of this vector.
-        @param coeffs A vector containing coefficients for all components.  If component \f$k\f$ is defined by \f$C_k\f$ coefficients,
+        @param params A vector containing coefficients for all components.  If component \f$k\f$ is defined by \f$C_k\f$ coefficients,
                   then this vector should have length \f$\sum_{k=1}^K C_i\f$ and the coefficients for component \f$k\f$ should
                   start at index \f$\sum_{j=1}^{k-1} C_j\f$.
     */
     using ConditionalMapBase<MemorySpace>::SetParams;
     using ConditionalMapBase<MemorySpace>::WrapParams;
-    void SetParams(Kokkos::View<const double*, MemorySpace> coeffs) override;
-    void WrapParams(Kokkos::View<double*, MemorySpace> coeffs) override;
+    void SetParams(Kokkos::View<const double*, MemorySpace> params) override;
+    void WrapParams(Kokkos::View<double*, MemorySpace> params) override;
 
     #if defined(MPART_ENABLE_GPU)
-    void SetParams(Kokkos::View<const double*, std::conditional_t<std::is_same_v<MemorySpace, Kokkos::HostSpace>, mpart::DeviceSpace, Kokkos::HostSpace>> coeffs) override;
+    void SetParams(Kokkos::View<const double*, std::conditional_t<std::is_same_v<MemorySpace, Kokkos::HostSpace>, mpart::DeviceSpace, Kokkos::HostSpace>> params) override;
     #endif
 
     virtual std::shared_ptr<ConditionalMapBase<MemorySpace>> GetComponent(unsigned int i){ return maps_.at(i);}

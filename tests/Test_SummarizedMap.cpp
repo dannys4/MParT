@@ -42,9 +42,9 @@ TEST_CASE( "SummarizedMap", "[SummarizedMap_MonotoneComponent]" ) {
 
         // Now make sure that the coefficients of each block were set
         for(unsigned int i=0; i<sumMap->numParams; ++i){
-            CHECK(sumMap->Coeffs()(i) == 0.1*(i+1)); // Values of coefficients should be correct
-            CHECK(sumMap->Coeffs()(i) == comp->Coeffs()(i)); // Values of coefficients should be equal to those of comp
-            // CHECK(&sumMap->Coeffs()(i) == &comp->Coeffs()(i)); //
+            CHECK(sumMap->Params()(i) == 0.1*(i+1)); // Values of coefficients should be correct
+            CHECK(sumMap->Params()(i) == comp->Params()(i)); // Values of coefficients should be equal to those of comp
+            // CHECK(&sumMap->Params()(i) == &comp->Params()(i)); //
         
         }
     }
@@ -125,7 +125,7 @@ TEST_CASE( "SummarizedMap", "[SummarizedMap_MonotoneComponent]" ) {
 
     }
 
-    SECTION("CoeffGrad"){
+    SECTION("ParamGrad"){
 
         Kokkos::View<double**,Kokkos::HostSpace> sens("Sensitivities", sumMap->outputDim, numSamps);
         for(unsigned int j=0; j<numSamps; ++j){
@@ -137,7 +137,7 @@ TEST_CASE( "SummarizedMap", "[SummarizedMap_MonotoneComponent]" ) {
         Kokkos::View<double**,Kokkos::HostSpace> evals = sumMap->Evaluate(in);
         Kokkos::View<double**,Kokkos::HostSpace> evals2;
 
-        Kokkos::View<double**,Kokkos::HostSpace> coeffGrad = sumMap->CoeffGrad(in, sens);
+        Kokkos::View<double**,Kokkos::HostSpace> coeffGrad = sumMap->ParamGrad(in, sens);
 
         REQUIRE(coeffGrad.extent(0)==sumMap->numParams);
         REQUIRE(coeffGrad.extent(1)==numSamps);
@@ -204,10 +204,10 @@ TEST_CASE( "SummarizedMap", "[SummarizedMap_MonotoneComponent]" ) {
         
     }
 
-    SECTION("LogDeterminantCoeffGrad"){
+    SECTION("LogDeterminantParamGrad"){
 
 
-        Kokkos::View<double**,Kokkos::HostSpace> detGrad = sumMap->LogDeterminantCoeffGrad(in);
+        Kokkos::View<double**,Kokkos::HostSpace> detGrad = sumMap->LogDeterminantParamGrad(in);
         REQUIRE(detGrad.extent(0)==sumMap->numParams);
         REQUIRE(detGrad.extent(1)==numSamps);
         

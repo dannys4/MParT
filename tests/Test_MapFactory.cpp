@@ -96,11 +96,11 @@ TEST_CASE( "Testing map component factory with linearized basis", "[MapFactoryLi
         REQUIRE(linearized_map!=nullptr);
         REQUIRE(map!=nullptr);
 
-        Kokkos::View<double*,MemorySpace> coeffs("Coefficients", map->numParams);
+        Kokkos::View<double*,MemorySpace> params("Coefficients", map->numParams);
         for(unsigned int i=0; i<map->numParams; ++i)
-            coeffs(i) = 1.0;
-        map->SetParams(coeffs);
-        linearized_map->SetParams(coeffs);
+            params(i) = 1.0;
+        map->SetParams(params);
+        linearized_map->SetParams(params);
 
         unsigned int numPts = 5;
         Kokkos::View<double**,MemorySpace> pts("Points", dim, numPts);
@@ -232,8 +232,8 @@ TEST_CASE( "Testing factory method for Sigmoid Component", "[MapFactorySigmoidCo
     });
     Kokkos::fence();
     // Checking example of Gradient
-    StridedVector<double, MemorySpace> coeffs = func->Coeffs();
-    Kokkos::deep_copy(coeffs, 1.0);
+    StridedVector<double, MemorySpace> params = func->Params();
+    Kokkos::deep_copy(params, 1.0);
     Kokkos::View<double**, MemorySpace> eval = func->Evaluate(pts);
     CHECK(eval.extent(0)==1);
     SECTION("Check Gradient") {

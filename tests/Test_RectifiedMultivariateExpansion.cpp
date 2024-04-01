@@ -71,9 +71,9 @@ TEST_CASE("RectifiedMultivariateExpansion, Unrectified", "[RMVE_NoRect]") {
             }
         }
     }
-    SECTION("CoeffGrad") {
-        StridedMatrix<double, MemorySpace> grad_ref = mve.CoeffGrad(points, sens);
-        StridedMatrix<double, MemorySpace> grad_rect = rect_mve.CoeffGrad(points, sens);
+    SECTION("ParamGrad") {
+        StridedMatrix<double, MemorySpace> grad_ref = mve.ParamGrad(points, sens);
+        StridedMatrix<double, MemorySpace> grad_rect = rect_mve.ParamGrad(points, sens);
         REQUIRE(grad_rect.extent(0) == mve.numParams);
         REQUIRE(grad_rect.extent(1) == numPts);
         std::vector<double> grad_ref_vec(mve.numParams);
@@ -135,10 +135,10 @@ TEST_CASE("RectifiedMultivariateExpansion, Unrectified", "[RMVE_NoRect]") {
             }
         }
     }
-    SECTION("LogDeterminantCoeffGrad") {
-        StridedMatrix<double, MemorySpace> logdet_rect_coeff_grad = rect_mve.LogDeterminantCoeffGrad(points);
+    SECTION("LogDeterminantParamGrad") {
+        StridedMatrix<double, MemorySpace> logdet_rect_coeff_grad = rect_mve.LogDeterminantParamGrad(points);
         Kokkos::View<double*, MemorySpace> logdet_rect_fd ("Perturbed LogDet", numPts);
-        rect_mve.Coeffs()(0) += fd_step;
+        rect_mve.Params()(0) += fd_step;
 
         for(int j = 0; j < mve.numParams; j++) {
             rect_mve.LogDeterminantImpl(points, logdet_rect_fd);
@@ -146,8 +146,8 @@ TEST_CASE("RectifiedMultivariateExpansion, Unrectified", "[RMVE_NoRect]") {
                 double logdet_rect_coeff_grad_fd = (logdet_rect_fd(i) - logdet_rect(i))/fd_step;
                 if(idx_checked[i]) // Only check points with positive derivative
                     CHECK_THAT(logdet_rect_coeff_grad(j, i), WithinRel(logdet_rect_coeff_grad_fd, 20*fd_step));
-                rect_mve.Coeffs()(j) -= fd_step;
-                if(j < mve.numParams-1) rect_mve.Coeffs()(j+1) += fd_step;
+                rect_mve.Params()(j) -= fd_step;
+                if(j < mve.numParams-1) rect_mve.Params()(j+1) += fd_step;
             }
         }
     }
@@ -187,7 +187,7 @@ TEMPLATE_TEST_CASE("Single Sigmoid RectifiedMultivariateExpansion","[single_sigm
     MultivariateExpansionWorker<DiagEval_T, MemorySpace> worker_diag(fmset_diag, basis_eval_diag);
     RectExpansion_T expansion(worker_off, worker_diag);
 
-    // Initialize Points and Coeffs
+    // Initialize Points and Params
     Kokkos::View<double*, MemorySpace> coeffs("Input", expansion.numParams);
     Kokkos::deep_copy(coeffs, 0.0); // Initialize to 0
     expansion.WrapParams(coeffs);
@@ -350,8 +350,8 @@ TEMPLATE_TEST_CASE("Multiple Sigmoid RectifiedMultivariateExpansion","[multi_sig
             }
         }
     }
-    SECTION("CoeffGrad") {
-        StridedMatrix<double, MemorySpace> grad_rect = expansion.CoeffGrad(points, sens);
+    SECTION("ParamGrad") {
+        StridedMatrix<double, MemorySpace> grad_rect = expansion.ParamGrad(points, sens);
         Kokkos::View<double**, MemorySpace> eval_fd ("EvaluateImpl storage", 1, numPts);
         REQUIRE(grad_rect.extent(0) == expansion.numParams);
         REQUIRE(grad_rect.extent(1) == numPts);
@@ -400,8 +400,8 @@ TEMPLATE_TEST_CASE("Multiple Sigmoid RectifiedMultivariateExpansion","[multi_sig
             }
         }
     }
-    SECTION("LogDeterminantCoeffGrad") {
-        StridedMatrix<double, MemorySpace> logdet_rect_coeff_grad = expansion.LogDeterminantCoeffGrad(points);
+    SECTION("LogDeterminantParamGrad") {
+        StridedMatrix<double, MemorySpace> logdet_rect_coeff_grad = expansion.LogDeterminantParamGrad(points);
         Kokkos::View<double*, MemorySpace> logdet_rect_fd ("Perturbed LogDet", numPts);
         coeffs(0) += fd_step;
         for(int j = 0; j < expansion.numParams; j++) {

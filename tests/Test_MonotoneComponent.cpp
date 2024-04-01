@@ -433,7 +433,7 @@ TEST_CASE( "Testing monotone component evaluation in 1d", "[MonotoneComponent1d]
 
         // Test the log determinant
         Kokkos::View<double*, HostSpace> logDet("Log Determinant", numPts);
-        comp.Coeffs() = coeffs;
+        comp.Params() = coeffs;
         //comp.LogDeterminantImpl(evalPts,logDet);
 
     }
@@ -789,7 +789,7 @@ TEST_CASE( "Least squares test", "[MonotoneComponentRegression]" ) {
 }
 
 
-TEST_CASE("Testing MonotoneComponent CoeffGrad and LogDeterminantCoeffGrad", "[MonotoneComponent_CoeffGrad]")
+TEST_CASE("Testing MonotoneComponent ParamGrad and LogDeterminantParamGrad", "[MonotoneComponent_ParamGrad]")
 {
     //const double testTol = 1e-4;
     unsigned int dim = 2;
@@ -822,13 +822,13 @@ TEST_CASE("Testing MonotoneComponent CoeffGrad and LogDeterminantCoeffGrad", "[M
 
     comp.SetParams(coeffs);
 
-    SECTION("CoeffGrad"){
+    SECTION("ParamGrad"){
 
         Kokkos::View<double**, HostSpace> sens("Sensitivity", 1, numPts);
         for(unsigned int i=0; i<numPts; ++i)
             sens(0,i) = 0.25*(i+1);
 
-        Kokkos::View<double**, HostSpace> grads = comp.CoeffGrad(evalPts, sens);
+        Kokkos::View<double**, HostSpace> grads = comp.ParamGrad(evalPts, sens);
         REQUIRE(grads.extent(0)==comp.numParams);
         REQUIRE(grads.extent(1)==numPts);
 
@@ -839,7 +839,7 @@ TEST_CASE("Testing MonotoneComponent CoeffGrad and LogDeterminantCoeffGrad", "[M
         }
     }
 
-    SECTION("LogDeterminantCoeffGrad"){
+    SECTION("LogDeterminantParamGrad"){
 
         for(unsigned int i=0; i<numPts; ++i){
             evalPts(0,i) = 0.03*i;
@@ -848,7 +848,7 @@ TEST_CASE("Testing MonotoneComponent CoeffGrad and LogDeterminantCoeffGrad", "[M
 
         Kokkos::View<double*, HostSpace> logDets = comp.LogDeterminant(evalPts);
         Kokkos::View<double*, HostSpace> logDets2;
-        Kokkos::View<double**, HostSpace> grads = comp.LogDeterminantCoeffGrad(evalPts);
+        Kokkos::View<double**, HostSpace> grads = comp.LogDeterminantParamGrad(evalPts);
         REQUIRE(grads.extent(0)==comp.numParams);
         REQUIRE(grads.extent(1)==numPts);
 

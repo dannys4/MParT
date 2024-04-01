@@ -97,7 +97,7 @@ TEST_CASE( "Testing Pullback/Pushforward density", "[PullbackPushforwardDensity]
 
         std::shared_ptr<ConditionalMapBase<Kokkos::HostSpace>> map = MapFactory::CreateTriangular<Kokkos::HostSpace>(dim,dim,5, options);
         for(int i = 0; i < map->numParams; i++) {
-            map->Coeffs()(i) = (double) (i + 1);
+            map->Params()(i) = (double) (i + 1);
         }
 
         // Create reference and pullback densities
@@ -117,7 +117,7 @@ TEST_CASE( "Testing Pullback/Pushforward density", "[PullbackPushforwardDensity]
         // Perform first order forward finite difference
         double fdstep = 1e-5;
         for(int i = 0; i < map->numParams; i++) {
-            map->Coeffs()(i) += fdstep;
+            map->Params()(i) += fdstep;
             auto logDensityPerturb = pullback.LogDensity(pullbackSamples);
 	    Kokkos::RangePolicy<typename MemoryToExecution<Kokkos::HostSpace>::Space> policy(0,N_samp);
 
@@ -130,7 +130,7 @@ TEST_CASE( "Testing Pullback/Pushforward density", "[PullbackPushforwardDensity]
             Kokkos::fence();
             double max_err = *std::max_element(logDensityPerturb.data(), logDensityPerturb.data()+N_samp);
             REQUIRE(max_err < std::sqrt(fdstep));
-            map->Coeffs()(i) = (double) (i + 1);
+            map->Params()(i) = (double) (i + 1);
         }
     }
 }

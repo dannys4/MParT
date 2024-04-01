@@ -85,7 +85,7 @@ TEST_CASE( "Test InnerMarginalAffineMap", "[InnerMarginalAffineMap]") {
 
         // Penalize high order k
         for(unsigned int k = 0; k < trimap->numParams; k++) {
-            trimap->Coeffs()(k) = 1/(k+1);
+            trimap->Params()(k) = 1/(k+1);
         }
         auto map = std::make_shared<InnerMarginalAffineMap<MemorySpace>>(scale, shift, trimap);
 
@@ -151,17 +151,17 @@ TEST_CASE( "Test InnerMarginalAffineMap", "[InnerMarginalAffineMap]") {
             }
         }
 
-        // LogDeterminantCoeffGrad test
-        StridedMatrix<double, MemorySpace> logdet_coeff_grad = map->LogDeterminantCoeffGrad(pts);
+        // LogDeterminantParamGrad test
+        StridedMatrix<double, MemorySpace> logdet_coeff_grad = map->LogDeterminantParamGrad(pts);
         Kokkos::View<double**, MemorySpace> exp_logdet_coeff_grad_map("exp_logdet_coeff_grad_map", trimap->numParams, numPts);
         for(int k = 0; k < trimap->numParams; k++) {
             for(int j = 0; j < numPts; j++) {
-                trimap->Coeffs()(k) += fd_step;
+                trimap->Params()(k) += fd_step;
                 StridedVector<double,MemorySpace> exp_logdet_map_fd = trimap->LogDeterminant(appliedPts);
                 for(int j = 0; j < numPts; j++) {
                     exp_logdet_coeff_grad_map(k,j) = (exp_logdet_map_fd(j) - exp_logdet_map(j))/fd_step;
                 }
-                trimap->Coeffs()(k) -= fd_step;
+                trimap->Params()(k) -= fd_step;
             }
         }
 
@@ -201,13 +201,13 @@ TEST_CASE( "Test InnerMarginalAffineMap", "[InnerMarginalAffineMap]") {
             }
         }
 
-        // CoeffGrad test
-        Kokkos::View<double**, MemorySpace> coeff_grad = map->CoeffGrad(pts, sens);
+        // ParamGrad test
+        Kokkos::View<double**, MemorySpace> coeff_grad = map->ParamGrad(pts, sens);
         Kokkos::View<double**, MemorySpace> exp_coeff_grad_map("exp_coeff_grad_map", trimap->numParams, numPts);
         for(int i = 0; i < trimap->numParams; i++) {
-            trimap->Coeffs()(i) += fd_step;
+            trimap->Params()(i) += fd_step;
             StridedMatrix<double,MemorySpace> exp_output_fd = trimap->Evaluate(appliedPts);
-            trimap->Coeffs()(i) -= fd_step;
+            trimap->Params()(i) -= fd_step;
             for(int j = 0; j < numPts; j++) {
                 exp_coeff_grad_map(i,j) = 0.;
                 for(int k = 0; k < outputDim; k++) {
@@ -229,21 +229,21 @@ TEST_CASE( "Test InnerMarginalAffineMap", "[InnerMarginalAffineMap]") {
 
         // Penalize high order k
         for(unsigned int k = 0; k < trimap->numParams; k++) {
-            trimap->Coeffs()(k) = 1/(k+1);
+            trimap->Params()(k) = 1/(k+1);
         }
         auto map = std::make_shared<InnerMarginalAffineMap<MemorySpace>>(scale, shift, trimap);
         for(unsigned int k = 0; k < map->numParams; k++) {
-            map->Coeffs()(k) += 0.1;
+            map->Params()(k) += 0.1;
         }
         for(unsigned int k = 0; k < map->numParams; k++) {
-            REQUIRE_THAT(map->Coeffs()(k), WithinRel(trimap->Coeffs()(k), 1e-14));
+            REQUIRE_THAT(map->Params()(k), WithinRel(trimap->Params()(k), 1e-14));
         }
         map = std::make_shared<InnerMarginalAffineMap<MemorySpace>>(scale, shift, trimap, false);
         for(unsigned int k = 0; k < map->numParams; k++) {
-            map->Coeffs()(k) += 0.1;
+            map->Params()(k) += 0.1;
         }
         for(unsigned int k = 0; k < map->numParams; k++) {
-            REQUIRE_THAT(map->Coeffs()(k), WithinRel(trimap->Coeffs()(k) + 0.1, 1e-14));
+            REQUIRE_THAT(map->Params()(k), WithinRel(trimap->Params()(k) + 0.1, 1e-14));
         }
     }
 }

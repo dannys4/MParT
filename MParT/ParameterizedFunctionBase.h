@@ -11,7 +11,7 @@
 #include "MParT/Utilities/ArrayConversions.h"
 
 #include "MParT/Utilities/GPUtils.h"
-
+#include "MParT/Utilities/Miscellaneous.h"
 
 
 #include <Eigen/Core>
@@ -52,7 +52,7 @@ namespace mpart {
          * @return Kokkos::View<double*, MemorySpace>& 
          */
         Kokkos::View<double*, MemorySpace>& Coeffs(){
-            // TODO: Warn that this is deprecated
+            DeprecationWarning("Coeffs","Params");
             return Params();
         };
 
@@ -71,7 +71,7 @@ namespace mpart {
          */
         template<typename CoeffType>
         void SetCoeffs(CoeffType coeffs) {
-            // TODO: Warn that this is deprecated
+            DeprecationWarning("SetCoeffs","SetParams");
             SetParams(coeffs);
         }
 
@@ -89,7 +89,7 @@ namespace mpart {
          */
         template<typename CoeffType>
         void WrapCoeffs(CoeffType params){
-            // TODO: Warn that this is deprecated
+            DeprecationWarning("WrapCoeffs","WrapParams");
             WrapParams(params);
         }
 
@@ -107,14 +107,14 @@ namespace mpart {
         */
         virtual Eigen::Map<Eigen::VectorXd> ParamMap();
         Eigen::Map<Eigen::VectorXd> CoeffMap() {
-            // TODO: Warn that this is deprecated
+            DeprecationWarning("CoeffMap","ParamMap");
             return ParamMap();
         };
 
         /** Const version of the Coeffs() function. */
         virtual Kokkos::View<const double*, MemorySpace> Params() const{return this->savedParams;};
         Kokkos::View<const double*, MemorySpace> Coeffs() const{
-            // TODO: Warn that this is deprecated
+            DeprecationWarning("Coeffs","Params");
             return Params();
         };
 
@@ -161,7 +161,7 @@ namespace mpart {
          */
         template<typename ViewType1, typename ViewType2>
         StridedMatrix<double, typename ViewType1::memory_space> Gradient(ViewType1 pts, ViewType2 sens){
-            // TODO: Warn that this is deprecated
+            DeprecationWarning("Gradient","InputGrad");
             return this->InputGrad(pts, sens);
         }
 
@@ -179,7 +179,7 @@ namespace mpart {
          */
         Eigen::RowMatrixXd Gradient(Eigen::Ref<const Eigen::RowMatrixXd> const& pts,
                                     Eigen::Ref<const Eigen::RowMatrixXd> const& sens) {
-            // TODO: Warn that this is deprecated
+            DeprecationWarning("Gradient","InputGrad");
             return InputGrad(pts,sens);
         }
 
@@ -217,7 +217,7 @@ namespace mpart {
         void GradientImpl(StridedMatrix<const double, MemorySpace> const& pts,
                           StridedMatrix<const double, MemorySpace> const& sens,
                           StridedMatrix<double, MemorySpace>              output) {
-            // TODO: Warn that this is deprecated
+            DeprecationWarning("GradientImpl","InputGradImpl");
             InputGradImpl(pts,sens,output);
         }
 
@@ -263,7 +263,7 @@ namespace mpart {
          */
         template<typename PtsViewType, typename SensViewType>
         StridedMatrix<double, typename PtsViewType::memory_space> CoeffGrad(PtsViewType pts,  SensViewType sens){
-            // TODO: Warn that this is deprecated
+            DeprecationWarning("CoeffGrad","ParamGrad");
             return this->ParamGrad(pts,sens);
         }
 
@@ -280,7 +280,7 @@ namespace mpart {
          */
         Eigen::RowMatrixXd CoeffGrad(Eigen::Ref<const Eigen::RowMatrixXd> const& pts,
                                      Eigen::Ref<const Eigen::RowMatrixXd> const& sens) {
-            // TODO: Warn that this is deprecated
+            DeprecationWarning("CoeffGrad","ParamGrad");
             return this->ParamGrad(pts,sens);
         }
         
@@ -307,7 +307,7 @@ namespace mpart {
         void CoeffGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
                            StridedMatrix<const double, MemorySpace> const& sens,
                            StridedMatrix<double, MemorySpace>              output) {
-            // TODO: Warn that this is deprecated
+            DeprecationWarning("CoeffGradImpl","ParamGradImpl");
             ParamGradImpl(pts,sens,output);
         }
 
@@ -315,7 +315,7 @@ namespace mpart {
         bool CheckParameters() const;
 
         bool CheckCoefficients() const {
-            // TODO: Warn that this is deprecated
+            DeprecationWarning("CheckCoefficients","CheckParameters");
             return CheckParameters();
         }
 

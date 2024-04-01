@@ -54,8 +54,8 @@ TEST_CASE("UnivariateExpansion") {
             coeffs(order) = 0.0;
         }
     }
-    SECTION("CoeffGrad") {
-        StridedMatrix<double, MemorySpace> grad = expansion.CoeffGrad(points, sens);
+    SECTION("ParamGrad") {
+        StridedMatrix<double, MemorySpace> grad = expansion.ParamGrad(points, sens);
         REQUIRE(grad.extent(0) == maxOrder+1);
         REQUIRE(grad.extent(1) == numPts);
         for(int order = 0; order <= maxOrder; order++) {
@@ -101,19 +101,19 @@ TEST_CASE("UnivariateExpansion") {
             }
         }
     }
-    SECTION("LogDeterminantCoeffGrad") {
+    SECTION("LogDeterminantParamGrad") {
         Kokkos::deep_copy(coeffs, 1.0);
-        StridedMatrix<double, MemorySpace> logDetCoeffGrad = expansion.LogDeterminantCoeffGrad(points);
-        REQUIRE(logDetCoeffGrad.extent(0) == maxOrder+1);
-        REQUIRE(logDetCoeffGrad.extent(1) == numPts);
+        StridedMatrix<double, MemorySpace> logDetParamGrad = expansion.LogDeterminantParamGrad(points);
+        REQUIRE(logDetParamGrad.extent(0) == maxOrder+1);
+        REQUIRE(logDetParamGrad.extent(1) == numPts);
         for(int i = 0; i < numPts; i++) {
             double df = 0.;
             for(int order = 0; order <= maxOrder; order++) df += basis.Derivative(order, points(0, i));
             if(df <= 0.) continue;
             for(int order = 0; order <= maxOrder; order++) {
                 double df_j = basis.Derivative(order, points(0, i));
-                double logDetCoeffGrad_ref = df_j / df;
-                CHECK_THAT(logDetCoeffGrad(order, i), WithinRel(logDetCoeffGrad_ref, 1e-14));
+                double logDetParamGrad_ref = df_j / df;
+                CHECK_THAT(logDetParamGrad(order, i), WithinRel(logDetParamGrad_ref, 1e-14));
             }
         }
     }

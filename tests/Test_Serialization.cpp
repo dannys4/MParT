@@ -309,10 +309,10 @@ TEST_CASE("Test serialization of monotone component.", "[Serialization]"){
     {
         MultiIndexSet mset = MultiIndexSet::CreateTotalOrder(dim, maxDegree);
 
-        Kokkos::View<double*,Kokkos::HostSpace> coeffs("Expansion coefficients", mset.Size());
-        coeffs(1) = 1.0; // Linear term = x ^1
-        coeffs(2) = 0.5; // Quadratic term = x^2 - 1.0
-        coeffs(0) = 1.0 + coeffs(2); // Constant term = x^0
+        Kokkos::View<double*,Kokkos::HostSpace> params("Expansion coefficients", mset.Size());
+        params(1) = 1.0; // Linear term = x ^1
+        params(2) = 0.5; // Quadratic term = x^2 - 1.0
+        params(0) = 1.0 + params(2); // Constant term = x^0
 
         MultivariateExpansionWorker<BasisEvaluator<BasisHomogeneity::Homogeneous,LinearizedBasis<HermiteFunction>>,Kokkos::HostSpace> expansion(mset);
 
@@ -323,7 +323,7 @@ TEST_CASE("Test serialization of monotone component.", "[Serialization]"){
 
         //std::shared_ptr<ParameterizedFunctionBase<Kokkos::HostSpace>>
         std::shared_ptr<mpart::ParameterizedFunctionBase<Kokkos::HostSpace>> comp = std::make_shared<MonotoneComponent<decltype(expansion), Exp, AdaptiveSimpson<Kokkos::HostSpace>, Kokkos::HostSpace>>(expansion, quad);
-        comp->SetParams(coeffs);
+        comp->SetParams(params);
 
         output1 = comp->Evaluate(evalPts);
 
@@ -401,8 +401,8 @@ TEST_CASE("Test serialization of triangular map.", "[Serialization]"){
             CHECK(triMap1->numParams == triMap2->numParams);
             
             // Make sure the coefficients are the same 
-            auto coeffs1 = triMap1->Coeffs();
-            auto coeffs2 = triMap2->Coeffs();
+            auto coeffs1 = triMap1->Params();
+            auto coeffs2 = triMap2->Params();
             
             REQUIRE(coeffs1.size() == coeffs2.size());
             for(unsigned int i=0; i<coeffs1.size(); ++i){
@@ -431,8 +431,8 @@ TEST_CASE("Test serialization of triangular map.", "[Serialization]"){
         CHECK(triMap1->numParams == triMap2->numParams);
     
         // Make sure the coefficients are the same 
-        auto coeffs1 = triMap1->Coeffs();
-        auto coeffs2 = triMap2->Coeffs();
+        auto coeffs1 = triMap1->Params();
+        auto coeffs2 = triMap2->Params();
         
         REQUIRE(coeffs1.size() == coeffs2.size());
         for(unsigned int i=0; i<coeffs1.size(); ++i){

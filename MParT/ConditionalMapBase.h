@@ -12,6 +12,7 @@
 #include "MParT/Utilities/ArrayConversions.h"
 
 #include "MParT/ParameterizedFunctionBase.h"
+#include "MParT/Utilities/Miscellaneous.h"
 
 #include <Eigen/Core>
 
@@ -138,7 +139,7 @@ namespace mpart {
          */
         template<typename AnyMemorySpace>
         StridedMatrix<double, AnyMemorySpace> LogDeterminantCoeffGrad(StridedMatrix<const double, AnyMemorySpace> const& pts) {
-            // TODO: Warn that this function is deprecated.
+            DeprecationWarning("LogDeterminantCoeffGrad", "LogDeterminantParamGrad");
             return this->LogDeterminantParamGrad(pts);
         }
 
@@ -155,7 +156,7 @@ namespace mpart {
         */
         template<typename ViewType>
         StridedMatrix<double, typename ViewType::memory_space> LogDeterminantCoeffGrad(ViewType pts){
-            // TODO: Warn that this function is deprecated.
+            DeprecationWarning("LogDeterminantCoeffGrad", "LogDeterminantParamGrad");
             return this->LogDeterminantParamGrad(pts);
         }
 
@@ -171,7 +172,7 @@ namespace mpart {
          * @return Eigen::RowMatrixXd 
          */
         Eigen::RowMatrixXd LogDeterminantCoeffGrad(Eigen::Ref<const Eigen::RowMatrixXd> const& pts) {
-            // TODO: Warn that this function is deprecated.
+            DeprecationWarning("LogDeterminantCoeffGrad", "LogDeterminantParamGrad");
             return LogDeterminantParamGrad(pts);
         }
 
@@ -180,7 +181,7 @@ namespace mpart {
 
         void LogDeterminantCoeffGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
                                          StridedMatrix<double, MemorySpace>              output) {
-            // TODO: Warn that this function is deprecated.
+            DeprecationWarning("LogDeterminantCoeffGradImpl", "LogDeterminantParamGradImpl");
             LogDeterminantParamGradImpl(pts, output);
         }
 

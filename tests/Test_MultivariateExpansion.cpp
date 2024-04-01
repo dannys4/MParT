@@ -74,7 +74,7 @@ TEST_CASE( "Testing multivariate expansion", "[MultivariateExpansion]") {
                 sens(d,ptInd) = 1.0;
 
             // Evaluate the gradient
-            grads = func.CoeffGrad(pts,sens);
+            grads = func.ParamGrad(pts,sens);
 
             REQUIRE(grads.extent(0)==func.numParams);
             REQUIRE(grads.extent(1)==numPts);
@@ -163,7 +163,7 @@ TEST_CASE( "Testing multivariate expansion", "[MultivariateExpansion]") {
         StridedMatrix<double,Kokkos::HostSpace> evals2 = func.Evaluate(pts);
         
         for(unsigned int i=0; i<newCoeffs.size(); ++i)
-            CHECK(&newCoeffs(i) == &func.Coeffs()(i));
+            CHECK(&newCoeffs(i) == &func.Params()(i));
 
         for(unsigned int d=0; d<outDim; ++d){
             for(unsigned int ptInd=0; ptInd<numPts; ++ptInd){
