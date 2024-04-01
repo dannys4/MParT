@@ -11,11 +11,11 @@ mset_1 = mpart.MultiIndexSet(multis_1).fix(True)
 mset_2 = mpart.MultiIndexSet(multis_2).fix(True)
 
 map_1 = mpart.CreateComponent(mset_1, opts)
-coeffs_1 = np.random.randn(map_1.numCoeffs)
+coeffs_1 = np.random.randn(map_1.numParams)
 map_1.SetCoeffs(coeffs_1)
 
 map_2 = mpart.CreateComponent(mset_2, opts)
-coeffs_2 = np.random.randn(map_2.numCoeffs)
+coeffs_2 = np.random.randn(map_2.numParams)
 map_2.SetCoeffs(coeffs_2)
 
 triangular = mpart.TriangularMap([map_1,map_2], moveCoeffs=True)
@@ -23,8 +23,8 @@ num_samples = 100
 x = np.random.randn(2,num_samples)
 
 
-def test_numCoeffs():
-    assert triangular.numCoeffs == 2 + 3
+def test_numParams():
+    assert triangular.numParams == 2 + 3
 
 
 def test_Evaluate():
@@ -35,7 +35,7 @@ def test_LogDeterminant():
     assert triangular.LogDeterminant(x).shape == (num_samples,)
     
 def test_Inverse():
-    # coeffs = np.random.randn(triangular.numCoeffs)
+    # coeffs = np.random.randn(triangular.numParams)
     # triangular.SetCoeffs(coeffs)
     y = triangular.Evaluate(x)
     x_ = triangular.Inverse(np.zeros((1,num_samples)),y)

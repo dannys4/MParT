@@ -12,15 +12,15 @@ num_samples = 100
 x = np.random.randn(1,num_samples)
 
 
-def test_numCoeffs():
-    assert component.numCoeffs == 2
+def test_numParams():
+    assert component.numParams == 2
 
 
 def test_CoeffsMap():
-    component.SetCoeffs(np.zeros(component.numCoeffs))
+    component.SetCoeffs(np.zeros(component.numParams))
     assert component.CoeffMap().tolist() == [0,0]
 
-    coeffs = np.random.randn(component.numCoeffs)
+    coeffs = np.random.randn(component.numParams)
     component.SetCoeffs(coeffs)
     assert np.all(component.CoeffMap() == coeffs)
 
@@ -34,7 +34,7 @@ def test_LogDeterminant():
     
 
 def test_Inverse():
-    coeffs = np.random.randn(component.numCoeffs)
+    coeffs = np.random.randn(component.numParams)
     component.SetCoeffs(coeffs)
     y = component.Evaluate(x)
     x_ = component.Inverse(np.zeros((1,num_samples)),y)

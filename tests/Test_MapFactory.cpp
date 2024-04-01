@@ -96,8 +96,8 @@ TEST_CASE( "Testing map component factory with linearized basis", "[MapFactoryLi
         REQUIRE(linearized_map!=nullptr);
         REQUIRE(map!=nullptr);
 
-        Kokkos::View<double*,MemorySpace> coeffs("Coefficients", map->numCoeffs);
-        for(unsigned int i=0; i<map->numCoeffs; ++i)
+        Kokkos::View<double*,MemorySpace> coeffs("Coefficients", map->numParams);
+        for(unsigned int i=0; i<map->numParams; ++i)
             coeffs(i) = 1.0;
         map->SetCoeffs(coeffs);
         linearized_map->SetCoeffs(coeffs);
@@ -268,7 +268,7 @@ TEST_CASE( "Testing factory method for Sigmoid Component", "[MapFactorySigmoidCo
         FixedMultiIndexSet<MemorySpace> mset_diag = MultiIndexSet::CreateTotalOrder(inputDim, maxDegree, limiter).Fix(true);
         std::shared_ptr<ConditionalMapBase<MemorySpace>> map = MapFactory::CreateSigmoidComponent<MemorySpace>(mset_offdiag, mset_diag, centers, options);
         REQUIRE(map != nullptr);
-        REQUIRE(map->numCoeffs == mset_diag.Size()+mset_offdiag.Size());
+        REQUIRE(map->numParams == mset_diag.Size()+mset_offdiag.Size());
     }
     SECTION("Create Triangular Sigmoid Map From Components") {
         std::vector<std::shared_ptr<ConditionalMapBase<MemorySpace>>> maps;

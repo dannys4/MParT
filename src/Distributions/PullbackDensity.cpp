@@ -38,7 +38,7 @@ void PullbackDensity<MemorySpace>::LogDensityCoeffGradImpl(StridedMatrix<const d
 
 template<typename MemorySpace>
 StridedMatrix<double, MemorySpace> PullbackDensity<MemorySpace>::LogDensityCoeffGrad(StridedMatrix<const double, MemorySpace> const &pts) {
-    Kokkos::View<double**, MemorySpace> output("LogDensityCoeffGrad", map_->numCoeffs, pts.extent(1));
+    Kokkos::View<double**, MemorySpace> output("LogDensityCoeffGrad", map_->numParams, pts.extent(1));
     LogDensityCoeffGradImpl(pts, output);
     return output;
 }

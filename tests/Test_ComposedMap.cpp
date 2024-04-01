@@ -25,18 +25,18 @@ TEST_CASE( "Testing 2 layer composed map with moveCoeffs=false", "[ShallowCompos
     for(unsigned int i=0;i<numMaps;++i){
 
         maps.at(i) = MapFactory::CreateTriangular<Kokkos::HostSpace>(dim, dim, order, options);
-        coeffSize += maps.at(i)->numCoeffs;
+        coeffSize += maps.at(i)->numParams;
     }
 
     std::shared_ptr<ConditionalMapBase<MemorySpace>> composedMap = std::make_shared<ComposedMap<MemorySpace>>(maps);
 
     CHECK(composedMap->outputDim == dim);
     CHECK(composedMap->inputDim == dim);
-    CHECK(composedMap->numCoeffs == coeffSize);
+    CHECK(composedMap->numParams == coeffSize);
 
 
-    Eigen::RowVectorXd coeffs(composedMap->numCoeffs);
-    for(unsigned int i=0; i<composedMap->numCoeffs; ++i)
+    Eigen::RowVectorXd coeffs(composedMap->numParams);
+    for(unsigned int i=0; i<composedMap->numParams; ++i)
         coeffs(i) = 0.1*(i+1);
 
     SECTION("Coefficients"){
@@ -47,7 +47,7 @@ TEST_CASE( "Testing 2 layer composed map with moveCoeffs=false", "[ShallowCompos
         // Now make sure that the coefficients of each block were set
         unsigned int cumCoeffInd = 0;
         for(unsigned int i=0; i<numMaps; ++i){
-            for(unsigned int j=0; j<maps.at(i)->numCoeffs; ++j){
+            for(unsigned int j=0; j<maps.at(i)->numParams; ++j){
                 CHECK(maps.at(i)->Coeffs()(j) == coeffs(cumCoeffInd)); // Values of coefficients should be equal
                 CHECK(&maps.at(i)->Coeffs()(j) == &composedMap->Coeffs()(cumCoeffInd)); // Memory location should also be the same (no copy)
                 cumCoeffInd++;
@@ -125,12 +125,12 @@ TEST_CASE( "Testing 2 layer composed map with moveCoeffs=false", "[ShallowCompos
 
         Kokkos::View<double**,Kokkos::HostSpace> coeffGrad = composedMap->CoeffGrad(in, sens);
 
-        REQUIRE(coeffGrad.extent(0)==composedMap->numCoeffs);
+        REQUIRE(coeffGrad.extent(0)==composedMap->numParams);
         REQUIRE(coeffGrad.extent(1)==numSamps);
 
         // Compare with finite differences
         double fdstep = 1e-5;
-        for(unsigned int i=0; i<composedMap->numCoeffs; ++i){
+        for(unsigned int i=0; i<composedMap->numParams; ++i){
             coeffs(i) += fdstep;
 
             composedMap->SetCoeffs(coeffs);
@@ -193,7 +193,7 @@ TEST_CASE( "Testing 2 layer composed map with moveCoeffs=false", "[ShallowCompos
     SECTION("LogDeterminantCoeffGrad"){
 
         Kokkos::View<double**,Kokkos::HostSpace> detGrad = composedMap->LogDeterminantCoeffGrad(in);
-        REQUIRE(detGrad.extent(0)==composedMap->numCoeffs);
+        REQUIRE(detGrad.extent(0)==composedMap->numParams);
         REQUIRE(detGrad.extent(1)==numSamps);
 
         Kokkos::View<double*,Kokkos::HostSpace> logDet = composedMap->LogDeterminant(in);
@@ -201,7 +201,7 @@ TEST_CASE( "Testing 2 layer composed map with moveCoeffs=false", "[ShallowCompos
 
         // Compare with finite differences
         double fdstep = 1e-5;
-        for(unsigned int i=0; i<composedMap->numCoeffs; ++i){
+        for(unsigned int i=0; i<composedMap->numParams; ++i){
             coeffs(i) += fdstep;
 
             composedMap->SetCoeffs(coeffs);
@@ -265,11 +265,11 @@ TEST_CASE( "Testing 2 layer composed map with moveCoeffs=true", "[ShallowCompose
     for(unsigned int i=0;i<numMaps;++i){
 
         maps.at(i) = MapFactory::CreateTriangular<Kokkos::HostSpace>(dim, dim, order, options);
-        coeffSize += maps.at(i)->numCoeffs;
+        coeffSize += maps.at(i)->numParams;
 
-        coeffs_.at(i) = Kokkos::View<double*,Kokkos::HostSpace>("Coefficients", maps.at(i)->numCoeffs);
+        coeffs_.at(i) = Kokkos::View<double*,Kokkos::HostSpace>("Coefficients", maps.at(i)->numParams);
 
-        for(unsigned int j=0; j<maps.at(i)->numCoeffs; ++j)
+        for(unsigned int j=0; j<maps.at(i)->numParams; ++j)
             coeffs_.at(i)(j) = 0.1*(j+1);
 
         maps.at(i)->SetCoeffs(coeffs_.at(i));
@@ -279,16 +279,16 @@ TEST_CASE( "Testing 2 layer composed map with moveCoeffs=true", "[ShallowCompose
 
     CHECK(composedMap->outputDim == dim);
     CHECK(composedMap->inputDim == dim);
-    CHECK(composedMap->numCoeffs == coeffSize);
+    CHECK(composedMap->numParams == coeffSize);
 
-    Kokkos::View<double*,Kokkos::HostSpace> coeffs(composedMap->Coeffs().data(), composedMap->numCoeffs);
+    Kokkos::View<double*,Kokkos::HostSpace> coeffs(composedMap->Coeffs().data(), composedMap->numParams);
 
     SECTION("Coefficients"){
 
         // Now make sure that the coefficients of each block were set
         unsigned int cumCoeffInd = 0;
         for(unsigned int i=0; i<numMaps; ++i){
-            for(unsigned int j=0; j<maps.at(i)->numCoeffs; ++j){
+            for(unsigned int j=0; j<maps.at(i)->numParams; ++j){
                 CHECK(maps.at(i)->Coeffs()(j) == coeffs(cumCoeffInd)); // Values of coefficients should be equal
                 CHECK(maps.at(i)->Coeffs()(j) == coeffs_.at(i)(j));
                 CHECK(&maps.at(i)->Coeffs()(j) == &coeffs(cumCoeffInd));// Memory location should also be the same (no copy)
@@ -366,12 +366,12 @@ TEST_CASE( "Testing 2 layer composed map with moveCoeffs=true", "[ShallowCompose
 
         Kokkos::View<double**,Kokkos::HostSpace> coeffGrad = composedMap->CoeffGrad(in, sens);
 
-        REQUIRE(coeffGrad.extent(0)==composedMap->numCoeffs);
+        REQUIRE(coeffGrad.extent(0)==composedMap->numParams);
         REQUIRE(coeffGrad.extent(1)==numSamps);
 
         // Compare with finite differences
         double fdstep = 1e-5;
-        for(unsigned int i=0; i<composedMap->numCoeffs; ++i){
+        for(unsigned int i=0; i<composedMap->numParams; ++i){
             coeffs(i) += fdstep;
 
             composedMap->SetCoeffs(coeffs);
@@ -434,7 +434,7 @@ TEST_CASE( "Testing 2 layer composed map with moveCoeffs=true", "[ShallowCompose
     SECTION("LogDeterminantCoeffGrad"){
 
         Kokkos::View<double**,Kokkos::HostSpace> detGrad = composedMap->LogDeterminantCoeffGrad(in);
-        REQUIRE(detGrad.extent(0)==composedMap->numCoeffs);
+        REQUIRE(detGrad.extent(0)==composedMap->numParams);
         REQUIRE(detGrad.extent(1)==numSamps);
 
         Kokkos::View<double*,Kokkos::HostSpace> logDet = composedMap->LogDeterminant(in);
@@ -442,7 +442,7 @@ TEST_CASE( "Testing 2 layer composed map with moveCoeffs=true", "[ShallowCompose
 
         // Compare with finite differences
         double fdstep = 1e-5;
-        for(unsigned int i=0; i<composedMap->numCoeffs; ++i){
+        for(unsigned int i=0; i<composedMap->numParams; ++i){
             coeffs(i) += fdstep;
 
             composedMap->SetCoeffs(coeffs);
@@ -504,13 +504,13 @@ TEST_CASE( "Testing 5 layer composed map with moveCoeffs=false", "[DeepComposedM
     for(unsigned int i=0;i<numMaps;++i){
 
         maps.at(i) = MapFactory::CreateTriangular<Kokkos::HostSpace>(dim, dim, order, options);
-        coeffSize += maps.at(i)->numCoeffs;
+        coeffSize += maps.at(i)->numParams;
     }
 
     std::shared_ptr<ConditionalMapBase<MemorySpace>> composedMap = std::make_shared<ComposedMap<MemorySpace>>(maps, numChecks);
 
-    Eigen::RowVectorXd coeffs(composedMap->numCoeffs);
-    for(unsigned int i=0; i<composedMap->numCoeffs; ++i)
+    Eigen::RowVectorXd coeffs(composedMap->numParams);
+    for(unsigned int i=0; i<composedMap->numParams; ++i)
         coeffs(i) = 0.1*(i+1);
 
 
@@ -573,12 +573,12 @@ TEST_CASE( "Testing 5 layer composed map with moveCoeffs=false", "[DeepComposedM
 
         Kokkos::View<double**,Kokkos::HostSpace> coeffGrad = composedMap->CoeffGrad(in, sens);
 
-        REQUIRE(coeffGrad.extent(0)==composedMap->numCoeffs);
+        REQUIRE(coeffGrad.extent(0)==composedMap->numParams);
         REQUIRE(coeffGrad.extent(1)==numSamps);
 
         // Compare with finite differences
         double fdstep = 1e-5;
-        for(unsigned int i=0; i<composedMap->numCoeffs; ++i){
+        for(unsigned int i=0; i<composedMap->numParams; ++i){
             coeffs(i) += fdstep;
 
             composedMap->SetCoeffs(coeffs);
@@ -641,7 +641,7 @@ TEST_CASE( "Testing 5 layer composed map with moveCoeffs=false", "[DeepComposedM
     SECTION("LogDeterminantCoeffGrad"){
 
         Kokkos::View<double**,Kokkos::HostSpace> detGrad = composedMap->LogDeterminantCoeffGrad(in);
-        REQUIRE(detGrad.extent(0)==composedMap->numCoeffs);
+        REQUIRE(detGrad.extent(0)==composedMap->numParams);
         REQUIRE(detGrad.extent(1)==numSamps);
 
         Kokkos::View<double*,Kokkos::HostSpace> logDet = composedMap->LogDeterminant(in);
@@ -649,7 +649,7 @@ TEST_CASE( "Testing 5 layer composed map with moveCoeffs=false", "[DeepComposedM
 
         // Compare with finite differences
         double fdstep = 1e-5;
-        for(unsigned int i=0; i<composedMap->numCoeffs; ++i){
+        for(unsigned int i=0; i<composedMap->numParams; ++i){
             coeffs(i) += fdstep;
 
             composedMap->SetCoeffs(coeffs);
@@ -713,11 +713,11 @@ TEST_CASE( "Testing 8 layer composed map with moveCoeffs=true", "[DeepComposedMa
     for(unsigned int i=0;i<numMaps;++i){
 
         maps.at(i) = MapFactory::CreateTriangular<Kokkos::HostSpace>(dim, dim, order, options);
-        coeffSize += maps.at(i)->numCoeffs;
+        coeffSize += maps.at(i)->numParams;
 
-        coeffs_.at(i) = Kokkos::View<double*,Kokkos::HostSpace>("Coefficients", maps.at(i)->numCoeffs);
+        coeffs_.at(i) = Kokkos::View<double*,Kokkos::HostSpace>("Coefficients", maps.at(i)->numParams);
 
-        for(unsigned int j=0; j<maps.at(i)->numCoeffs; ++j)
+        for(unsigned int j=0; j<maps.at(i)->numParams; ++j)
             coeffs_.at(i)(j) = 0.1*(j+1);
 
         maps.at(i)->SetCoeffs(coeffs_.at(i));
@@ -727,16 +727,16 @@ TEST_CASE( "Testing 8 layer composed map with moveCoeffs=true", "[DeepComposedMa
 
     CHECK(composedMap->outputDim == dim);
     CHECK(composedMap->inputDim == dim);
-    CHECK(composedMap->numCoeffs == coeffSize);
+    CHECK(composedMap->numParams == coeffSize);
 
-    Kokkos::View<double*,Kokkos::HostSpace> coeffs(composedMap->Coeffs().data(), composedMap->numCoeffs);
+    Kokkos::View<double*,Kokkos::HostSpace> coeffs(composedMap->Coeffs().data(), composedMap->numParams);
 
     SECTION("Coefficients"){
 
         // Now make sure that the coefficients of each block were set
         unsigned int cumCoeffInd = 0;
         for(unsigned int i=0; i<numMaps; ++i){
-            for(unsigned int j=0; j<maps.at(i)->numCoeffs; ++j){
+            for(unsigned int j=0; j<maps.at(i)->numParams; ++j){
                 CHECK(maps.at(i)->Coeffs()(j) == coeffs(cumCoeffInd)); // Values of coefficients should be equal
                 CHECK(maps.at(i)->Coeffs()(j) == coeffs_.at(i)(j));
                 CHECK(&maps.at(i)->Coeffs()(j) == &coeffs(cumCoeffInd));// Memory location should also be the same (no copy)
@@ -804,12 +804,12 @@ TEST_CASE( "Testing 8 layer composed map with moveCoeffs=true", "[DeepComposedMa
 
         Kokkos::View<double**,Kokkos::HostSpace> coeffGrad = composedMap->CoeffGrad(in, sens);
 
-        REQUIRE(coeffGrad.extent(0)==composedMap->numCoeffs);
+        REQUIRE(coeffGrad.extent(0)==composedMap->numParams);
         REQUIRE(coeffGrad.extent(1)==numSamps);
 
         // Compare with finite differences
         double fdstep = 1e-5;
-        for(unsigned int i=0; i<composedMap->numCoeffs; ++i){
+        for(unsigned int i=0; i<composedMap->numParams; ++i){
             coeffs(i) += fdstep;
 
             composedMap->SetCoeffs(coeffs);
@@ -872,7 +872,7 @@ TEST_CASE( "Testing 8 layer composed map with moveCoeffs=true", "[DeepComposedMa
     SECTION("LogDeterminantCoeffGrad"){
 
         Kokkos::View<double**,Kokkos::HostSpace> detGrad = composedMap->LogDeterminantCoeffGrad(in);
-        REQUIRE(detGrad.extent(0)==composedMap->numCoeffs);
+        REQUIRE(detGrad.extent(0)==composedMap->numParams);
         REQUIRE(detGrad.extent(1)==numSamps);
 
         Kokkos::View<double*,Kokkos::HostSpace> logDet = composedMap->LogDeterminant(in);
@@ -880,7 +880,7 @@ TEST_CASE( "Testing 8 layer composed map with moveCoeffs=true", "[DeepComposedMa
 
         // Compare with finite differences
         double fdstep = 1e-5;
-        for(unsigned int i=0; i<composedMap->numCoeffs; ++i){
+        for(unsigned int i=0; i<composedMap->numParams; ++i){
             coeffs(i) += fdstep;
 
             composedMap->SetCoeffs(coeffs);

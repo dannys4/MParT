@@ -21,14 +21,14 @@ TEST_CASE( "Testing multivariate expansion", "[MultivariateExpansion]") {
 
     ProbabilistHermite basis;
     MultivariateExpansion<BasisEvaluator<BasisHomogeneity::Homogeneous,ProbabilistHermite>,Kokkos::HostSpace> func(outDim, mset, basis);
-    CHECK(func.numCoeffs == (mset.Size()*outDim));
+    CHECK(func.numParams == (mset.Size()*outDim));
     std::vector<unsigned int> nonzeroDiagTerms_ref = mset.NonzeroDiagonalEntries();
     std::vector<unsigned int> diagCoeffs = func.DiagonalCoeffIndices();
     
     REQUIRE((nonzeroDiagTerms_ref == diagCoeffs));
 
-    Kokkos::View<double*,Kokkos::HostSpace> coeffs("coefficients", func.numCoeffs);
-    for(unsigned int i=0; i<func.numCoeffs; ++i)
+    Kokkos::View<double*,Kokkos::HostSpace> coeffs("coefficients", func.numParams);
+    for(unsigned int i=0; i<func.numParams; ++i)
         coeffs(i) = 0.01;
         
     func.SetCoeffs(coeffs);
@@ -76,7 +76,7 @@ TEST_CASE( "Testing multivariate expansion", "[MultivariateExpansion]") {
             // Evaluate the gradient
             grads = func.CoeffGrad(pts,sens);
 
-            REQUIRE(grads.extent(0)==func.numCoeffs);
+            REQUIRE(grads.extent(0)==func.numParams);
             REQUIRE(grads.extent(1)==numPts);
 
             // Check the solution
@@ -151,7 +151,7 @@ TEST_CASE( "Testing multivariate expansion", "[MultivariateExpansion]") {
 
 
     SECTION("WrapCoeffs"){
-        Eigen::VectorXd newCoeffs = Eigen::VectorXd::Random(func.numCoeffs);
+        Eigen::VectorXd newCoeffs = Eigen::VectorXd::Random(func.numParams);
         func.WrapCoeffs(newCoeffs);
 
         StridedMatrix<double,Kokkos::HostSpace> evals1 = func.Evaluate(pts);

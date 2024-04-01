@@ -117,7 +117,7 @@ std::shared_ptr<ConditionalMapBase<Kokkos::HostSpace>> mpart::TrainMapAdaptive(s
 
     // Create initial map
     std::shared_ptr<ConditionalMapBase<Kokkos::HostSpace>> map = std::make_shared<TriangularMap<Kokkos::HostSpace>>(mapBlocks);
-    Kokkos::View<double*, Kokkos::HostSpace> mapCoeffs ("mapCoeffs", map->numCoeffs);
+    Kokkos::View<double*, Kokkos::HostSpace> mapCoeffs ("mapCoeffs", map->numParams);
     for(int i = 0; i < mapCoeffs.extent(0); i++) {
         mapCoeffs(i) = 0.;
     }
@@ -146,10 +146,10 @@ std::shared_ptr<ConditionalMapBase<Kokkos::HostSpace>> mpart::TrainMapAdaptive(s
 
             // Create a component with the expanded multiindexset
             std::shared_ptr<ConditionalMapBase<Kokkos::HostSpace>> comp_i = MapFactory::CreateComponent(mset_tmp[i].Fix(), options);
-            Kokkos::View<double*,Kokkos::HostSpace> coeffsFrontier ("Frontier coeffs", comp_i->numCoeffs);
+            Kokkos::View<double*,Kokkos::HostSpace> coeffsFrontier ("Frontier coeffs", comp_i->numParams);
             int oldIdx = 0;
             int rmIdx = 0;
-            for(int j = 0; j < comp_i->numCoeffs; j++) {
+            for(int j = 0; j < comp_i->numParams; j++) {
                 if(j == multis_rm[i][rmIdx]){ // Fill new coeff with zero
                     coeffsFrontier(j) = 0.;
                     rmIdx++;
@@ -210,7 +210,7 @@ std::shared_ptr<ConditionalMapBase<Kokkos::HostSpace>> mpart::TrainMapAdaptive(s
         // Create a new map with the larger MultiIndexSet in component maxIdxBlock
         std::shared_ptr<ConditionalMapBase<Kokkos::HostSpace>> newComp = MapFactory::CreateComponent(mset0[maxIdxBlock].Fix(true), options);
         Kokkos::View<double*, Kokkos::HostSpace> oldCoeffs = mapBlocks[maxIdxBlock]->Coeffs();
-        Kokkos::View<double*, Kokkos::HostSpace> newCoeffs ("New component coefficients", newComp->numCoeffs);
+        Kokkos::View<double*, Kokkos::HostSpace> newCoeffs ("New component coefficients", newComp->numParams);
         std::copy(oldCoeffs.data(), oldCoeffs.data() + mset_sizes[maxIdxBlock], newCoeffs.data());
         newCoeffs(mset_sizes[maxIdxBlock]) = 0.;
         mapBlocks[maxIdxBlock] = newComp;
@@ -248,7 +248,7 @@ std::shared_ptr<ConditionalMapBase<Kokkos::HostSpace>> mpart::TrainMapAdaptive(s
     // Create the "best" map and optimize it
     map = std::make_shared<TriangularMap<Kokkos::HostSpace>>(mapBlocks, true);
     if(options.verbose) {
-        std::cout << "\nFinal map has " << map->numCoeffs << " terms.\n";
+        std::cout << "\nFinal map has " << map->numParams << " terms.\n";
     }
     // Train a map with the new MultiIndex
     double train_error = TrainMap(map, objective, options);

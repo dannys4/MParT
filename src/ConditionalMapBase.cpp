@@ -145,7 +145,7 @@ template<>
 StridedMatrix<double, Kokkos::HostSpace> ConditionalMapBase<Kokkos::HostSpace>::LogDeterminantParamGrad(StridedMatrix<const double, Kokkos::HostSpace> const& pts)
 {
     this->CheckParameters("LogDeterminantParamGrad");
-    Kokkos::View<double**, Kokkos::HostSpace> output("LogDeterminantParamGrad", this->numCoeffs, pts.extent(1));
+    Kokkos::View<double**, Kokkos::HostSpace> output("LogDeterminantParamGrad", this->numParams, pts.extent(1));
     LogDeterminantParamGradImpl(pts,output);
     return output;
 }
@@ -168,7 +168,7 @@ template<>
 StridedMatrix<double, mpart::DeviceSpace> ConditionalMapBase<mpart::DeviceSpace>::LogDeterminantParamGrad(StridedMatrix<const double, mpart::DeviceSpace> const& pts)
 {
     this->CheckParameters("LogDeterminantCoeffGrad");
-    Kokkos::View<double**, mpart::DeviceSpace> output("LogDeterminantParamGrad", this->numCoeffs, pts.extent(1));
+    Kokkos::View<double**, mpart::DeviceSpace> output("LogDeterminantParamGrad", this->numParams, pts.extent(1));
     LogDeterminantParamGradImpl(pts,output);
     return output;
 }

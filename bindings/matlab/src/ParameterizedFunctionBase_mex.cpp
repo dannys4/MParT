@@ -83,12 +83,12 @@ MEX_DEFINE(ParameterizedFunction_CoeffMap) (int nlhs, mxArray* plhs[],
   output.set(0,coeffs);
 }
 
-MEX_DEFINE(ParameterizedFunction_numCoeffs) (int nlhs, mxArray* plhs[],
+MEX_DEFINE(ParameterizedFunction_numParams) (int nlhs, mxArray* plhs[],
                  int nrhs, const mxArray* prhs[]) {
   InputArguments input(nrhs, prhs, 1);
   OutputArguments output(nlhs, plhs, 1);
   const ParameterizedFunctionMex& parFunc = Session<ParameterizedFunctionMex>::getConst(input.get(0));
-  auto numcoeffs = parFunc.fun_ptr->numCoeffs;
+  auto numcoeffs = parFunc.fun_ptr->numParams;
   output.set(0,numcoeffs);
 }
 
@@ -161,12 +161,12 @@ MEX_DEFINE(ParameterizedFunction_Serialize) (int nlhs, mxArray* plhs[],
   const ParameterizedFunctionMex& parFunc = Session<ParameterizedFunctionMex>::getConst(input.get(0));
   unsigned int inputDim = parFunc.fun_ptr->inputDim;
   unsigned int outputDim = parFunc.fun_ptr->outputDim;
-  unsigned int numCoeffs = parFunc.fun_ptr->numCoeffs;
+  unsigned int numParams = parFunc.fun_ptr->numParams;
   auto coeffs = parFunc.fun_ptr->Coeffs();
   std::string filename = input.get<std::string>(1);
   std::ofstream os(filename);
   cereal::BinaryOutputArchive oarchive(os);
-  oarchive(inputDim,outputDim,numCoeffs);
+  oarchive(inputDim,outputDim,numParams);
   oarchive(coeffs);
 #else
   mexErrMsgIdAndTxt("MParT:NoCereal",
@@ -184,9 +184,9 @@ MEX_DEFINE(ParameterizedFunction_DeserializeMap) (int nlhs, mxArray* plhs[],
   std::string filename = input.get<std::string>(0);
   std::ifstream is(filename);
   cereal::BinaryInputArchive archive(is);
-  unsigned int inputDim, outputDim, numCoeffs;
-  archive(inputDim, outputDim, numCoeffs);
-  Kokkos::View<double*, Kokkos::HostSpace> coeffs ("Map coeffs", numCoeffs);
+  unsigned int inputDim, outputDim, numParams;
+  archive(inputDim, outputDim, numParams);
+  Kokkos::View<double*, Kokkos::HostSpace> coeffs ("Map coeffs", numParams);
   load(archive, coeffs);
   output.set(0,inputDim);
   output.set(1,outputDim);

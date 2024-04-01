@@ -167,7 +167,7 @@ public:
                        StridedMatrix<const double, MemorySpace> const& sens,
                        StridedMatrix<double, MemorySpace>              output) override
     {
-        checkGradFunctionInput("CoeffGradImpl", sens.extent(0), sens.extent(1), pts.extent(0), pts.extent(1), output.extent(0), output.extent(1), this->numCoeffs);
+        checkGradFunctionInput("CoeffGradImpl", sens.extent(0), sens.extent(1), pts.extent(0), pts.extent(1), output.extent(0), output.extent(1), this->numParams);
 
         Kokkos::View<double*,MemorySpace> evals("Map output", pts.extent(1));
 
@@ -176,7 +176,7 @@ public:
         // Scale each column by the sensitivity
         auto policy = Kokkos::RangePolicy<typename MemoryToExecution<MemorySpace>::Space>(0,pts.extent(1));
         Kokkos::parallel_for(policy, KOKKOS_CLASS_LAMBDA (unsigned int ptInd) {
-            for(unsigned int i=0; i<this->numCoeffs; ++i)
+            for(unsigned int i=0; i<this->numParams; ++i)
                 output(i,ptInd) *= sens(0,ptInd);
         });
     }
@@ -200,7 +200,7 @@ public:
         // Now take the log
         auto policy = Kokkos::RangePolicy<typename MemoryToExecution<MemorySpace>::Space>(0,pts.extent(1));
         Kokkos::parallel_for(policy, KOKKOS_CLASS_LAMBDA (unsigned int ptInd) {
-            for(unsigned int i=0; i<this->numCoeffs; ++i)
+            for(unsigned int i=0; i<this->numParams; ++i)
                 output(i,ptInd) *= 1.0/derivs(ptInd);
         });
     }

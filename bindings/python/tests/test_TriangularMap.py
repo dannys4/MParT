@@ -16,12 +16,12 @@ map_2 = mpart.CreateComponent(mset_2, opts)
 triangular = mpart.TriangularMap([map_1,map_2])
 num_samples = 100
 x = np.random.randn(2,num_samples)
-coeffs = np.random.randn(triangular.numCoeffs)
+coeffs = np.random.randn(triangular.numParams)
 triangular.SetCoeffs(coeffs)
 
 
-def test_numCoeffs():
-    assert triangular.numCoeffs == 2 + 3
+def test_numParams():
+    assert triangular.numParams == 2 + 3
 
 
 def test_CoeffsMap():

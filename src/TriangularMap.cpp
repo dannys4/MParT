@@ -9,7 +9,7 @@ using namespace mpart;
 template<typename MemorySpace>
 TriangularMap<MemorySpace>::TriangularMap(std::vector<std::shared_ptr<ConditionalMapBase<MemorySpace>>> const& components, bool moveCoeffs) : ConditionalMapBase<MemorySpace>(components.back()->inputDim,
                         std::accumulate(components.begin(), components.end(), 0, [](size_t sum, std::shared_ptr<ConditionalMapBase<MemorySpace>> const& comp){ return sum + comp->outputDim; }),
-                        std::accumulate(components.begin(), components.end(), 0, [](size_t sum, std::shared_ptr<ConditionalMapBase<MemorySpace>> const& comp){ return sum + comp->numCoeffs; })),
+                        std::accumulate(components.begin(), components.end(), 0, [](size_t sum, std::shared_ptr<ConditionalMapBase<MemorySpace>> const& comp){ return sum + comp->numParams; })),
                         comps_(components)
 {
 
@@ -40,7 +40,7 @@ TriangularMap<MemorySpace>::TriangularMap(std::vector<std::shared_ptr<Conditiona
     // if moveCoeffs is set to true, we check if each component's coeffs are set, and then copy them into the new triangular map's coeffs
     if(moveCoeffs){
 
-        Kokkos::View<double*,MemorySpace> coeffs("coeffs", this->numCoeffs);
+        Kokkos::View<double*,MemorySpace> coeffs("coeffs", this->numParams);
         unsigned int cumNumCoeffs = 0;
 
         for(unsigned int i=0; i<comps_.size(); ++i){
@@ -51,9 +51,9 @@ TriangularMap<MemorySpace>::TriangularMap(std::vector<std::shared_ptr<Conditiona
                 throw std::invalid_argument(msg.str());
             }
 
-            Kokkos::View<double*,MemorySpace> subCoeffs = Kokkos::subview(coeffs, std::make_pair(cumNumCoeffs, cumNumCoeffs+comps_.at(i)->numCoeffs));
+            Kokkos::View<double*,MemorySpace> subCoeffs = Kokkos::subview(coeffs, std::make_pair(cumNumCoeffs, cumNumCoeffs+comps_.at(i)->numParams));
             Kokkos::deep_copy(subCoeffs, comps_.at(i)->Coeffs());
-            cumNumCoeffs += comps_.at(i)->numCoeffs;
+            cumNumCoeffs += comps_.at(i)->numParams;
         }
 
         this->WrapCoeffs(coeffs);
@@ -71,11 +71,11 @@ void TriangularMap<MemorySpace>::SetCoeffs(Kokkos::View<const double*, MemorySpa
     // Now create subviews for each of the components
     unsigned int cumNumCoeffs = 0;
     for(unsigned int i=0; i<comps_.size(); ++i){
-        assert(cumNumCoeffs+comps_.at(i)->numCoeffs <= this->savedCoeffs.size());
+        assert(cumNumCoeffs+comps_.at(i)->numParams <= this->savedCoeffs.size());
 
         comps_.at(i)->WrapCoeffs( Kokkos::subview(this->savedCoeffs,
-            std::make_pair(cumNumCoeffs, cumNumCoeffs+comps_.at(i)->numCoeffs)));
-        cumNumCoeffs += comps_.at(i)->numCoeffs;
+            std::make_pair(cumNumCoeffs, cumNumCoeffs+comps_.at(i)->numParams)));
+        cumNumCoeffs += comps_.at(i)->numParams;
     }
 }
 
@@ -88,11 +88,11 @@ void TriangularMap<MemorySpace>::WrapCoeffs(Kokkos::View<double*, MemorySpace> c
     // Now create subviews for each of the components
     unsigned int cumNumCoeffs = 0;
     for(unsigned int i=0; i<comps_.size(); ++i){
-        assert(cumNumCoeffs+comps_.at(i)->numCoeffs <= this->savedCoeffs.size());
+        assert(cumNumCoeffs+comps_.at(i)->numParams <= this->savedCoeffs.size());
 
         comps_.at(i)->WrapCoeffs( Kokkos::subview(this->savedCoeffs,
-            std::make_pair(cumNumCoeffs, cumNumCoeffs+comps_.at(i)->numCoeffs)));
-        cumNumCoeffs += comps_.at(i)->numCoeffs;
+            std::make_pair(cumNumCoeffs, cumNumCoeffs+comps_.at(i)->numParams)));
+        cumNumCoeffs += comps_.at(i)->numParams;
     }
 }
 
@@ -237,16 +237,16 @@ void TriangularMap<MemorySpace>::ParamGradImpl(StridedMatrix<const double, Memor
     int startParamDim = 0;
     for(unsigned int i=0; i<comps_.size(); ++i){
 
-        if(comps_.at(i)->numCoeffs != 0){
+        if(comps_.at(i)->numParams != 0){
 
             subPts = Kokkos::subview(pts, std::make_pair(0,int(comps_.at(i)->inputDim)), Kokkos::ALL());
             subSens = Kokkos::subview(sens, std::make_pair(startOutDim,int(startOutDim+comps_.at(i)->outputDim)), Kokkos::ALL());
 
-            subOut = Kokkos::subview(output, std::make_pair(startParamDim,int(startParamDim+comps_.at(i)->numCoeffs)), Kokkos::ALL());
+            subOut = Kokkos::subview(output, std::make_pair(startParamDim,int(startParamDim+comps_.at(i)->numParams)), Kokkos::ALL());
             comps_.at(i)->CoeffGradImpl(subPts, subSens, subOut);
 
 
-            startParamDim += comps_.at(i)->numCoeffs;
+            startParamDim += comps_.at(i)->numParams;
         }
 
         startOutDim += comps_.at(i)->outputDim;
@@ -263,14 +263,14 @@ void TriangularMap<MemorySpace>::LogDeterminantParamGradImpl(StridedMatrix<const
 
     int startParamDim = 0;
     for(unsigned int i=0; i<comps_.size(); ++i){
-        if(comps_.at(i)->numCoeffs != 0){
+        if(comps_.at(i)->numParams != 0){
 
             subPts = Kokkos::subview(pts, std::make_pair(0,int(comps_.at(i)->inputDim)), Kokkos::ALL());
 
-            subOut = Kokkos::subview(output, std::make_pair(startParamDim,int(startParamDim+comps_.at(i)->numCoeffs)), Kokkos::ALL());
+            subOut = Kokkos::subview(output, std::make_pair(startParamDim,int(startParamDim+comps_.at(i)->numParams)), Kokkos::ALL());
             comps_.at(i)->LogDeterminantParamGradImpl(subPts, subOut);
 
-            startParamDim += comps_.at(i)->numCoeffs;
+            startParamDim += comps_.at(i)->numParams;
         }
     }
 }

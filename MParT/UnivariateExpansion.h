@@ -158,8 +158,8 @@ class UnivariateExpansion: public ConditionalMapBase<MemorySpace>{
         auto out_slice = Kokkos::subview(out, 0, Kokkos::ALL());
         StridedVector<const double, MemorySpace> coeffs = this->savedCoeffs;
         unsigned int numPts = points.extent(1);
-        unsigned int numCoeffs = this->numCoeffs;
-        unsigned int cacheSize = numCoeffs*3;
+        unsigned int numParams = this->numParams;
+        unsigned int cacheSize = numParams*3;
 
         auto functor = KOKKOS_CLASS_LAMBDA(typename Kokkos::TeamPolicy<ExecutionSpace>::member_type team_member) {
 
@@ -168,9 +168,9 @@ class UnivariateExpansion: public ConditionalMapBase<MemorySpace>{
             if(ptInd<numPts){
 
                 // Get a pointer to the shared memory that Kokkos set up for this team
-                Kokkos::View<double*,MemorySpace> cache_eval(team_member.thread_scratch(1), numCoeffs);
-                Kokkos::View<double*,MemorySpace> cache_grad(team_member.thread_scratch(1), numCoeffs);
-                Kokkos::View<double*,MemorySpace> cache_hess(team_member.thread_scratch(1), numCoeffs);
+                Kokkos::View<double*,MemorySpace> cache_eval(team_member.thread_scratch(1), numParams);
+                Kokkos::View<double*,MemorySpace> cache_grad(team_member.thread_scratch(1), numParams);
+                Kokkos::View<double*,MemorySpace> cache_hess(team_member.thread_scratch(1), numParams);
                 basis_.EvaluateSecondDerivatives(cache_eval.data(), cache_grad.data(), cache_hess.data(), maxOrder_, point_slice(ptInd));
                 double df = 0.0;
                 double d2f = 0.0;
@@ -193,8 +193,8 @@ class UnivariateExpansion: public ConditionalMapBase<MemorySpace>{
         auto point_slice = Kokkos::subview(points, 0, Kokkos::ALL());
         StridedVector<const double, MemorySpace> coeffs = this->savedCoeffs;
         unsigned int numPts = points.extent(1);
-        unsigned int numCoeffs = this->numCoeffs;
-        unsigned int cacheSize = 2*numCoeffs;
+        unsigned int numParams = this->numParams;
+        unsigned int cacheSize = 2*numParams;
 
         auto functor = KOKKOS_CLASS_LAMBDA(typename Kokkos::TeamPolicy<ExecutionSpace>::member_type team_member) {
 
@@ -204,8 +204,8 @@ class UnivariateExpansion: public ConditionalMapBase<MemorySpace>{
                 auto out_slice = Kokkos::subview(out, Kokkos::ALL(), ptInd);
 
                 // Get a pointer to the shared memory that Kokkos set up for this team
-                Kokkos::View<double*,MemorySpace> cache_eval(team_member.thread_scratch(1), numCoeffs);
-                Kokkos::View<double*,MemorySpace> cache_grad(team_member.thread_scratch(1), numCoeffs);
+                Kokkos::View<double*,MemorySpace> cache_eval(team_member.thread_scratch(1), numParams);
+                Kokkos::View<double*,MemorySpace> cache_grad(team_member.thread_scratch(1), numParams);
                 basis_.EvaluateDerivatives(cache_eval.data(), cache_grad.data(), maxOrder_, point_slice(ptInd));
                 double df = 0.0;
                 for(int i = 0; i <= maxOrder_; i++) {

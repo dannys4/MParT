@@ -62,8 +62,12 @@ methods
     result = MParT_('ParameterizedFunction_CoeffMap',this.id_);
   end
 
+  function result = numParams(this)
+    result = MParT_('ConditionalMap_numParams',this.id_);
+  end
+
   function result = numCoeffs(this)
-    result = MParT_('ParameterizedFunction_numCoeffs',this.id_);
+    result = MParT_('ConditionalMap_numParams',this.id_);
   end
 
   function result = Evaluate(this,pts)
@@ -72,7 +76,7 @@ methods
   end
 
   function result = CoeffGrad(this,pts,sens)
-    result = zeros(this.numCoeffs, size(pts,2));
+    result = zeros(this.numParams, size(pts,2));
     MParT_('ParameterizedFunction_CoeffGrad',this.id_,pts,sens,result);
   end
 

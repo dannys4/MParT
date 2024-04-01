@@ -12,7 +12,11 @@ void mpart::binding::ParameterizedFunctionBaseWrapper(jlcxx::Module &mod) {
 	    Kokkos::View<const double*, Kokkos::HostSpace> ConstCoeffs = JuliaToKokkos(v);
 	    pfb.SetCoeffs(ConstCoeffs); 
 	})
-        .method("numCoeffs", [](ParameterizedFunctionBase<Kokkos::HostSpace> &pfb) { return pfb.numCoeffs; })
+        .method("numParams", [](ParameterizedFunctionBase<Kokkos::HostSpace> &pfb) { return pfb.numParams; })
+        .method("numCoeffs", [](ParameterizedFunctionBase<Kokkos::HostSpace> &pfb) { 
+            // TODO: Create deprecation warning
+            return pfb.numParams;
+        })
         .method("inputDim" , [](ParameterizedFunctionBase<Kokkos::HostSpace> &pfb) { return pfb.inputDim; })
         .method("outputDim", [](ParameterizedFunctionBase<Kokkos::HostSpace> &pfb) { return pfb.outputDim; })
         .method("Evaluate" , [](ParameterizedFunctionBase<Kokkos::HostSpace> &pfb, jlcxx::ArrayRef<double,2> pts) {
@@ -29,8 +33,8 @@ void mpart::binding::ParameterizedFunctionBaseWrapper(jlcxx::Module &mod) {
         })
         .method("CoeffGrad", [](ParameterizedFunctionBase<Kokkos::HostSpace> &pfb, jlcxx::ArrayRef<double,2> pts, jlcxx::ArrayRef<double,2> sens) {
             unsigned int numPts = size(pts,1);
-            unsigned int numCoeffs = pfb.numCoeffs;
-            jlcxx::ArrayRef<double,2> output = jlMalloc<double>(numCoeffs, numPts);
+            unsigned int numParams = pfb.numParams;
+            jlcxx::ArrayRef<double,2> output = jlMalloc<double>(numParams, numPts);
             pfb.CoeffGradImpl(JuliaToKokkos(pts), JuliaToKokkos(sens), JuliaToKokkos(output));
             return output;
         })
@@ -50,11 +54,11 @@ void mpart::binding::ParameterizedFunctionBaseWrapper(jlcxx::Module &mod) {
 #if defined(MPART_HAS_CEREAL)
             unsigned int inputDim = pfb.inputDim;
             unsigned int outputDim = pfb.outputDim;
-            unsigned int numCoeffs = pfb.numCoeffs;
+            unsigned int numParams = pfb.numParams;
             auto coeffs = pfb.Coeffs();
             std::ofstream os(filename);
             cereal::BinaryOutputArchive oarchive(os);
-            oarchive(inputDim,outputDim,numCoeffs);
+            oarchive(inputDim,outputDim,numParams);
             oarchive(coeffs);
 #else
             std::cerr << "ParameterizedFunctionBase::Serialize: MParT was not compiled with Cereal support. Operation incomplete." << std::endl;
@@ -67,10 +71,10 @@ void mpart::binding::ParameterizedFunctionBaseWrapper(jlcxx::Module &mod) {
 
             std::ifstream is(filename);
             cereal::BinaryInputArchive archive(is);
-            unsigned int inputDim, outputDim, numCoeffs;
-            archive(inputDim, outputDim, numCoeffs);
-            jlcxx::ArrayRef<double> coeffs_jl = jlMalloc<double>(numCoeffs);
-            Kokkos::View<double*, Kokkos::HostSpace> coeffs ("Map coeffs", numCoeffs);
+            unsigned int inputDim, outputDim, numParams;
+            archive(inputDim, outputDim, numParams);
+            jlcxx::ArrayRef<double> coeffs_jl = jlMalloc<double>(numParams);
+            Kokkos::View<double*, Kokkos::HostSpace> coeffs ("Map coeffs", numParams);
             load(archive, coeffs);
             dims[0] = inputDim; dims[1] = outputDim;
             Kokkos::deep_copy(JuliaToKokkos(coeffs_jl), coeffs);

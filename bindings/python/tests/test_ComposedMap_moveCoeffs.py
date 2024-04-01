@@ -10,14 +10,14 @@ maxOrder = 1
 
 maps = []
 coeffs_ = []
-numCoeffs = 0
+numParams = 0
 for i in range(num_maps):
     map = mpart.CreateTriangular(dim,dim,maxOrder,opts)
-    coeffs = np.random.randn(map.numCoeffs)
+    coeffs = np.random.randn(map.numParams)
     map.SetCoeffs(coeffs)
     maps.append(map)
     coeffs_.append(coeffs)
-    numCoeffs += map.numCoeffs
+    numParams += map.numParams
 
 
 moveCoeffs = True
@@ -27,8 +27,8 @@ all_coeffs = np.hstack(coeffs_).flatten()
 num_samples = 100
 x = np.random.randn(dim, num_samples)
 
-def test_numCoeffs():
-    assert composed_map.numCoeffs == numCoeffs
+def test_numParams():
+    assert composed_map.numParams == numParams
 
 def test_CoeffsMap():
     assert np.all(composed_map.CoeffMap() == all_coeffs)

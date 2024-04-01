@@ -135,7 +135,7 @@ template<typename MemorySpace>
 ComposedMap<MemorySpace>::ComposedMap(std::vector<std::shared_ptr<ConditionalMapBase<MemorySpace>>> const& maps, bool moveCoeffs,
                                       int maxChecks) : ConditionalMapBase<MemorySpace>(maps.front()->inputDim,
                                                                                        maps.front()->inputDim,
-                                                                                       std::accumulate(maps.begin(), maps.end(), 0, [](size_t sum, std::shared_ptr<ConditionalMapBase<MemorySpace>> const& comp){ return sum + comp->numCoeffs; })),
+                                                                                       std::accumulate(maps.begin(), maps.end(), 0, [](size_t sum, std::shared_ptr<ConditionalMapBase<MemorySpace>> const& comp){ return sum + comp->numParams; })),
                                                         maps_(maps),
                                                         maxChecks_((maxChecks<=0) ? maps.size() : maxChecks)
 {
@@ -157,7 +157,7 @@ ComposedMap<MemorySpace>::ComposedMap(std::vector<std::shared_ptr<ConditionalMap
     // if moveCoeffs is set to true, we check if each map's coeffs are set, and then copy them into the new composed map's coeffs
     if(moveCoeffs){
 
-        Kokkos::View<double*,MemorySpace> coeffs("coeffs", this->numCoeffs);
+        Kokkos::View<double*,MemorySpace> coeffs("coeffs", this->numParams);
         unsigned int cumNumCoeffs = 0;
 
         for(unsigned int i=0; i<maps_.size(); ++i){
@@ -168,9 +168,9 @@ ComposedMap<MemorySpace>::ComposedMap(std::vector<std::shared_ptr<ConditionalMap
                 throw std::invalid_argument(msg.str());
             }
 
-            Kokkos::View<double*,MemorySpace> subCoeffs = Kokkos::subview(coeffs, std::make_pair(cumNumCoeffs, cumNumCoeffs+maps_.at(i)->numCoeffs));
+            Kokkos::View<double*,MemorySpace> subCoeffs = Kokkos::subview(coeffs, std::make_pair(cumNumCoeffs, cumNumCoeffs+maps_.at(i)->numParams));
             Kokkos::deep_copy(subCoeffs, maps_.at(i)->Coeffs());
-            cumNumCoeffs += maps_.at(i)->numCoeffs;
+            cumNumCoeffs += maps_.at(i)->numParams;
         }
 
         this->WrapCoeffs(coeffs);
@@ -186,11 +186,11 @@ void ComposedMap<MemorySpace>::SetCoeffs(Kokkos::View<const double*, MemorySpace
     // Now create subviews for each of the maps
     unsigned int cumNumCoeffs = 0;
     for(unsigned int i=0; i<maps_.size(); ++i){
-        assert(cumNumCoeffs+maps_.at(i)->numCoeffs <= this->savedCoeffs.size());
+        assert(cumNumCoeffs+maps_.at(i)->numParams <= this->savedCoeffs.size());
 
         maps_.at(i)->WrapCoeffs(Kokkos::subview(this->savedCoeffs,
-            std::make_pair(cumNumCoeffs, cumNumCoeffs+maps_.at(i)->numCoeffs)));
-        cumNumCoeffs += maps_.at(i)->numCoeffs;
+            std::make_pair(cumNumCoeffs, cumNumCoeffs+maps_.at(i)->numParams)));
+        cumNumCoeffs += maps_.at(i)->numParams;
     }
 }
 
@@ -203,11 +203,11 @@ void ComposedMap<MemorySpace>::WrapCoeffs(Kokkos::View<double*, MemorySpace> coe
     // Now create subviews for each of the components
     unsigned int cumNumCoeffs = 0;
     for(unsigned int i=0; i<maps_.size(); ++i){
-        assert(cumNumCoeffs+maps_.at(i)->numCoeffs <= this->savedCoeffs.size());
+        assert(cumNumCoeffs+maps_.at(i)->numParams <= this->savedCoeffs.size());
 
         maps_.at(i)->WrapCoeffs( Kokkos::subview(this->savedCoeffs,
-            std::make_pair(cumNumCoeffs, cumNumCoeffs+maps_.at(i)->numCoeffs)));
-        cumNumCoeffs += maps_.at(i)->numCoeffs;
+            std::make_pair(cumNumCoeffs, cumNumCoeffs+maps_.at(i)->numParams)));
+        cumNumCoeffs += maps_.at(i)->numParams;
     }
 }
 
@@ -221,11 +221,11 @@ void ComposedMap<Kokkos::HostSpace>::SetCoeffs(Kokkos::View<const double*, mpart
     // Now create subviews for each of the maps
     unsigned int cumNumCoeffs = 0;
     for(unsigned int i=0; i<maps_.size(); ++i){
-        assert(cumNumCoeffs+maps_.at(i)->numCoeffs <= this->savedCoeffs.size());
+        assert(cumNumCoeffs+maps_.at(i)->numParams <= this->savedCoeffs.size());
 
         maps_.at(i)->WrapCoeffs(Kokkos::subview(this->savedCoeffs,
-            std::make_pair(cumNumCoeffs, cumNumCoeffs+maps_.at(i)->numCoeffs)));
-        cumNumCoeffs += maps_.at(i)->numCoeffs;
+            std::make_pair(cumNumCoeffs, cumNumCoeffs+maps_.at(i)->numParams)));
+        cumNumCoeffs += maps_.at(i)->numParams;
     }
 }
 
@@ -238,11 +238,11 @@ void ComposedMap<mpart::DeviceSpace>::SetCoeffs(Kokkos::View<const double*, Kokk
     // Now create subviews for each of the maps
     unsigned int cumNumCoeffs = 0;
     for(unsigned int i=0; i<maps_.size(); ++i){
-        assert(cumNumCoeffs+maps_.at(i)->numCoeffs <= this->savedCoeffs.size());
+        assert(cumNumCoeffs+maps_.at(i)->numParams <= this->savedCoeffs.size());
 
         maps_.at(i)->WrapCoeffs(Kokkos::subview(this->savedCoeffs,
-            std::make_pair(cumNumCoeffs, cumNumCoeffs+maps_.at(i)->numCoeffs)));
-        cumNumCoeffs += maps_.at(i)->numCoeffs;
+            std::make_pair(cumNumCoeffs, cumNumCoeffs+maps_.at(i)->numParams)));
+        cumNumCoeffs += maps_.at(i)->numParams;
     }
 }
 #endif
@@ -370,7 +370,7 @@ void ComposedMap<MemorySpace>::ParamGradImpl(StridedMatrix<const double, MemoryS
     Checkpointer checker(maxChecks_, pts, maps_);
 
     StridedMatrix<double, MemorySpace> subOut;
-    int endParamDim = this->numCoeffs;
+    int endParamDim = this->numParams;
     for(int i = maps_.size() - 1; i>=0; --i){
 
         // intPts1 = T_{i-1} o ... o T_1(x)
@@ -378,7 +378,7 @@ void ComposedMap<MemorySpace>::ParamGradImpl(StridedMatrix<const double, MemoryS
 
         // finish g_i = s^T \nabla_{w_i} T(x)
         subOut = Kokkos::subview(output,
-                                 std::make_pair(int(endParamDim-maps_.at(i)->numCoeffs), endParamDim),
+                                 std::make_pair(int(endParamDim-maps_.at(i)->numParams), endParamDim),
                                  Kokkos::ALL());
 
 
@@ -391,7 +391,7 @@ void ComposedMap<MemorySpace>::ParamGradImpl(StridedMatrix<const double, MemoryS
             maps_.at(i)->GradientImpl(input, intSens1, intSens2);
             simple_swap<decltype(intSens1)>(intSens1,intSens2);
         }
-        endParamDim -= maps_.at(i)->numCoeffs;
+        endParamDim -= maps_.at(i)->numParams;
     }
 
 }
@@ -411,16 +411,16 @@ void ComposedMap<MemorySpace>::LogDeterminantParamGradImpl(StridedMatrix<const d
     Checkpointer checker(maxChecks_, pts, maps_);
     auto input = checker.GetLayerInput(maps_.size()-1);
 
-    int endParamDim = this->numCoeffs;
+    int endParamDim = this->numParams;
     subOut = Kokkos::subview(output,
-                                 std::make_pair(int(endParamDim-maps_.back()->numCoeffs), endParamDim),
+                                 std::make_pair(int(endParamDim-maps_.back()->numParams), endParamDim),
                                  Kokkos::ALL());
     maps_.back()->LogDeterminantParamGradImpl(input, subOut);
 
     // Get the sensitivity of this log determinant term wrt changes in the input
     maps_.back()->LogDeterminantInputGradImpl(input, intSens1);
 
-    endParamDim -= maps_.back()->numCoeffs;
+    endParamDim -= maps_.back()->numParams;
 
     for(int i = maps_.size() - 2; i>=0; --i){
 
@@ -429,13 +429,13 @@ void ComposedMap<MemorySpace>::LogDeterminantParamGradImpl(StridedMatrix<const d
 
         // Gradient for direct contribution of these parameters on the log determinant
         subOut = Kokkos::subview(output,
-                                 std::make_pair(int(endParamDim-maps_.at(i)->numCoeffs), endParamDim),
+                                 std::make_pair(int(endParamDim-maps_.at(i)->numParams), endParamDim),
                                  Kokkos::ALL());
 
         maps_.at(i)->LogDeterminantParamGradImpl(input, subOut);
 
         // Gradient of later log determinant terms on the coefficients of this layer
-        Kokkos::View<double**, Kokkos::LayoutLeft, MemorySpace> subOut2("temp", maps_.at(i)->numCoeffs, pts.extent(1));
+        Kokkos::View<double**, Kokkos::LayoutLeft, MemorySpace> subOut2("temp", maps_.at(i)->numParams, pts.extent(1));
         maps_.at(i)->CoeffGradImpl(input, intSens1, subOut2);
         subOut += subOut2;
 
@@ -449,7 +449,7 @@ void ComposedMap<MemorySpace>::LogDeterminantParamGradImpl(StridedMatrix<const d
 
             intSens1 += intSens2;
         }
-        endParamDim -= maps_.at(i)->numCoeffs;
+        endParamDim -= maps_.at(i)->numParams;
     }
 }
 

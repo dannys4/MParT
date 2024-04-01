@@ -136,8 +136,12 @@ methods
     result = MParT_('ConditionalMap_CoeffMap',this.id_);
   end
 
+  function result = numParams(this)
+    result = MParT_('ConditionalMap_numParams',this.id_);
+  end
+
   function result = numCoeffs(this)
-    result = MParT_('ConditionalMap_numCoeffs',this.id_);
+    result = MParT_('ConditionalMap_numParams',this.id_);
   end
 
   function result = Evaluate(this,pts)
@@ -156,7 +160,7 @@ methods
   end
 
   function result = CoeffGrad(this,pts,sens)
-    result = zeros(this.numCoeffs, size(pts,2));
+    result = zeros(this.numParams, size(pts,2));
     MParT_('ConditionalMap_CoeffGrad',this.id_,pts,sens,result);
   end
 
@@ -166,7 +170,7 @@ methods
   end
 
   function result = LogDeterminantCoeffGrad(this,pts)
-    result = zeros(this.numCoeffs, size(pts,2));
+    result = zeros(this.numParams, size(pts,2));
     MParT_('ConditionalMap_LogDeterminantCoeffGrad',this.id_,pts,result);
   end
 

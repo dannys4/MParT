@@ -48,7 +48,7 @@ if haveTorch:
         assert torch.autograd.gradcheck(lambda xx: mt.MpartTorchAutograd.apply(x,None,tmap,True)[0], x)
 
         x.requires_grad = False        
-        coeffs = torch.randn(tmap.numCoeffs, dtype=torch.double)
+        coeffs = torch.randn(tmap.numParams, dtype=torch.double)
         coeffs.requires_grad = True 
 
         # Check the autograd gradient with finite differences
@@ -104,7 +104,7 @@ if haveTorch:
         tmap2 = tmap.torch(store_coeffs=False)
 
         x = torch.randn(numSamps, dim, dtype=torch.double)
-        coeffs = torch.randn(tmap.numCoeffs, dtype=torch.double)
+        coeffs = torch.randn(tmap.numParams, dtype=torch.double)
 
         y = tmap2(x,coeffs)
         assert y.shape[0] == numSamps

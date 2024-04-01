@@ -299,12 +299,12 @@ MEX_DEFINE(ConditionalMap_CoeffMap) (int nlhs, mxArray* plhs[],
   output.set(0,coeffs);
 }
 
-MEX_DEFINE(ConditionalMap_numCoeffs) (int nlhs, mxArray* plhs[],
+MEX_DEFINE(ConditionalMap_numParams) (int nlhs, mxArray* plhs[],
                  int nrhs, const mxArray* prhs[]) {
   InputArguments input(nrhs, prhs, 1);
   OutputArguments output(nlhs, plhs, 1);
   const ConditionalMapMex& condMap = Session<ConditionalMapMex>::getConst(input.get(0));
-  auto numcoeffs = condMap.map_ptr->numCoeffs;
+  auto numcoeffs = condMap.map_ptr->numParams;
   output.set(0,numcoeffs);
 }
 
@@ -432,12 +432,12 @@ MEX_DEFINE(ConditionalMap_Serialize) (int nlhs, mxArray* plhs[],
   const ConditionalMapMex& condMap = Session<ConditionalMapMex>::getConst(input.get(0));
   int inputDim = condMap.map_ptr->inputDim;
   int outputDim = condMap.map_ptr->outputDim;
-  int numCoeffs = condMap.map_ptr->numCoeffs;
+  int numParams = condMap.map_ptr->numParams;
   auto coeffs = condMap.map_ptr->Coeffs();
   std::string filename = input.get<std::string>(1);
   std::ofstream os(filename);
   cereal::BinaryOutputArchive oarchive(os);
-  oarchive(inputDim,outputDim,numCoeffs);
+  oarchive(inputDim,outputDim,numParams);
   oarchive(coeffs);
 #else
   mexErrMsgIdAndTxt("MParT:NoCereal",

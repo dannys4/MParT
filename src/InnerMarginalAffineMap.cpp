@@ -23,7 +23,7 @@ InnerMarginalAffineMap<MemorySpace>::InnerMarginalAffineMap(StridedVector<double
                                   StridedVector<double,MemorySpace> shift,
                                   std::shared_ptr<ConditionalMapBase<MemorySpace>> map,
                                   bool moveCoeffs) :
-                                  ConditionalMapBase<MemorySpace>(map->inputDim, map->outputDim, map->numCoeffs),
+                                  ConditionalMapBase<MemorySpace>(map->inputDim, map->outputDim, map->numParams),
                                   scale_("scale", scale.extent(0)),
                                   shift_("shift", shift.extent(0)),
                                   map_(map)

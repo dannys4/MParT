@@ -21,9 +21,9 @@ classdef TrainMapTest < matlab.unittest.TestCase
             map1 = CreateComponent(FixedMultiIndexSet(dim+1,max_order),map_options);
             map2 = CreateTriangular(dim+1,dim,max_order,map_options);
             map3 = CreateTriangular(dim+1,dim+1,max_order,map_options);
-            map1.SetCoeffs(zeros(map1.numCoeffs,1));
-            map2.SetCoeffs(zeros(map2.numCoeffs,1));
-            map3.SetCoeffs(zeros(map3.numCoeffs,1));
+            map1.SetCoeffs(zeros(map1.numParams,1));
+            map2.SetCoeffs(zeros(map2.numParams,1));
+            map3.SetCoeffs(zeros(map3.numParams,1));
 
             % Set Training Options
             train_options = TrainOptions;

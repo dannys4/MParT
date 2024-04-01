@@ -23,9 +23,9 @@ void mpart::binding::DeserializeWrapper(py::module &m)
     [](std::string const &filename) {
         std::ifstream is(filename);
         cereal::BinaryInputArchive archive(is);
-        unsigned int inputDim, outputDim, numCoeffs;
-        archive(inputDim, outputDim, numCoeffs);
-        Kokkos::View<double*, MemorySpace> coeffs ("Map coeffs", numCoeffs);
+        unsigned int inputDim, outputDim, numParams;
+        archive(inputDim, outputDim, numParams);
+        Kokkos::View<double*, MemorySpace> coeffs ("Map coeffs", numParams);
         load(archive, coeffs);
         return std::make_tuple(inputDim, outputDim, CopyKokkosToVec(coeffs));
     });

@@ -829,11 +829,11 @@ TEST_CASE("Testing MonotoneComponent CoeffGrad and LogDeterminantCoeffGrad", "[M
             sens(0,i) = 0.25*(i+1);
 
         Kokkos::View<double**, HostSpace> grads = comp.CoeffGrad(evalPts, sens);
-        REQUIRE(grads.extent(0)==comp.numCoeffs);
+        REQUIRE(grads.extent(0)==comp.numParams);
         REQUIRE(grads.extent(1)==numPts);
 
         for(unsigned int j=1; j<numPts; ++j){
-            for(unsigned int i=0; i<comp.numCoeffs; ++i){
+            for(unsigned int i=0; i<comp.numParams; ++i){
                 CHECK(grads(i,j) == (j+1.0)*grads(i,0));
             }
         }
@@ -849,7 +849,7 @@ TEST_CASE("Testing MonotoneComponent CoeffGrad and LogDeterminantCoeffGrad", "[M
         Kokkos::View<double*, HostSpace> logDets = comp.LogDeterminant(evalPts);
         Kokkos::View<double*, HostSpace> logDets2;
         Kokkos::View<double**, HostSpace> grads = comp.LogDeterminantCoeffGrad(evalPts);
-        REQUIRE(grads.extent(0)==comp.numCoeffs);
+        REQUIRE(grads.extent(0)==comp.numParams);
         REQUIRE(grads.extent(1)==numPts);
 
         // Compare with finite difference derivatives

@@ -12,7 +12,7 @@ TEST_CASE("UnivariateExpansion") {
     unsigned int maxOrder = 5;
     UnivariateExpansion<MemorySpace, Basis_T> expansion(maxOrder);
     Basis_T basis;
-    REQUIRE(expansion.numCoeffs == maxOrder + 1);
+    REQUIRE(expansion.numParams == maxOrder + 1);
     REQUIRE(expansion.inputDim == 1);
     REQUIRE(expansion.outputDim == 1);
     Kokkos::View<double*, MemorySpace> coeffs("coeffs", maxOrder + 1);

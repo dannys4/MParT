@@ -369,8 +369,8 @@ TEST_CASE("Test serialization of triangular map.", "[Serialization]"){
 
     auto triMap1 = std::make_shared<TriangularMap<Kokkos::HostSpace>>(blocks1);
 
-    Kokkos::View<double*,Kokkos::HostSpace> coeffs1("Coefficients", triMap1->numCoeffs);
-    for(unsigned int i=0; i<triMap1->numCoeffs; ++i)
+    Kokkos::View<double*,Kokkos::HostSpace> coeffs1("Coefficients", triMap1->numParams);
+    for(unsigned int i=0; i<triMap1->numParams; ++i)
         coeffs1(i) = 0.1*(i+1);
     triMap1->SetCoeffs(coeffs1);
 
@@ -398,7 +398,7 @@ TEST_CASE("Test serialization of triangular map.", "[Serialization]"){
 
             CHECK(triMap1->inputDim == triMap2->inputDim);
             CHECK(triMap1->outputDim == triMap2->outputDim);
-            CHECK(triMap1->numCoeffs == triMap2->numCoeffs);
+            CHECK(triMap1->numParams == triMap2->numParams);
             
             // Make sure the coefficients are the same 
             auto coeffs1 = triMap1->Coeffs();
@@ -428,7 +428,7 @@ TEST_CASE("Test serialization of triangular map.", "[Serialization]"){
     
         CHECK(triMap1->inputDim == triMap2->inputDim);
         CHECK(triMap1->outputDim == triMap2->outputDim);
-        CHECK(triMap1->numCoeffs == triMap2->numCoeffs);
+        CHECK(triMap1->numParams == triMap2->numParams);
     
         // Make sure the coefficients are the same 
         auto coeffs1 = triMap1->Coeffs();

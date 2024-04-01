@@ -72,7 +72,7 @@ void mpart::binding::ParameterizedFunctionBaseWrapper<MemorySpace>(py::module &m
         .def("Serialize", [](ParameterizedFunctionBase<MemorySpace> const &obj, std::string const &filename){
             std::ofstream os(filename);
             cereal::BinaryOutputArchive archive(os);
-            archive(obj.inputDim, obj.outputDim, obj.numCoeffs);
+            archive(obj.inputDim, obj.outputDim, obj.numParams);
             archive(obj.Coeffs());
         })
         .def("ToBytes", [](std::shared_ptr<ParameterizedFunctionBase<MemorySpace>> const &ptr) {

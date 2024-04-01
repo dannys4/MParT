@@ -66,7 +66,7 @@ The monotone component :math:`T_d` is therefore defined by five main options:
             opts = mt.MapOptions()
             mapComponent = mt.CreateComponent(fixedSet,opts)
 
-            nc = mapComponent.numCoeffs
+            nc = mapComponent.numParams
             print(nc)
 
         This should display :code:`3` as the number of coefficients is equal to the number of multi-indices in the set. See :ref:`tutorials` for several examples using MParT for measure transport in python.
@@ -98,7 +98,7 @@ The monotone component :math:`T_d` is therefore defined by five main options:
             opts = MapOptions()
             mapComponent = CreateComponent(fixedSet,opts)
 
-            nc = numCoeffs(mapComponent)
+            nc = numParams(mapComponent)
             print(nc)
 
         This should display :code:`3` as the number of coefficients is equal to the number of multi-indices in the set.
@@ -135,7 +135,7 @@ The monotone component :math:`T_d` is therefore defined by five main options:
             opts = MapOptions();
             mapComponent = CreateComponent(fixedSet,opts);
 
-            nc = mapComponent.numCoeffs;
+            nc = mapComponent.numParams;
             disp(nc)
 
         This should display :code:`3` as the number of coefficients is equal to the number of multi-indices in the set.
@@ -173,7 +173,7 @@ The monotone component :math:`T_d` is therefore defined by five main options:
                 std::shared_ptr<ConditionalMapBase<Kokkos::HostSpace>> mapComponent;
                 mapComponent = MapFactory::CreateComponent<Kokkos::HostSpace>(fixedSet,opts);
 
-                unsigned int nc = mapComponent->numCoeffs;
+                unsigned int nc = mapComponent->numParams;
                 std::cout<<nc<<std::endl;
 
                 }

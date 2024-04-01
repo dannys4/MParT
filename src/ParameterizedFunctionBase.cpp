@@ -182,21 +182,21 @@ Eigen::RowMatrixXd ParameterizedFunctionBase<mpart::DeviceSpace>::Gradient(Eigen
 #endif
 
 template<typename MemorySpaceSrc, typename MemorySpaceDest>
-void SetCoeffsInternal(unsigned int numCoeffs,
+void SetCoeffsInternal(unsigned int numParams,
         Kokkos::View<double*,MemorySpaceDest>& coeffsDest,
         Kokkos::View<const double*,MemorySpaceSrc> coeffsSrc) {
     // If coefficients already exist, make sure the sizes match
     if(coeffsDest.is_allocated()){
-        if(coeffsSrc.size() != numCoeffs){
+        if(coeffsSrc.size() != numParams){
             std::stringstream msg;
-            msg << "Error in ParameterizedFunctionBase<MemorySpace>::SetCoeffs.  Expected coefficient vector with size " << numCoeffs << ", but new coefficients have size " << coeffsSrc.size() << ".";
+            msg << "Error in ParameterizedFunctionBase<MemorySpace>::SetCoeffs.  Expected coefficient vector with size " << numParams << ", but new coefficients have size " << coeffsSrc.size() << ".";
             throw std::invalid_argument(msg.str());
         }
 
-        if(coeffsDest.size() != numCoeffs)
-            Kokkos::resize(coeffsDest, numCoeffs);
+        if(coeffsDest.size() != numParams)
+            Kokkos::resize(coeffsDest, numParams);
     }else{
-        coeffsDest = Kokkos::View<double*, MemorySpaceDest>("ParameterizedFunctionBase<MemorySpace> Coefficients", numCoeffs);
+        coeffsDest = Kokkos::View<double*, MemorySpaceDest>("ParameterizedFunctionBase<MemorySpace> Coefficients", numParams);
     }
 
     Kokkos::deep_copy(coeffsDest, coeffsSrc);
@@ -204,7 +204,7 @@ void SetCoeffsInternal(unsigned int numCoeffs,
 
 template<typename MemorySpace>
 void ParameterizedFunctionBase<MemorySpace>::SetCoeffs(Kokkos::View<const double*, MemorySpace> coeffs){
-    SetCoeffsInternal(this->numCoeffs, this->savedCoeffs, coeffs);
+    SetCoeffsInternal(this->numParams, this->savedCoeffs, coeffs);
 }
 
 template<typename MemorySpace>
@@ -218,9 +218,9 @@ void ParameterizedFunctionBase<MemorySpace>::SetCoeffs(Kokkos::View<double*, Mem
 template<typename MemorySpace>
 void ParameterizedFunctionBase<MemorySpace>::WrapCoeffs(Kokkos::View<double*, MemorySpace> coeffs){
 
-    if(coeffs.size() != numCoeffs){
+    if(coeffs.size() != numParams){
         std::stringstream msg;
-        msg << "Error in ParameterizedFunctionBase<MemorySpace>::WrapCoeffs.  Expected coefficient vector with size " << numCoeffs << ", but new coefficients have size " << coeffs.size() << ".";
+        msg << "Error in ParameterizedFunctionBase<MemorySpace>::WrapCoeffs.  Expected coefficient vector with size " << numParams << ", but new coefficients have size " << coeffs.size() << ".";
         throw std::invalid_argument(msg.str());
     }
     this->savedCoeffs = coeffs;
@@ -231,12 +231,12 @@ void ParameterizedFunctionBase<MemorySpace>::WrapCoeffs(Kokkos::View<double*, Me
 template<>
 void ParameterizedFunctionBase<mpart::DeviceSpace>::SetCoeffs(Kokkos::View<const double*, Kokkos::HostSpace> coeffs)
 {
-    SetCoeffsInternal(this->numCoeffs, this->savedCoeffs, coeffs);
+    SetCoeffsInternal(this->numParams, this->savedCoeffs, coeffs);
 }
 template<>
 void ParameterizedFunctionBase<Kokkos::HostSpace>::SetCoeffs(Kokkos::View<const double*, mpart::DeviceSpace> coeffs)
 {
-    SetCoeffsInternal(this->numCoeffs, this->savedCoeffs, coeffs);
+    SetCoeffsInternal(this->numParams, this->savedCoeffs, coeffs);
 }
 
 template<>
@@ -287,7 +287,7 @@ StridedMatrix<double, Kokkos::HostSpace> ParameterizedFunctionBase<Kokkos::HostS
                                                                                                  StridedMatrix<const double, Kokkos::HostSpace> const& sens)
 {
     CheckParameters("ParamGrad");
-    Kokkos::View<double**, Kokkos::HostSpace> output("Coeff Grad", numCoeffs, pts.extent(1));
+    Kokkos::View<double**, Kokkos::HostSpace> output("Coeff Grad", numParams, pts.extent(1));
     ParamGradImpl(pts,sens, output);
     return output;
 }
@@ -312,7 +312,7 @@ StridedMatrix<double, mpart::DeviceSpace> ParameterizedFunctionBase<mpart::Devic
                                                                                                    StridedMatrix<const double, mpart::DeviceSpace> const& sens)
 {
     CheckParameters("ParamGrad");
-    Kokkos::View<double**, mpart::DeviceSpace> output("Coeff Grad", numCoeffs, pts.extent(1));
+    Kokkos::View<double**, mpart::DeviceSpace> output("Coeff Grad", numParams, pts.extent(1));
     ParamGradImpl(pts,sens, output);
     return output;
 }
@@ -348,14 +348,14 @@ Eigen::RowMatrixXd ParameterizedFunctionBase<mpart::DeviceSpace>::ParamGrad(Eige
 template<typename MemorySpace>
 bool ParameterizedFunctionBase<MemorySpace>::CheckParameters() const
 {
-    if(this->numCoeffs==0)
+    if(this->numParams==0)
         return true;
 
     bool good = true;
 
     if(!this->savedCoeffs.is_allocated()){
         good = false;
-    }else if(this->savedCoeffs.size()!=this->numCoeffs){
+    }else if(this->savedCoeffs.size()!=this->numParams){
         good = false;
     }
 

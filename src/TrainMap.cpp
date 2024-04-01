@@ -62,15 +62,15 @@ double mpart::TrainMap(std::shared_ptr<ConditionalMapBase<Kokkos::HostSpace>> ma
         if(options.verbose) {
             std::cout << "TrainMap: Initializing map coeffs to 1." << std::endl;
         }
-        Kokkos::View<double*, Kokkos::HostSpace> coeffs ("Default coeffs", map->numCoeffs);
-	Kokkos::RangePolicy<typename MemoryToExecution<Kokkos::HostSpace>::Space> policy(0,map->numCoeffs);
+        Kokkos::View<double*, Kokkos::HostSpace> coeffs ("Default coeffs", map->numParams);
+	Kokkos::RangePolicy<typename MemoryToExecution<Kokkos::HostSpace>::Space> policy(0,map->numParams);
         Kokkos::parallel_for("Setting default coeff val", policy, KOKKOS_LAMBDA(const unsigned int i){
             coeffs(i) = 1.;
         });
 	Kokkos::View<const double*, Kokkos::HostSpace> constCoeffs = coeffs;
         map->SetCoeffs(constCoeffs);
     }
-    nlopt::opt opt = SetupOptimization(map->numCoeffs, options);
+    nlopt::opt opt = SetupOptimization(map->numParams, options);
 
     // Since objective is (rightfully) separate from the map, we use std::bind to create a functor
     // from objective::operator() that keeps the map argument held.

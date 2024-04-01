@@ -95,7 +95,7 @@ std::shared_ptr<ConditionalMapBase<MemorySpace>> mpart::MapFactory::CreateSingle
         output = std::make_shared<TriangularMap<MemorySpace>>(blocks);
 
     }
-    Kokkos::View<const double*, MemorySpace> coeffs = Kokkos::View<double*,MemorySpace>("Component Coefficients", output->numCoeffs);
+    Kokkos::View<const double*, MemorySpace> coeffs = Kokkos::View<double*,MemorySpace>("Component Coefficients", output->numParams);
     output->SetCoeffs(coeffs);
     return output;
 
@@ -119,7 +119,7 @@ std::shared_ptr<ConditionalMapBase<MemorySpace>> mpart::MapFactory::CreateTriang
     }
     auto output = std::make_shared<TriangularMap<MemorySpace>>(comps);
     
-    Kokkos::View<const double*, MemorySpace> coeffs = Kokkos::View<double*,MemorySpace>("Component Coefficients", output->numCoeffs);
+    Kokkos::View<const double*, MemorySpace> coeffs = Kokkos::View<double*,MemorySpace>("Component Coefficients", output->numParams);
     output->SetCoeffs(coeffs);
     return output;
 }
@@ -162,7 +162,7 @@ std::shared_ptr<ParameterizedFunctionBase<MemorySpace>> mpart::MapFactory::Creat
     }
 
     if(output){
-        Kokkos::View<const double*, MemorySpace> coeffs = Kokkos::View<double*,MemorySpace>("Component Coefficients", output->numCoeffs);
+        Kokkos::View<const double*, MemorySpace> coeffs = Kokkos::View<double*,MemorySpace>("Component Coefficients", output->numParams);
     	output->SetCoeffs(coeffs);
         return output;
     }
@@ -247,7 +247,7 @@ std::shared_ptr<ConditionalMapBase<MemorySpace>> CreateSigmoidExpansionTemplate(
     if(inputDim == 1) {
         unsigned int maxOrder = mset_diag.Size() - 1;
         auto output = std::make_shared<UnivariateExpansion<MemorySpace, Sigmoid_T>>(maxOrder, sigmoid);
-        output->SetCoeffs(Kokkos::View<double*,MemorySpace>("Component Coefficients", output->numCoeffs));
+        output->SetCoeffs(Kokkos::View<double*,MemorySpace>("Component Coefficients", output->numParams));
         return output;
     }
     DiagBasisEval_T diagBasisEval(inputDim, OffdiagEval(), sigmoid);
@@ -257,7 +257,7 @@ std::shared_ptr<ConditionalMapBase<MemorySpace>> CreateSigmoidExpansionTemplate(
     MultivariateExpansionWorker<DiagBasisEval_T,MemorySpace> worker_diag(mset_diag, diagBasisEval);
     MultivariateExpansionWorker<OffdiagBasisEval_T,MemorySpace> worker_offdiag(mset_offdiag, offdiagBasisEval);
     auto output = std::make_shared<RMVE>(worker_offdiag, worker_diag);
-    output->SetCoeffs(Kokkos::View<double*,MemorySpace>("Component Coefficients", output->numCoeffs));
+    output->SetCoeffs(Kokkos::View<double*,MemorySpace>("Component Coefficients", output->numParams));
     return output;
 }
 
@@ -362,7 +362,7 @@ std::shared_ptr<ConditionalMapBase<MemorySpace>> MapFactory::CreateSigmoidTriang
         comps[i] = comp;
     }
     auto output = std::make_shared<TriangularMap<MemorySpace>>(comps);
-    output->SetCoeffs(Kokkos::View<double*,MemorySpace>("Component Coefficients", output->numCoeffs));
+    output->SetCoeffs(Kokkos::View<double*,MemorySpace>("Component Coefficients", output->numParams));
     return output;
 }
 

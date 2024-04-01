@@ -20,16 +20,16 @@ summarized_component = mpart.SummarizedMap(summary_fun, component)
 num_samples = 100
 pts = np.random.randn(dim, num_samples)
 
-coeffs = np.random.randn(summarized_component.numCoeffs)
+coeffs = np.random.randn(summarized_component.numParams)
 summarized_component.SetCoeffs(coeffs)
 
-def test_numCoeffs():
-    assert summarized_component.numCoeffs == component.numCoeffs
+def test_numParams():
+    assert summarized_component.numParams == component.numParams
 
 
 def test_CoeffsMap():
     
-    coeffs = np.random.randn(summarized_component.numCoeffs)
+    coeffs = np.random.randn(summarized_component.numParams)
     summarized_component.SetCoeffs(coeffs)
     assert np.all(summarized_component.CoeffMap() == coeffs)
 

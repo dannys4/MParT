@@ -31,7 +31,7 @@ void MapObjective<MemorySpace>::TrainCoeffGradImpl(std::shared_ptr<ConditionalMa
 
 template<typename MemorySpace>
 StridedVector<double, MemorySpace> MapObjective<MemorySpace>::TrainCoeffGrad(std::shared_ptr<ConditionalMapBase<MemorySpace>> map) const {
-    Kokkos::View<double*, MemorySpace> grad("trainCoeffGrad", map->numCoeffs);
+    Kokkos::View<double*, MemorySpace> grad("trainCoeffGrad", map->numParams);
     TrainCoeffGradImpl(map, grad);
     return grad;
 }

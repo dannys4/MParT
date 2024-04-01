@@ -13,7 +13,7 @@ classdef SigmoidTest < matlab.unittest.TestCase
             opts.basisType = BasisTypes.HermiteFunctions;
             comp = CreateSigmoidComponent(input_dim, max_order, centers, opts);
             expected_coeffs = nchoosek(input_dim+max_order, max_order);
-            testCase.verifyEqual( comp.numCoeffs, uint32(expected_coeffs) );
+            testCase.verifyEqual( comp.numParams, uint32(expected_coeffs) );
         end
 
         function SigmoidComponentMset( testCase )
@@ -28,7 +28,7 @@ classdef SigmoidTest < matlab.unittest.TestCase
             mset_diag = MultiIndexSet.CreateNonzeroDiagTotalOrder(input_dim, max_order).Fix();
             comp = CreateSigmoidComponent(mset_off, mset_diag, centers, opts);
             expected_coeffs = mset_off.Size() + mset_diag.Size();
-            testCase.verifyEqual( comp.numCoeffs, uint32(expected_coeffs) );
+            testCase.verifyEqual( comp.numParams, uint32(expected_coeffs) );
         end
 
         function SigmoidTriangular( testCase )
@@ -43,7 +43,7 @@ classdef SigmoidTest < matlab.unittest.TestCase
             opts.basisType = BasisTypes.HermiteFunctions;
             comp = CreateSigmoidTriangular(input_dim, output_dim, max_order, centers_total, opts);
             expected_coeffs = sum(arrayfun(@(d) nchoosek(d+max_order, max_order), (input_dim-output_dim+1):input_dim));
-            testCase.verifyEqual( comp.numCoeffs, uint32(expected_coeffs) );
+            testCase.verifyEqual( comp.numParams, uint32(expected_coeffs) );
         end
     end
 end

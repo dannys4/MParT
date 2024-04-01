@@ -30,9 +30,9 @@ namespace mpart {
          @param outDim The dimension \f$M\f$ of the output from this map.
          @param nCoeffs The number of coefficients in the parameterization.
          */
-        ParameterizedFunctionBase(unsigned int inDim, unsigned int outDim, unsigned int nCoeffs) : inputDim(inDim), outputDim(outDim), numCoeffs(nCoeffs){};
+        ParameterizedFunctionBase(unsigned int inDim, unsigned int outDim, unsigned int nCoeffs) : inputDim(inDim), outputDim(outDim), numParams(nCoeffs){};
 
-        ParameterizedFunctionBase(unsigned int inDim, unsigned int outDim, unsigned int nCoeffs, Kokkos::View<const double*, MemorySpace> coeffsIn) : inputDim(inDim), outputDim(outDim), numCoeffs(coeffsIn.size()){SetCoeffs(coeffsIn);};
+        ParameterizedFunctionBase(unsigned int inDim, unsigned int outDim, unsigned int nCoeffs, Kokkos::View<const double*, MemorySpace> coeffsIn) : inputDim(inDim), outputDim(outDim), numParams(coeffsIn.size()){SetCoeffs(coeffsIn);};
 
         virtual ~ParameterizedFunctionBase() = default;
 
@@ -237,7 +237,7 @@ namespace mpart {
 
         const unsigned int inputDim; /// The total dimension of the input N+M
         const unsigned int outputDim; /// The output dimension M
-        const unsigned int numCoeffs; /// The number of coefficients used to parameterize this map.
+        const unsigned int numParams; /// The number of coefficients used to parameterize this map.
 
 #if defined(MPART_HAS_CEREAL)
     /** Saves this object as a binary sequence in a stream. Due to subtleties in the 

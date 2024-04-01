@@ -28,11 +28,11 @@ TEST_CASE( "SummarizedMap", "[SummarizedMap_MonotoneComponent]" ) {
 
     CHECK(sumMap->outputDim == 1);
     CHECK(sumMap->inputDim == dim);
-    CHECK(sumMap->numCoeffs == comp->numCoeffs);
+    CHECK(sumMap->numParams == comp->numParams);
 
 
-    Kokkos::View<double*,Kokkos::HostSpace> coeffs("Coefficients", sumMap->numCoeffs);
-    for(unsigned int i=0; i<sumMap->numCoeffs; ++i)
+    Kokkos::View<double*,Kokkos::HostSpace> coeffs("Coefficients", sumMap->numParams);
+    for(unsigned int i=0; i<sumMap->numParams; ++i)
         coeffs(i) = 0.1*(i+1);
         
     SECTION("Coefficients"){
@@ -41,7 +41,7 @@ TEST_CASE( "SummarizedMap", "[SummarizedMap_MonotoneComponent]" ) {
         sumMap->SetCoeffs(coeffs);
 
         // Now make sure that the coefficients of each block were set
-        for(unsigned int i=0; i<sumMap->numCoeffs; ++i){
+        for(unsigned int i=0; i<sumMap->numParams; ++i){
             CHECK(sumMap->Coeffs()(i) == 0.1*(i+1)); // Values of coefficients should be correct
             CHECK(sumMap->Coeffs()(i) == comp->Coeffs()(i)); // Values of coefficients should be equal to those of comp
             // CHECK(&sumMap->Coeffs()(i) == &comp->Coeffs()(i)); //
@@ -139,12 +139,12 @@ TEST_CASE( "SummarizedMap", "[SummarizedMap_MonotoneComponent]" ) {
 
         Kokkos::View<double**,Kokkos::HostSpace> coeffGrad = sumMap->CoeffGrad(in, sens);
 
-        REQUIRE(coeffGrad.extent(0)==sumMap->numCoeffs);
+        REQUIRE(coeffGrad.extent(0)==sumMap->numParams);
         REQUIRE(coeffGrad.extent(1)==numSamps);
 
         // Compare with finite differences
         double fdstep = 1e-5;
-        for(unsigned int i=0; i<sumMap->numCoeffs; ++i){
+        for(unsigned int i=0; i<sumMap->numParams; ++i){
             coeffs(i) += fdstep;
 
             sumMap->SetCoeffs(coeffs);
@@ -208,7 +208,7 @@ TEST_CASE( "SummarizedMap", "[SummarizedMap_MonotoneComponent]" ) {
 
 
         Kokkos::View<double**,Kokkos::HostSpace> detGrad = sumMap->LogDeterminantCoeffGrad(in);
-        REQUIRE(detGrad.extent(0)==sumMap->numCoeffs);
+        REQUIRE(detGrad.extent(0)==sumMap->numParams);
         REQUIRE(detGrad.extent(1)==numSamps);
         
         Kokkos::View<double*,Kokkos::HostSpace> logDet = sumMap->LogDeterminant(in);
@@ -216,7 +216,7 @@ TEST_CASE( "SummarizedMap", "[SummarizedMap_MonotoneComponent]" ) {
 
         // Compare with finite differences
         double fdstep = 1e-5;
-        for(unsigned int i=0; i<sumMap->numCoeffs; ++i){
+        for(unsigned int i=0; i<sumMap->numParams; ++i){
             coeffs(i) += fdstep;
 
             sumMap->SetCoeffs(coeffs);

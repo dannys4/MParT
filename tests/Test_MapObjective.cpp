@@ -51,9 +51,9 @@ TEST_CASE( "Test KLMapObjective", "[KLMapObjective]") {
     SECTION("CoeffGradImpl"){
         double fd_step = 1e-6;
         double kl_est = objective.ObjectiveImpl(reference_samples, map);
-        Kokkos::View<double*, Kokkos::HostSpace> coeffGrad ("Actual CoeffGrad of KL Obj", map->numCoeffs);
+        Kokkos::View<double*, Kokkos::HostSpace> coeffGrad ("Actual CoeffGrad of KL Obj", map->numParams);
         objective.CoeffGradImpl(reference_samples, coeffGrad, map);
-        for(int i = 0; i < map->numCoeffs; i++) {
+        for(int i = 0; i < map->numParams; i++) {
             map->Coeffs()(i) += fd_step;
             double kl_perturb_i = objective.ObjectiveImpl(reference_samples, map);
             double coeffFD_i = (kl_perturb_i - kl_est)/fd_step;
@@ -63,23 +63,23 @@ TEST_CASE( "Test KLMapObjective", "[KLMapObjective]") {
     }
     SECTION("ObjectivePlusCoeffGradImpl"){
         double kl_est_ref = objective.ObjectiveImpl(reference_samples, map);
-        Kokkos::View<double*, Kokkos::HostSpace> coeffGradRef ("Reference CoeffGrad of KL Obj", map->numCoeffs);
-        Kokkos::View<double*, Kokkos::HostSpace> coeffGrad ("CoeffGrad of KL Obj", map->numCoeffs);
+        Kokkos::View<double*, Kokkos::HostSpace> coeffGradRef ("Reference CoeffGrad of KL Obj", map->numParams);
+        Kokkos::View<double*, Kokkos::HostSpace> coeffGrad ("CoeffGrad of KL Obj", map->numParams);
         objective.CoeffGradImpl(reference_samples, coeffGradRef, map);
         double kl_est = objective.ObjectivePlusCoeffGradImpl(reference_samples, coeffGrad, map);
         CHECK(kl_est_ref == Approx(kl_est).margin(1e-12));
-        for(int i = 0; i < map->numCoeffs; i++) {
+        for(int i = 0; i < map->numParams; i++) {
             CHECK(coeffGradRef(i) == Approx(coeffGrad(i)).margin(1e-12));
         }
     }
     SECTION("MapObjectiveFunctions") {
         // operator()
-        Kokkos::View<double*, Kokkos::HostSpace> coeffGradRef ("Reference CoeffGrad of KL Obj", map->numCoeffs);
-        Kokkos::View<double*, Kokkos::HostSpace> coeffGrad ("CoeffGrad of KL Obj", map->numCoeffs);
+        Kokkos::View<double*, Kokkos::HostSpace> coeffGradRef ("Reference CoeffGrad of KL Obj", map->numParams);
+        Kokkos::View<double*, Kokkos::HostSpace> coeffGrad ("CoeffGrad of KL Obj", map->numParams);
         double kl_est_ref = objective.ObjectivePlusCoeffGradImpl(train_samples, coeffGradRef, map);
-        double kl_est = objective(map->numCoeffs, map->Coeffs().data(), coeffGrad.data(), map);
+        double kl_est = objective(map->numParams, map->Coeffs().data(), coeffGrad.data(), map);
         CHECK(kl_est_ref == Approx(kl_est).margin(1e-12));
-        for(int i = 0; i < map->numCoeffs; i++) {
+        for(int i = 0; i < map->numParams; i++) {
             CHECK(coeffGradRef(i) == Approx(coeffGrad(i)).margin(1e-12));
         }
         // TestError
@@ -88,7 +88,7 @@ TEST_CASE( "Test KLMapObjective", "[KLMapObjective]") {
         CHECK(test_error_ref == Approx(test_error).margin(1e-12));
         // TrainCoeffGrad
         StridedVector<double,Kokkos::HostSpace> trainCoeffGrad = objective.TrainCoeffGrad(map);
-        for(int i = 0; i < map->numCoeffs; i++){
+        for(int i = 0; i < map->numParams; i++){
             CHECK(coeffGradRef(i) == Approx(trainCoeffGrad(i)).margin(1e-12));
         }
     }

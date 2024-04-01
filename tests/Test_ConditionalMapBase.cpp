@@ -8,7 +8,7 @@ using MemorySpace = Kokkos::HostSpace;
 
 class MyIdentityMap : public ConditionalMapBase<MemorySpace>{
 public:
-    MyIdentityMap(unsigned int dim, unsigned int numCoeffs) : ConditionalMapBase(dim,dim,numCoeffs){};
+    MyIdentityMap(unsigned int dim, unsigned int numParams) : ConditionalMapBase(dim,dim,numParams){};
 
     virtual ~MyIdentityMap() = default;
 
@@ -56,22 +56,22 @@ public:
 
 TEST_CASE( "Testing coefficient functions of conditional map base class", "[ConditionalMapBaseCoeffs]" ) {
 
-    unsigned int numCoeffs = 10;
-    MyIdentityMap map(4,numCoeffs);
+    unsigned int numParams = 10;
+    MyIdentityMap map(4,numParams);
 
     CHECK(map.inputDim == 4);
     CHECK(map.outputDim == 4);
 
     SECTION("Using Kokkos"){
 
-        Kokkos::View<double*, Kokkos::HostSpace> coeffs("New Coeffs", numCoeffs);
-        for(unsigned int i=0; i<numCoeffs; ++i)
+        Kokkos::View<double*, Kokkos::HostSpace> coeffs("New Coeffs", numParams);
+        for(unsigned int i=0; i<numParams; ++i)
             coeffs(i) = i;
 
         map.SetCoeffs(coeffs);
-        CHECK(map.Coeffs().extent(0) == numCoeffs);
+        CHECK(map.Coeffs().extent(0) == numParams);
 
-        for(unsigned int i=0; i<numCoeffs; ++i)
+        for(unsigned int i=0; i<numParams; ++i)
             CHECK(map.Coeffs()(i) == coeffs(i));
 
         coeffs(0) = 100;
@@ -83,7 +83,7 @@ TEST_CASE( "Testing coefficient functions of conditional map base class", "[Cond
         auto coeffSlice = Kokkos::subview(coeffs, std::make_pair(start, end));
 
         map.Coeffs() = coeffSlice;
-        CHECK(coeffs.extent(0) == numCoeffs);
+        CHECK(coeffs.extent(0) == numParams);
         CHECK(map.Coeffs().extent(0)==(end-start));
 
         for(unsigned int i=0; i<end-start; ++i)
@@ -97,29 +97,29 @@ TEST_CASE( "Testing coefficient functions of conditional map base class", "[Cond
 
     SECTION("Using Eigen"){
 
-        Eigen::VectorXd coeffs(numCoeffs);
-        for(unsigned int i=0; i<numCoeffs; ++i)
+        Eigen::VectorXd coeffs(numParams);
+        for(unsigned int i=0; i<numParams; ++i)
             coeffs(i) = i;
 
-        Kokkos::resize(map.Coeffs(), numCoeffs);
+        Kokkos::resize(map.Coeffs(), numParams);
         map.CoeffMap() = coeffs;
-        CHECK(map.Coeffs().extent(0) == numCoeffs);
+        CHECK(map.Coeffs().extent(0) == numParams);
 
-        for(unsigned int i=0; i<numCoeffs; ++i){
+        for(unsigned int i=0; i<numParams; ++i){
             CHECK(map.Coeffs()(i) == coeffs(i));
             coeffs(i)++;
             CHECK(map.Coeffs()(i) != coeffs(i));
         }
 
         map.SetCoeffs(coeffs);
-        for(unsigned int i=0; i<numCoeffs; ++i){
+        for(unsigned int i=0; i<numParams; ++i){
             CHECK(map.Coeffs()(i) == coeffs(i));
             coeffs(i)++;
             CHECK(map.Coeffs()(i) != coeffs(i));
         }
 
         map.SetCoeffs(coeffs);
-        for(unsigned int i=0; i<numCoeffs; ++i){
+        for(unsigned int i=0; i<numParams; ++i){
             CHECK(map.Coeffs()(i) == coeffs(i));
             coeffs(i)++;
             map.CoeffMap()(i)++;

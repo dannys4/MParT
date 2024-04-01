@@ -88,7 +88,7 @@ class MpartTorchAutograd(torch.autograd.Function):
         coeff_grad = None
         if coeffs is not None:
             if coeffs.requires_grad:
-                coeff_grad = torch.zeros(f.numCoeffs, input.shape[1], dtype=torch.double)
+                coeff_grad = torch.zeros(f.numParams, input.shape[1], dtype=torch.double)
                 f.CoeffGradImpl(ExtractTorchTensorData(input_dbl),
                                 ExtractTorchTensorData(output_sens_dbl),
                                 ExtractTorchTensorData(coeff_grad))
@@ -96,7 +96,7 @@ class MpartTorchAutograd(torch.autograd.Function):
                 coeff_grad = coeff_grad.sum(axis=1) # pytorch expects total gradient not per-sample gradient
 
                 if logdet_sens is not None:
-                    grad2 = torch.zeros(f.numCoeffs, input.shape[1], dtype=torch.double)
+                    grad2 = torch.zeros(f.numParams, input.shape[1], dtype=torch.double)
 
                     f.LogDeterminantCoeffGradImpl(ExtractTorchTensorData(input_dbl), 
                                                  ExtractTorchTensorData(grad2))
@@ -214,5 +214,5 @@ class TorchConditionalMapBase(torch.nn.Module):
                 raise ValueError(f'Reference input to map inverse has wrong shape.  r has {r.shape[1]} columns but map expects input dimension of {self.f.outputDim}.')
 
         if coeffs is not None:
-            if (coeffs.shape[0] != self.f.numCoeffs):
-                raise ValueError(f'Specified coefficients have wrong shape. coeffs input has length {coeffs.shape[0]} but map has {self.f.numCoeffs} coefficients.')
+            if (coeffs.shape[0] != self.f.numParams):
+                raise ValueError(f'Specified coefficients have wrong shape. coeffs input has length {coeffs.shape[0]} but map has {self.f.numParams} coefficients.')

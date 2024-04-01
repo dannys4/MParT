@@ -96,7 +96,7 @@ def test_trimap_saveload():
     map_2 = mt.CreateComponent(mset_2, opts)
 
     tmap = mt.TriangularMap([map_1,map_2],True)
-    tmap.SetCoeffs(np.random.randn(tmap.numCoeffs))
+    tmap.SetCoeffs(np.random.randn(tmap.numParams))
     
     # Dump the tmap to a byte string
     tmap_bytes = tmap.ToBytes()
