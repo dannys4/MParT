@@ -15,46 +15,67 @@
 namespace py = pybind11;
 using namespace mpart::binding;
 
-template<>
-void mpart::binding::ParameterizedFunctionBaseWrapper<Kokkos::HostSpace>(py::module &m)
+template<typename MemorySpace>
+void mpart::binding::ParameterizedFunctionBaseWrapper<MemorySpace>(py::module &m)
 {
     // ParameterizedFunctionBase
-    py::class_<ParameterizedFunctionBase<Kokkos::HostSpace>, std::shared_ptr<ParameterizedFunctionBase<Kokkos::HostSpace>>>(m, "ParameterizedFunctionBase")
-        .def("CoeffMap", &ParameterizedFunctionBase<Kokkos::HostSpace>::CoeffMap)
-        .def("SetCoeffs", py::overload_cast<Eigen::Ref<Eigen::VectorXd>>(&ParameterizedFunctionBase<Kokkos::HostSpace>::SetCoeffs))
-        .def("WrapCoeffs", [](std::shared_ptr<ParameterizedFunctionBase<Kokkos::HostSpace>> obj, std::tuple<long,int,int> coeffs){
-            obj->WrapCoeffs(ToKokkos<double,Kokkos::HostSpace>(coeffs));
+    py::class_<ParameterizedFunctionBase<MemorySpace>, std::shared_ptr<ParameterizedFunctionBase<MemorySpace>>>(m, "ParameterizedFunctionBase")
+        .def("CoeffMap", [](std::shared_ptr<ParameterizedFunctionBase<MemorySpace>> pfb) {
+            Kokkos::View<const double*, MemorySpace> coeffs = pfb->CoeffMap();
+            Kokkos::View<const double*, Kokkos::HostSpace> host_coeffs = ToHost(coeffs);
+            return Eigen::VectorXd(Eigen::Map<Eigen::VectorXd>(host_coeffs.data(), host_coeffs.size()));
         })
-        .def("Evaluate", static_cast<Eigen::RowMatrixXd (ParameterizedFunctionBase<Kokkos::HostSpace>::*)(Eigen::Ref<const Eigen::RowMatrixXd> const&)>(&ParameterizedFunctionBase<Kokkos::HostSpace>::Evaluate))
-        .def("EvaluateImpl", [](std::shared_ptr<ParameterizedFunctionBase<Kokkos::HostSpace>> obj, std::tuple<long,std::tuple<int,int>,std::tuple<int,int>> input, std::tuple<long,std::tuple<int,int>,std::tuple<int,int>> output){
-            obj->EvaluateImpl(ToKokkos<double,Kokkos::HostSpace>(input),ToKokkos<double,Kokkos::HostSpace>(output));
+        .def("SetCoeffs", py::overload_cast<Eigen::Ref<Eigen::VectorXd>>(&ParameterizedFunctionBase<MemorySpace>::SetCoeffs))
+        .def("WrapCoeffs", [](std::shared_ptr<ParameterizedFunctionBase<MemorySpace>> obj, std::tuple<long,int,int> coeffs){
+            obj->WrapCoeffs(ToKokkos<double,MemorySpace>(coeffs));
         })
-        .def("Gradient", static_cast<Eigen::RowMatrixXd (ParameterizedFunctionBase<Kokkos::HostSpace>::*)(Eigen::Ref<const Eigen::RowMatrixXd> const&, Eigen::Ref<const Eigen::RowMatrixXd> const&)>(&ParameterizedFunctionBase<Kokkos::HostSpace>::Gradient))
-        .def("GradientImpl", [](std::shared_ptr<ParameterizedFunctionBase<Kokkos::HostSpace>> obj, std::tuple<long,std::tuple<int,int>,std::tuple<int,int>> input, std::tuple<long,std::tuple<int,int>,std::tuple<int,int>> sens, std::tuple<long,std::tuple<int,int>,std::tuple<int,int>> output){
-            obj->GradientImpl(ToKokkos<double,Kokkos::HostSpace>(input),ToKokkos<double,Kokkos::HostSpace>(sens), ToKokkos<double,Kokkos::HostSpace>(output));
+        .def("ParamMap", &ParameterizedFunctionBase<MemorySpace>::ParamMap)
+        .def("SetParams", py::overload_cast<Eigen::Ref<Eigen::VectorXd>>(&ParameterizedFunctionBase<MemorySpace>::SetParams))
+        .def("WrapParams", [](std::shared_ptr<ParameterizedFunctionBase<MemorySpace>> obj, std::tuple<long,int,int> params){
+            obj->WrapParams(ToKokkos<double,MemorySpace>(params));
         })
-        .def("CoeffGrad",static_cast<Eigen::RowMatrixXd (ParameterizedFunctionBase<Kokkos::HostSpace>::*)(Eigen::Ref<const Eigen::RowMatrixXd> const&, Eigen::Ref<const Eigen::RowMatrixXd> const&)>(&ParameterizedFunctionBase<Kokkos::HostSpace>::CoeffGrad))
-        .def("CoeffGradImpl",[](std::shared_ptr<ParameterizedFunctionBase<Kokkos::HostSpace>> obj, std::tuple<long,std::tuple<int,int>,std::tuple<int,int>> input, std::tuple<long,std::tuple<int,int>,std::tuple<int,int>> sens, std::tuple<long,std::tuple<int,int>,std::tuple<int,int>> output){
-            obj->CoeffGradImpl(ToKokkos<double,Kokkos::HostSpace>(input),ToKokkos<double,Kokkos::HostSpace>(sens), ToKokkos<double,Kokkos::HostSpace>(output));
+        .def("Evaluate", static_cast<Eigen::RowMatrixXd (ParameterizedFunctionBase<MemorySpace>::*)(Eigen::Ref<const Eigen::RowMatrixXd> const&)>(&ParameterizedFunctionBase<MemorySpace>::Evaluate))
+        .def("EvaluateImpl", [](std::shared_ptr<ParameterizedFunctionBase<MemorySpace>> obj, std::tuple<long,std::tuple<int,int>,std::tuple<int,int>> input, std::tuple<long,std::tuple<int,int>,std::tuple<int,int>> output){
+            obj->EvaluateImpl(ToKokkos<double,MemorySpace>(input),ToKokkos<double,MemorySpace>(output));
         })
-        .def("torch", [](std::shared_ptr<ParameterizedFunctionBase<Kokkos::HostSpace>> obj, bool store_coeffs){
+        .def("Gradient", static_cast<Eigen::RowMatrixXd (ParameterizedFunctionBase<MemorySpace>::*)(Eigen::Ref<const Eigen::RowMatrixXd> const&, Eigen::Ref<const Eigen::RowMatrixXd> const&)>(&ParameterizedFunctionBase<MemorySpace>::Gradient))
+        .def("GradientImpl", [](std::shared_ptr<ParameterizedFunctionBase<MemorySpace>> obj, std::tuple<long,std::tuple<int,int>,std::tuple<int,int>> input, std::tuple<long,std::tuple<int,int>,std::tuple<int,int>> sens, std::tuple<long,std::tuple<int,int>,std::tuple<int,int>> output){
+            obj->GradientImpl(ToKokkos<double,MemorySpace>(input),ToKokkos<double,MemorySpace>(sens), ToKokkos<double,MemorySpace>(output));
+        })
+        .def("InputGrad", static_cast<Eigen::RowMatrixXd (ParameterizedFunctionBase<MemorySpace>::*)(Eigen::Ref<const Eigen::RowMatrixXd> const&, Eigen::Ref<const Eigen::RowMatrixXd> const&)>(&ParameterizedFunctionBase<MemorySpace>::InputGrad))
+        .def("InputGradImpl", [](std::shared_ptr<ParameterizedFunctionBase<MemorySpace>> obj, std::tuple<long,std::tuple<int,int>,std::tuple<int,int>> input, std::tuple<long,std::tuple<int,int>,std::tuple<int,int>> sens, std::tuple<long,std::tuple<int,int>,std::tuple<int,int>> output){
+            obj->InputGradImpl(ToKokkos<double,MemorySpace>(input),ToKokkos<double,MemorySpace>(sens), ToKokkos<double,MemorySpace>(output));
+        })
+        .def("CoeffGrad",static_cast<Eigen::RowMatrixXd (ParameterizedFunctionBase<MemorySpace>::*)(Eigen::Ref<const Eigen::RowMatrixXd> const&, Eigen::Ref<const Eigen::RowMatrixXd> const&)>(&ParameterizedFunctionBase<MemorySpace>::CoeffGrad))
+        .def("CoeffGradImpl",[](std::shared_ptr<ParameterizedFunctionBase<MemorySpace>> obj, std::tuple<long,std::tuple<int,int>,std::tuple<int,int>> input, std::tuple<long,std::tuple<int,int>,std::tuple<int,int>> sens, std::tuple<long,std::tuple<int,int>,std::tuple<int,int>> output){
+            obj->CoeffGradImpl(ToKokkos<double,MemorySpace>(input),ToKokkos<double,MemorySpace>(sens), ToKokkos<double,MemorySpace>(output));
+        })
+        .def("ParamGrad",static_cast<Eigen::RowMatrixXd (ParameterizedFunctionBase<MemorySpace>::*)(Eigen::Ref<const Eigen::RowMatrixXd> const&, Eigen::Ref<const Eigen::RowMatrixXd> const&)>(&ParameterizedFunctionBase<MemorySpace>::ParamGrad))
+        .def("ParamGradImpl",[](std::shared_ptr<ParameterizedFunctionBase<MemorySpace>> obj, std::tuple<long,std::tuple<int,int>,std::tuple<int,int>> input, std::tuple<long,std::tuple<int,int>,std::tuple<int,int>> sens, std::tuple<long,std::tuple<int,int>,std::tuple<int,int>> output){
+            obj->ParamGradImpl(ToKokkos<double,MemorySpace>(input),ToKokkos<double,MemorySpace>(sens), ToKokkos<double,MemorySpace>(output));
+        })
+        .def("torch", [](std::shared_ptr<ParameterizedFunctionBase<MemorySpace>> obj, bool store_coeffs){
             auto mpart = py::module::import("mpart");
             if(!mpart.attr("mpart_has_torch").cast<bool>()){
                 throw std::runtime_error("MParT could not import pytorch.");
             }
             return mpart.attr("TorchParameterizedFunctionBase")(obj, store_coeffs);
         }, py::arg("store_coeffs")=true)
-        .def_readonly("numCoeffs", &ParameterizedFunctionBase<Kokkos::HostSpace>::numCoeffs)
-        .def_readonly("inputDim", &ParameterizedFunctionBase<Kokkos::HostSpace>::inputDim)
-        .def_readonly("outputDim", &ParameterizedFunctionBase<Kokkos::HostSpace>::outputDim)
+        .def_property_readonly("numCoeffs", [](ParameterizedFunctionBase<MemorySpace>& pfb){
+            // TODO: Create deprecation warning
+            return pfb.numParams;
+        })
+        .def_readonly("numParams", &ParameterizedFunctionBase<MemorySpace>::numParams)
+        .def_readonly("inputDim", &ParameterizedFunctionBase<MemorySpace>::inputDim)
+        .def_readonly("outputDim", &ParameterizedFunctionBase<MemorySpace>::outputDim)
 #if defined(MPART_HAS_CEREAL)
-        .def("Serialize", [](ParameterizedFunctionBase<Kokkos::HostSpace> const &obj, std::string const &filename){
+        .def("Serialize", [](ParameterizedFunctionBase<MemorySpace> const &obj, std::string const &filename){
             std::ofstream os(filename);
             cereal::BinaryOutputArchive archive(os);
             archive(obj.inputDim, obj.outputDim, obj.numCoeffs);
             archive(obj.Coeffs());
         })
-        .def("ToBytes", [](std::shared_ptr<ParameterizedFunctionBase<Kokkos::HostSpace>> const &ptr) {
+        .def("ToBytes", [](std::shared_ptr<ParameterizedFunctionBase<MemorySpace>> const &ptr) {
             std::stringstream ss;
             ptr->Save(ss);
             return py::bytes(ss.str());
@@ -63,11 +84,11 @@ void mpart::binding::ParameterizedFunctionBaseWrapper<Kokkos::HostSpace>(py::mod
             std::stringstream ss;
             ss.str(input);
 
-            auto ptr = ParameterizedFunctionBase<Kokkos::HostSpace>::Load(ss);
+            auto ptr = ParameterizedFunctionBase<MemorySpace>::Load(ss);
             return ptr;  
         })
         .def(py::pickle(
-            [](std::shared_ptr<ParameterizedFunctionBase<Kokkos::HostSpace>> const& ptr) { // __getstate__
+            [](std::shared_ptr<ParameterizedFunctionBase<MemorySpace>> const& ptr) { // __getstate__
                 std::stringstream ss;
                 ptr->Save(ss);
                 return py::bytes(ss.str());
@@ -77,7 +98,7 @@ void mpart::binding::ParameterizedFunctionBaseWrapper<Kokkos::HostSpace>(py::mod
                 std::stringstream ss;
                 ss.str(input);
 
-                auto ptr = ParameterizedFunctionBase<Kokkos::HostSpace>::Load(ss);
+                auto ptr = ParameterizedFunctionBase<MemorySpace>::Load(ss);
                 return ptr;
             }
         ))
@@ -85,25 +106,7 @@ void mpart::binding::ParameterizedFunctionBaseWrapper<Kokkos::HostSpace>(py::mod
         ;
 }
 
+template void mpart::binding::ParameterizedFunctionBaseWrapper<Kokkos::HostSpace>(py::module&);
 #if defined(MPART_ENABLE_GPU)
-template<>
-void mpart::binding::ParameterizedFunctionBaseWrapper<mpart::DeviceSpace>(py::module &m)
-{
-
-    // ParameterizedFunctionBase
-    py::class_<ParameterizedFunctionBase<mpart::DeviceSpace>, std::shared_ptr<ParameterizedFunctionBase<mpart::DeviceSpace>>>(m, "dParameterizedFunctionBase")
-        .def("CoeffMap", [](const ParameterizedFunctionBase<mpart::DeviceSpace> &f) {
-            Kokkos::View<const double*, Kokkos::HostSpace> host_coeffs = ToHost( f.Coeffs() );
-            return Eigen::VectorXd(Eigen::Map<const Eigen::VectorXd>(host_coeffs.data(), host_coeffs.size()));
-        })
-        .def("SetCoeffs", py::overload_cast<Eigen::Ref<Eigen::VectorXd>>(&ParameterizedFunctionBase<mpart::DeviceSpace>::SetCoeffs))
-        .def("Evaluate", static_cast<Eigen::RowMatrixXd (ParameterizedFunctionBase<mpart::DeviceSpace>::*)(Eigen::Ref<const Eigen::RowMatrixXd> const&)>(&ParameterizedFunctionBase<mpart::DeviceSpace>::Evaluate))
-        .def("Gradient", static_cast<Eigen::RowMatrixXd (ParameterizedFunctionBase<mpart::DeviceSpace>::*)(Eigen::Ref<const Eigen::RowMatrixXd> const&, Eigen::Ref<const Eigen::RowMatrixXd> const&)>(&ParameterizedFunctionBase<mpart::DeviceSpace>::Gradient))
-        .def("CoeffGrad",static_cast<Eigen::RowMatrixXd (ParameterizedFunctionBase<mpart::DeviceSpace>::*)(Eigen::Ref<const Eigen::RowMatrixXd> const&, Eigen::Ref<const Eigen::RowMatrixXd> const&)>(&ParameterizedFunctionBase<mpart::DeviceSpace>::CoeffGrad))
-        .def_readonly("numCoeffs", &ParameterizedFunctionBase<mpart::DeviceSpace>::numCoeffs)
-        .def_readonly("inputDim", &ParameterizedFunctionBase<mpart::DeviceSpace>::inputDim)
-        .def_readonly("outputDim", &ParameterizedFunctionBase<mpart::DeviceSpace>::outputDim)
-        ;
-}
-
+template void mpart::binding::ParameterizedFunctionBaseWrapper<mpart::DeviceSpace>(py::module&);
 #endif // MPART_ENABLE_GPU
