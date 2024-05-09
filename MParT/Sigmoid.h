@@ -123,7 +123,8 @@ class Sigmoid1d {
 	 */
 	KOKKOS_FUNCTION void EvaluateAll(double* output, int max_order, double input) const {
 		if (order_ < max_order) {
-			ProcAgnosticError<std::invalid_argument>("Sigmoid basis evaluation order too large.");
+			printf("Sigmoid eval too large. Expected %d, got %d.\n", order_, max_order);
+			ProcAgnosticError<std::invalid_argument>("Sigmoid evaluation order too large.");
 		}
 
 		output[0] = 1.;

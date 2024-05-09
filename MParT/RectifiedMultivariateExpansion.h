@@ -277,13 +277,15 @@ namespace mpart{
                     out_slice(ptInd) = RootFinding::InverseSingleBracket<MemorySpace>(yd, evaluator, pt(pt.size()-1), xtol, ytol, info);
                 }
             };
-
             auto cacheBytes = Kokkos::View<double*,MemorySpace>::shmem_size(cacheSize);
 
             // Paralel loop over each point computing T^{-1}(x,.)(r) for that point
             auto policy = GetCachedRangePolicy<ExecutionSpace>(numPts, cacheBytes, functor);
             Kokkos::parallel_for(policy, functor);
 
+            std::cout << "Cache size " << cacheSize << ", x1 size (" << x1.extent(0) << ", " << x1.extent(1) << ")"
+                << ", r size (" << r.extent(0) << ", " << r.extent(1) << "), " << "map dimension " << this->inputDim
+                << std::endl;
             Kokkos::fence();
         }
 
@@ -401,7 +403,6 @@ namespace mpart{
                 return worker.Evaluate(cache, coeffs);
             }
         };
-
 
         Worker_T worker;
     }; // class RectifiedMultivariateExpansion

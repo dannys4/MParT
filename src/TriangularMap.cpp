@@ -172,11 +172,16 @@ void TriangularMap<MemorySpace>::InverseInplace(StridedMatrix<double, MemorySpac
     unsigned int extraInputs = ipdim - opdim;
 
     int startOutDim = 0;
+    std::cout << "sizes: x (" << x.extent(0) << "," << x.extent(1) << "), r (" << r.extent(0) << "," << r.extent(1) << ")" << std::endl;
     for(unsigned int i=0; i<comps_.size(); ++i){
+        std::cout << "Component " << i << ", inputDim " << comps_.at(i)->inputDim << ", outputDim " << comps_.at(i)->outputDim << std::endl;
         subX = Kokkos::subview(x, std::make_pair(0,int(comps_.at(i)->inputDim)), Kokkos::ALL());
         subR = Kokkos::subview(r, std::make_pair(startOutDim,int(startOutDim+comps_.at(i)->outputDim)), Kokkos::ALL());
         subOut = Kokkos::subview(x, std::make_pair(int(extraInputs + startOutDim),int(extraInputs+startOutDim+comps_.at(i)->outputDim)), Kokkos::ALL());
-
+        std::cout << "slice dims: X (" << subX.extent(0) << "," << subX.extent(1) << "), "
+            << "R (" << subR.extent(0) << "," << subR.extent(1) << "), "
+            << "Out (" << subOut.extent(0) << "," << subOut.extent(1) << ")"
+            << std::endl;
         comps_.at(i)->InverseImpl(subX, subR, subOut);
 
         startOutDim += comps_.at(i)->outputDim;

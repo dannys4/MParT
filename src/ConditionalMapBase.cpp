@@ -74,7 +74,7 @@ StridedMatrix<double, Kokkos::HostSpace> ConditionalMapBase<Kokkos::HostSpace>::
         msg << "x1 and r have different numbers of columns.  x1.extent(1)=" << x1.extent(1) << ", but r.extent(1)=" << r.extent(1);
         throw std::invalid_argument(msg.str());
     }
-
+    std::cerr << "x1 size (" << x1.extent(0) << ", " << x1.extent(1) << "), r size (" << r.extent(0) << ", " << r.extent(1) << "), map dims (" << this->inputDim << ", " << this->outputDim << ")" << std::endl;
     Kokkos::View<double**, Kokkos::HostSpace> output("Map Inverse Evaluations", this->outputDim, r.extent(1));
     InverseImpl(x1,r, output);
     return output;
@@ -106,7 +106,7 @@ StridedMatrix<double, mpart::DeviceSpace> ConditionalMapBase<mpart::DeviceSpace>
         msg << "x1 and r have different numbers of columns.  x1.extent(1)=" << x1.extent(1) << ", but r.extent(1)=" << r.extent(1);
         throw std::invalid_argument(msg.str());
     }
-
+    std::cerr << "\nx1 size (" << x1.extent(0) << ", " << x1.extent(1) << "), r size (" << r.extent(0) << ", " << r.extent(1) << "), map dims (" << this->inputDim << ", " << this->outputDim << ")" << std::endl;
     Kokkos::View<double**, mpart::DeviceSpace> output("Map Inverse Evaluations", this->outputDim, r.extent(1));
     InverseImpl(x1,r, output);
     return output;
