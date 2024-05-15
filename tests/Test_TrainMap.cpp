@@ -35,7 +35,7 @@ if constexpr (!std::is_same_v<TestType, std::false_type>) {
     Kokkos::parallel_for("Banana", policy, KOKKOS_LAMBDA(const unsigned int i) {
         targetSamples(0,i) = samples(0,i);
         targetSamples(1,i) = samples(1,i);
-        targetSamples(2,i) = samples(2,i) + samples(1,i)*samples(1,i);
+        targetSamples(2,i) = samples(2,i) + samples(1,i)*samples(1,i) - 1;
     });
     unsigned int map_order = 2;
     SECTION("SquareMap") {
@@ -99,6 +99,41 @@ if constexpr (!std::is_same_v<TestType, std::false_type>) {
         train_options.verbose = 0;
         TrainMap(map, obj, train_options);
         StridedMatrix<double, MemorySpace> pullback_samples = map->Evaluate(testSamps);
+        StridedMatrix<double, Kokkos::HostSpace> pullback_samples_h = Kokkos::create_mirror_view_and_copy(Kokkos::HostSpace(), pullback_samples);
+        TestStandardNormalSamples(pullback_samples_h);
+    }
+    SECTION("Rectified Map") {
+        MapOptions rmve_opts;
+        rmve_opts.sigmoidBasisSumType = SigmoidSumSizeType::Constant;
+        rmve_opts.basisType = BasisTypes::HermiteFunctions;
+        double bound = 3.;
+        rmve_opts.basisLB = -bound;
+        rmve_opts.basisUB =  bound;
+        unsigned int numSigmoid = 5;
+        Kokkos::View<double**, MemorySpace> centers("Centers", 2+numSigmoid,2);
+        Kokkos::RangePolicy<typename MemoryToExecution<MemorySpace>::Space> policy {0u, numSigmoid};
+        Kokkos::parallel_for("Centers", policy, KOKKOS_LAMBDA(const unsigned int i) {
+            centers(i,0) = -bound + 2*bound*i/(numSigmoid-1);
+            centers(i,1) = -bound + 2*bound*i/(numSigmoid-1);
+            if(i == 0) {
+                centers(0,0) = -(bound-0.5);
+                centers(0,1) = -(bound-0.5);
+                centers(1,0) =   bound-0.5;
+                centers(1,1) =   bound-0.5;
+            }
+        });
+        std::shared_ptr<ConditionalMapBase<MemorySpace>> rmve = MapFactory::CreateSigmoidTriangular<MemorySpace>(dim, dim, 2, centers, rmve_opts);
+        auto obj = ObjectiveFactory::CreateGaussianKLObjective(trainSamps, testSamps);
+        TrainOptions train_options;
+        train_options.opt_alg = "LD_TNEWTON_PRECOND";
+        train_options.verbose = 1;
+        TrainMap(rmve, obj, train_options);
+        auto co = rmve->CoeffMap();
+        for(auto& c : co) {
+            std::cout << c << ", ";
+        }
+        std::cout << std::endl;
+        StridedMatrix<double, MemorySpace> pullback_samples = rmve->Evaluate(testSamps);
         StridedMatrix<double, Kokkos::HostSpace> pullback_samples_h = Kokkos::create_mirror_view_and_copy(Kokkos::HostSpace(), pullback_samples);
         TestStandardNormalSamples(pullback_samples_h);
     }

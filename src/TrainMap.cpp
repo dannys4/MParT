@@ -121,6 +121,28 @@ double TrainComponent_StandardNormalDensity(std::shared_ptr<ConditionalMapBase<M
 
     // Optimize the map coefficients using NLopt
     nlopt::opt opt = SetupOptimization(component->numCoeffs, options);
+
+    Kokkos::View<double*, Kokkos::HostSpace> lb, ub;
+    std::tie(lb, ub) = component->CoeffBounds();
+    std::vector<double> lbStd = KokkosToStd(lb);
+    std::vector<double> ubStd = KokkosToStd(ub);
+    // Print bounds
+    std::cout << "bounds:\n";
+    for(int i = 0; i < lb.extent(0); i++) {
+        std::cout << lb(i) << " " << ub(i) << "\n";
+    }
+    std::cout << std::endl;
+
+    opt.set_lower_bounds(lbStd);
+    opt.set_upper_bounds(ubStd);
+
+    auto lb_get = opt.get_lower_bounds();
+    auto ub_get = opt.get_upper_bounds();
+    std::cout << "set bounds:\n";
+    for(int i = 0; i < lb_get.size(); i++) {
+        std::cout << lb_get[i] << " " << ub_get[i] << "\n";
+    }
+
     opt.set_min_objective(functor_wrapper, reinterpret_cast<void*>(&functor));
 
     double error = 0.;
@@ -182,6 +204,14 @@ double mpart::TrainMap(std::shared_ptr<ConditionalMapBase<MemorySpace>> map, std
     }
 
     nlopt::opt opt = SetupOptimization(map->numCoeffs, options);
+
+    Kokkos::View<double*, Kokkos::HostSpace> lb, ub;
+    std::tie(lb, ub) = map->CoeffBounds();
+    std::vector<double> lbStd = KokkosToStd(lb);
+    std::vector<double> ubStd = KokkosToStd(ub);
+
+    opt.set_lower_bounds(lbStd);
+    opt.set_upper_bounds(ubStd);
 
     // Since objective is (rightfully) separate from the map, we use std::bind to create a functor
     // from objective::operator() that keeps the map argument held.
