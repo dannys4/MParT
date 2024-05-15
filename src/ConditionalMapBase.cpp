@@ -300,7 +300,9 @@ std::pair<Kokkos::View<double*,Kokkos::HostSpace>, Kokkos::View<double*,Kokkos::
     Kokkos::View<double*, MemorySpace> ub("upper bound",this->numCoeffs);
     
     FillCoeffBoundsImpl(lb,ub);
-    return std::make_pair(lb,ub);
+    Kokkos::View<double*,Kokkos::HostSpace> lb_h = Kokkos::mirror_view_and_copy(Kokkos::HostSpace(), lb);
+    Kokkos::View<double*,Kokkos::HostSpace> ub_h = Kokkos::mirror_view_and_copy(Kokkos::HostSpace(), ub);
+    return std::make_pair(lb_h,ub_h);
 }
 
 template<typename MemorySpace>
