@@ -293,6 +293,25 @@ Eigen::RowMatrixXd ConditionalMapBase<mpart::DeviceSpace>::LogDeterminantInputGr
 
 #endif
 
+template<typename MemorySpace>
+std::pair<Kokkos::View<double*,Kokkos::HostSpace>, Kokkos::View<double*,Kokkos::HostSpace>> ConditionalMapBase<MemorySpace>::CoeffBounds() const
+{
+    Kokkos::View<double*, Kokkos::HostSpace> lb("lower bound",this->numCoeffs);
+    Kokkos::View<double*, Kokkos::HostSpace> ub("upper bound",this->numCoeffs);
+    
+    FillCoeffBoundsImpl(lb,ub);
+    return std::make_pair(lb,ub);
+}
+
+template<typename MemorySpace>
+void ConditionalMapBase<MemorySpace>::FillCoeffBoundsImpl(Kokkos::View<double*,Kokkos::HostSpace> lb, 
+                                                          Kokkos::View<double*,Kokkos::HostSpace> ub) const
+{
+    Kokkos::deep_copy(lb, -std::numeric_limits<double>::infinity());
+    Kokkos::deep_copy(ub, std::numeric_limits<double>::infinity());
+}
+
+
 // Explicit template instantiation
 template class mpart::ConditionalMapBase<Kokkos::HostSpace>;
 #if defined(MPART_ENABLE_GPU)

@@ -364,7 +364,8 @@ FixedMultiIndexSet<MemorySpace> FixedMultiIndexSet<MemorySpace>::Cartesian(Fixed
     Kokkos::View<unsigned int*, MemorySpace> newDims("nzDims", otherSize*nzDims.size() + thisSize*otherSet.nzDims.size());
     Kokkos::View<unsigned int*, MemorySpace> newOrders("nzOrders", otherSize*nzOrders.size() + thisSize*otherSet.nzOrders.size());
 
-    Kokkos::parallel_for("Dummy Loop", 1, KOKKOS_LAMBDA (const int blahind) {
+    Kokkos::RangePolicy<typename MemoryToExecution<MemorySpace>::Space> policy(0, 1);
+    Kokkos::parallel_for("Dummy Loop", policy, KOKKOS_CLASS_LAMBDA (const int blahind) {
         
         unsigned int currStart = 0;
         unsigned int thisNumNz, otherNumNz;
@@ -421,7 +422,8 @@ FixedMultiIndexSet<MemorySpace> FixedMultiIndexSet<MemorySpace>::Concatenate(Fix
 
     //  Starts stemming from other set
     Kokkos::View<unsigned int*, MemorySpace> otherStarts = otherSet.nzStarts;
-    Kokkos::parallel_for("Other Starts", otherSize+1, KOKKOS_LAMBDA (const int i) {
+    Kokkos::RangePolicy<typename MemoryToExecution<MemorySpace>::Space> policy(0, otherSize+1);
+    Kokkos::parallel_for("Other Starts", policy, KOKKOS_LAMBDA (const int i) {
         newStarts(thisSize+i) = thisNumNz + otherStarts(i);
     });
     

@@ -381,6 +381,28 @@ namespace mpart{
             Kokkos::fence();
         }
 
+        /**
+         * Returns bounds on the parameters that ensure the rectified expansion is monotone in the last component.
+        */
+        virtual void FillCoeffBoundsImpl(Kokkos::View<double*, Kokkos::HostSpace> lb, 
+                                         Kokkos::View<double*, Kokkos::HostSpace> ub) const override
+        {
+            std::vector<unsigned int> indVec = DiagonalCoeffIndices();
+            Kokkos::View<unsigned int*, Kokkos::HostSpace, Kokkos::MemoryTraits<Kokkos::Unmanaged>> indView(indVec.data(), indVec.size());
+            Kokkos::View<unsigned int*, MemorySpace> inds = Kokkos::create_mirror_view_and_copy(MemorySpace(), indView);
+                
+            // Fill in the lower bounds
+            Kokkos::deep_copy(lb, -std::numeric_limits<double>::infinity());
+            Kokkos::RangePolicy<ExecutionSpace> policy(0, inds.extent(0));
+            Kokkos::parallel_for("lb loop", policy, KOKKOS_LAMBDA (const int i) {
+                lb(inds(i)) = 0.0;
+            });
+
+            // Fill in the upper bounds
+            Kokkos::deep_copy(ub, std::numeric_limits<double>::infinity());
+        }
+
+
         std::vector<unsigned int> DiagonalCoeffIndices() const
         {
             return worker.NonzeroDiagonalEntries();

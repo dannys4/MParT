@@ -34,6 +34,13 @@ void mpart::binding::ConditionalMapBaseWrapper(py::module &m)
         .def("LogDeterminantInputGradImpl", [](std::shared_ptr<ConditionalMapBase<MemorySpace>> obj, std::tuple<long,std::tuple<int,int>,std::tuple<int,int>> input, std::tuple<long,std::tuple<int,int>,std::tuple<int,int>> output){
             obj->LogDeterminantInputGradImpl(ToKokkos<double,MemorySpace>(input),ToKokkos<double,MemorySpace>(output));
         })
+        .def("CoeffBounds", [](std::shared_ptr<ConditionalMapBase<MemorySpace>> obj){
+            Eigen::VectorXd lb(obj->numCoeffs), ub(obj->numCoeffs);
+            Kokkos::View<double*, Kokkos::HostSpace, Kokkos::MemoryTraits<Kokkos::Unmanaged>> lbview(lb.data(), lb.size());
+            Kokkos::View<double*, Kokkos::HostSpace, Kokkos::MemoryTraits<Kokkos::Unmanaged>> ubview(ub.data(), ub.size());
+            obj->FillCoeffBoundsImpl(lbview,ubview);
+            return std::make_pair(lb,ub);
+        })
         .def("torch", [](std::shared_ptr<ParameterizedFunctionBase<Kokkos::HostSpace>> obj, bool store_coeffs, bool return_logdet){
             auto mpart = py::module::import("mpart");
             if(!mpart.attr("mpart_has_torch").cast<bool>()){

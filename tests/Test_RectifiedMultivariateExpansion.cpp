@@ -265,6 +265,19 @@ TEMPLATE_TEST_CASE("Single Sigmoid RectifiedMultivariateExpansion","[single_sigm
             coeffs(coeff_idx) = 0.0; // Set the previous coeff to 0
         }
     }
+
+    SECTION("Bounds"){
+        std::vector<unsigned int> indices = worker.NonzeroDiagonalEntries();
+        Kokkos::View<double*, MemorySpace> lb, ub;
+        std::tie(lb,ub) = expansion.CoeffBounds();
+        CHECK(lb.size()==expansion.numCoeffs);
+        CHECK(ub.size()==expansion.numCoeffs); 
+        for(auto& i: indices)
+            CHECK(lb(i)==0.0);
+        for(int i=0; i<expansion.numCoeffs; ++i){
+            CHECK(ub(i)==std::numeric_limits<double>::infinity());
+        }
+    }
 }
 
 // Test the gradient and inverse methods

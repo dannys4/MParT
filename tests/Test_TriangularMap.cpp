@@ -218,6 +218,13 @@ TEST_CASE( "Testing 3d triangular map from MonotoneComponents with moveCoeffs=fa
         }
 
     }
+
+    SECTION("CoeffBounds"){
+        Kokkos::View<double*, Kokkos::HostSpace> lb,ub;
+        std::tie(lb,ub) = triMap->CoeffBounds();
+        CHECK(lb.size() == triMap->numCoeffs);
+        CHECK(ub.size() == triMap->numCoeffs);
+    }
 }
 
 TEST_CASE( "Testing 3d triangular map from MonotoneComponents with moveCoeffs=true", "[TriangularMap_MonotoneComponents]" ) {

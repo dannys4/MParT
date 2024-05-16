@@ -66,6 +66,9 @@ public:
     virtual std::shared_ptr<ConditionalMapBase<MemorySpace>> GetComponent(unsigned int i){ return comps_.at(i);}
     unsigned int NumComponents() const { return comps_.size();}
 
+    void FillCoeffBoundsImpl(Kokkos::View<double*, Kokkos::HostSpace> lb, 
+                             Kokkos::View<double*, Kokkos::HostSpace> ub) const override;
+
     /** @brief Computes the log determinant of the Jacobian matrix of this map.
 
     @details

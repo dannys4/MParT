@@ -54,7 +54,7 @@ M3 = CreateTriangular(dim1+dim2+dim3,dim3,maxDegree,opts);
 
 triMap = TriangularMap([M1 M2 M3]);
 
-triMap.SetCoeffs(randn(dim,triMap.numCoeffs));
+triMap.SetCoeffs(randn(1,triMap.numCoeffs));
 
 disp(['Num coeffs triMap: ',num2str(triMap.numCoeffs)])
 disp(['Sum coeffs maps: ',num2str(M1.numCoeffs+M2.numCoeffs+M3.numCoeffs)])

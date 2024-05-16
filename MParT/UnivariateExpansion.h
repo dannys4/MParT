@@ -5,11 +5,35 @@
 #include "MParT/BasisEvaluator.h"
 #include "MParT/Utilities/KokkosHelpers.h"
 #include "MParT/Utilities/RootFinding.h"
+#include "MParT/Sigmoid.h"
 #include <iostream>
 #include <numeric>
 
-
 namespace mpart {
+
+
+template<typename MemorySpace, typename BasisType>
+class UnivariateExpansion;
+
+// This is needed for partial specialization with sigmoids
+template<typename MemorySpace, typename BasisType>
+void UnivariateExpansion_FillCoeffBoundsImpl(UnivariateExpansion<MemorySpace,BasisType> const& obj,
+                                             Kokkos::View<double*,Kokkos::HostSpace> lb, 
+                                             Kokkos::View<double*,Kokkos::HostSpace> ub)
+{
+    Kokkos::deep_copy(lb,-std::numeric_limits<double>::infinity());
+    Kokkos::deep_copy(ub,std::numeric_limits<double>::infinity());
+}
+template<typename MemorySpace, typename SigmoidType, typename EdgeType>
+void UnivariateExpansion_FillCoeffBoundsImpl(UnivariateExpansion<MemorySpace, Sigmoid1d<MemorySpace, SigmoidType, EdgeType>> const& obj,
+                                             Kokkos::View<double*,Kokkos::HostSpace> lb, 
+                                             Kokkos::View<double*,Kokkos::HostSpace> ub)
+{
+    Kokkos::deep_copy(lb,0.0);
+    Kokkos::deep_copy(Kokkos::subview(lb,std::pair<int,int>(0,1)), -std::numeric_limits<double>::infinity()); // Constant term can be negative
+    Kokkos::deep_copy(ub,std::numeric_limits<double>::infinity());
+}    
+
 
 /**
  * @brief A class to represent a univariate expansion \f$f(x) = \sum_{k=0}^p c_kp_k(x)\f$
@@ -272,6 +296,12 @@ class UnivariateExpansion: public ConditionalMapBase<MemorySpace>{
         std::vector<unsigned int> diagIndices(maxOrder_+1);
         std::iota(diagIndices.begin(), diagIndices.end(), 0);
         return diagIndices;
+    }
+
+    virtual void FillCoeffBoundsImpl(Kokkos::View<double*,Kokkos::HostSpace> lb, 
+                                     Kokkos::View<double*,Kokkos::HostSpace> ub) const override
+    {
+        UnivariateExpansion_FillCoeffBoundsImpl(*this, lb, ub);
     }
 
     private:

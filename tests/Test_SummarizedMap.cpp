@@ -259,5 +259,12 @@ TEST_CASE( "SummarizedMap", "[SummarizedMap_MonotoneComponent]" ) {
 
     }
 
+    SECTION("CoeffBounds"){
+        Kokkos::View<double*, Kokkos::HostSpace> lb,ub;
+        std::tie(lb,ub) = sumMap->CoeffBounds();
+        CHECK(lb.size() == sumMap->numCoeffs);
+        CHECK(ub.size() == sumMap->numCoeffs);
+    }
+
 }
 

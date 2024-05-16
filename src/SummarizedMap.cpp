@@ -44,6 +44,14 @@ void SummarizedMap<MemorySpace>::WrapCoeffs(Kokkos::View<double*, MemorySpace> c
 
 }
 
+template<typename MemorySpace>
+void SummarizedMap<MemorySpace>::FillCoeffBoundsImpl(Kokkos::View<double*, Kokkos::HostSpace> lb, 
+                                                     Kokkos::View<double*, Kokkos::HostSpace> ub) const
+{
+    comp_->FillCoeffBoundsImpl(lb,ub);
+}
+
+
 #if defined(MPART_ENABLE_GPU)
 template<>
 void SummarizedMap<Kokkos::HostSpace>::SetCoeffs(Kokkos::View<const double*, Kokkos::DefaultExecutionSpace::memory_space> coeffs)

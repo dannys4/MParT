@@ -230,12 +230,12 @@ Sigmoid1d<MemorySpace, SigmoidType, EdgeType> CreateSigmoid(unsigned int inputDi
             if(numSigmoids>1){
                 hWidths(2) = 4.0/(hCenters(3)-hCenters(2)); // Second sigmoid center minus first
             }else{
-                hWidths(2) = 2.0/std::abs(hCenters(1)-hCenters(0)); // Distance between edge centers
+                hWidths(2) = 8.0/std::abs(hCenters(1)-hCenters(0)); // Distance between edge centers
             }
 
             // Set "interior" sigmoids
             for(int i=1; i<numSigmoids-1; i++){
-                hWidths[2+i] = 2.0/(hCenters[3+i]-hCenters[1+i]);
+                hWidths[2+i] = 8.0/(hCenters[3+i]-hCenters[1+i]);
             }
 
             // If there is more than one sigmoid, set the last one

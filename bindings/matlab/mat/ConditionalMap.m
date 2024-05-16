@@ -143,6 +143,10 @@ methods
     result = MParT_('ConditionalMap_CoeffMap',this.id_);
   end
 
+  function [lb, ub] = CoeffBounds(this)
+    [lb, ub] = MParT_('ConditionalMap_CoeffBounds',this.id_);
+  end
+
   function result = numCoeffs(this)
     result = MParT_('ConditionalMap_numCoeffs',this.id_);
   end

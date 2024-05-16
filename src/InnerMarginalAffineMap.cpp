@@ -167,6 +167,14 @@ void InnerMarginalAffineMap<MemorySpace>::GradientImpl(StridedMatrix<const doubl
     });
 }
 
+template<typename MemorySpace>
+void InnerMarginalAffineMap<MemorySpace>::FillCoeffBoundsImpl(Kokkos::View<double*, Kokkos::HostSpace> lb, 
+                                                              Kokkos::View<double*, Kokkos::HostSpace> ub) const
+{
+    map_->FillCoeffBoundsImpl(lb,ub);
+}
+
+
 
 template class mpart::InnerMarginalAffineMap<Kokkos::HostSpace>;
 #if defined(MPART_ENABLE_GPU)

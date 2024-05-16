@@ -158,6 +158,16 @@ namespace mpart {
         virtual void LogDeterminantInputGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
                                                  StridedMatrix<double, MemorySpace>              output) = 0;
 
+        /** Returns pair with lower and upper bounds on the map parameters that are needed to ensure the 
+         *  map is monotone.  Will return vectors with -inf and inf if no bounds exist.
+            
+            Typical usage could be:
+            Kokkos::View<double*,Kokkos::HostSpace> lb, ub;
+            std::tie(lb,ub) = comp->GetParameterBounds();
+         */
+        virtual std::pair<Kokkos::View<double*,Kokkos::HostSpace>, Kokkos::View<double*,Kokkos::HostSpace>> CoeffBounds() const;
+        virtual void FillCoeffBoundsImpl(Kokkos::View<double*,Kokkos::HostSpace> lb, 
+                                         Kokkos::View<double*,Kokkos::HostSpace> ub) const;
 
 #if defined(MPART_HAS_CEREAL)
     // Define a serialize or save/load pair as you normally would

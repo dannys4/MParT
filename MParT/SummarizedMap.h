@@ -82,6 +82,9 @@ where the function \f$s:\mathbb{R}^{N-1}\rightarrow \mathbb{R}^{r}\f$ is a funct
     void LogDeterminantInputGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
                                      StridedMatrix<double, MemorySpace>              output) override;
 
+    void FillCoeffBoundsImpl(Kokkos::View<double*, Kokkos::HostSpace> lb, 
+                             Kokkos::View<double*, Kokkos::HostSpace> ub) const override;
+
 
 private:
 

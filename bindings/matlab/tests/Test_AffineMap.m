@@ -17,3 +17,5 @@ y1 = T1.Evaluate(x);
 y2 = T2.Evaluate(x);
 y3 = T3.Evaluate(x);
 
+lb, ub = T1.CoeffBounds()
+

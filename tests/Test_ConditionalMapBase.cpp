@@ -243,3 +243,19 @@ TEST_CASE( "Testing inverse evaluation of an identity conditional map", "[Condit
     }
 
 }
+
+
+TEST_CASE( "Testing ConditionalMap CoeffBounds", "[ConditionalMapBase_CoeffBounds]" ) {
+    unsigned int dim = 5;
+    MyIdentityMap map(dim,0);
+
+    Kokkos::View<double*, Kokkos::HostSpace> lb, ub;
+    std::tie(lb,ub) = map.CoeffBounds();
+
+    REQUIRE(lb.size()==map.numCoeffs);
+    REQUIRE(ub.size()==map.numCoeffs);
+    for(int i=0; i<map.numCoeffs; ++i){
+        CHECK(lb(i)==-std::numeric_limits<double>::infinity());
+        CHECK(ub(i)==std::numeric_limits<double>::infinity());
+    }
+}

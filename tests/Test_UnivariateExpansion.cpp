@@ -158,4 +158,10 @@ TEST_CASE("UnivariateExpansion Inverse") {
         if(std::abs(points(0,i)) > tol*1e-2) CHECK_THAT(inv(0, i), WithinRel(points(0, i), tol));
         else CHECK_THAT(inv(0, i), WithinAbs(points(0, i), 1e-10));
     }
+    Kokkos::View<double*, Kokkos::HostSpace> lb,ub;
+    std::tie(lb,ub) = expansion.CoeffBounds();
+    REQUIRE(lb.size()==expansion.numCoeffs);
+    REQUIRE(ub.size()==expansion.numCoeffs);
+    CHECK(lb(0)==0.0);
+    CHECK(ub(0)==std::numeric_limits<double>::infinity());    
 }

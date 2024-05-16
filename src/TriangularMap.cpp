@@ -309,6 +309,21 @@ void TriangularMap<MemorySpace>::LogDeterminantInputGradImpl(StridedMatrix<const
     }
 }
 
+
+template<typename MemorySpace>
+void TriangularMap<MemorySpace>::FillCoeffBoundsImpl(Kokkos::View<double*, Kokkos::HostSpace> lb, 
+                                                     Kokkos::View<double*, Kokkos::HostSpace> ub) const
+{   
+    unsigned int currCoeff = 0;
+    for(unsigned int i=0; i<comps_.size(); ++i){
+        auto lbview = Kokkos::subview(lb, std::pair<int,int>(currCoeff,currCoeff+comps_.at(i)->numCoeffs));
+        auto ubview = Kokkos::subview(ub, std::pair<int,int>(currCoeff,currCoeff+comps_.at(i)->numCoeffs));
+        comps_.at(i)->FillCoeffBoundsImpl(lbview, ubview);
+        currCoeff += comps_.at(i)->numCoeffs;
+    }
+}
+
+
 // Explicit template instantiation
 template class mpart::TriangularMap<Kokkos::HostSpace>;
 #if defined(MPART_ENABLE_GPU)

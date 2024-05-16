@@ -47,6 +47,10 @@ public:
     void LogDeterminantInputGradImpl(StridedMatrix<const double, MemorySpace> const& pts,
                                      StridedMatrix<double, MemorySpace>              output) override;
 
+    void FillCoeffBoundsImpl(Kokkos::View<double*, Kokkos::HostSpace> lb, 
+                             Kokkos::View<double*, Kokkos::HostSpace> ub) const override;
+
+
 protected:
 
     Kokkos::View<double*, Kokkos::LayoutLeft, MemorySpace> scale_;
