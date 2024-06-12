@@ -44,15 +44,15 @@ static auto reg_host_prob_acc_splus_compact = mpart::MapFactory::CompFactoryImpl
 #endif
 
 #if defined(MPART_HAS_CEREAL)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, ProbabilistHermite, Exp, AdaptiveClenshawCurtis, Kokkos::HostSpace, false)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, ProbabilistHermite, SoftPlus, AdaptiveClenshawCurtis, Kokkos::HostSpace, false)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, ProbabilistHermite, Exp, AdaptiveClenshawCurtis, Kokkos::HostSpace, true)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, ProbabilistHermite, SoftPlus, AdaptiveClenshawCurtis, Kokkos::HostSpace, true)
+REGISTER_HOMOGENEOUS_MONO_COMP(ProbabilistHermite, Exp, AdaptiveClenshawCurtis, Kokkos::HostSpace, false)
+REGISTER_HOMOGENEOUS_MONO_COMP(ProbabilistHermite, SoftPlus, AdaptiveClenshawCurtis, Kokkos::HostSpace, false)
+REGISTER_HOMOGENEOUS_MONO_COMP(ProbabilistHermite, Exp, AdaptiveClenshawCurtis, Kokkos::HostSpace, true)
+REGISTER_HOMOGENEOUS_MONO_COMP(ProbabilistHermite, SoftPlus, AdaptiveClenshawCurtis, Kokkos::HostSpace, true)
 #if defined(MPART_ENABLE_GPU)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, ProbabilistHermite, Exp, AdaptiveClenshawCurtis, mpart::DeviceSpace, false)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, ProbabilistHermite, SoftPlus, AdaptiveClenshawCurtis, mpart::DeviceSpace, false)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, ProbabilistHermite, Exp, AdaptiveClenshawCurtis, mpart::DeviceSpace, true)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, ProbabilistHermite, SoftPlus, AdaptiveClenshawCurtis, mpart::DeviceSpace, true)
+REGISTER_HOMOGENEOUS_MONO_COMP(ProbabilistHermite, Exp, AdaptiveClenshawCurtis, mpart::DeviceSpace, false)
+REGISTER_HOMOGENEOUS_MONO_COMP(ProbabilistHermite, SoftPlus, AdaptiveClenshawCurtis, mpart::DeviceSpace, false)
+REGISTER_HOMOGENEOUS_MONO_COMP(ProbabilistHermite, Exp, AdaptiveClenshawCurtis, mpart::DeviceSpace, true)
+REGISTER_HOMOGENEOUS_MONO_COMP(ProbabilistHermite, SoftPlus, AdaptiveClenshawCurtis, mpart::DeviceSpace, true)
 #endif 
 CEREAL_REGISTER_DYNAMIC_INIT(mpartInitMapFactory4)
 #endif 

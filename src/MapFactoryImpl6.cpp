@@ -42,15 +42,15 @@ static auto reg_host_prob_as_splus_compact = mpart::MapFactory::CompFactoryImpl<
 #endif
 
 #if defined(MPART_HAS_CEREAL)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, ProbabilistHermite, Exp, AdaptiveSimpson, Kokkos::HostSpace, false)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, ProbabilistHermite, SoftPlus, AdaptiveSimpson, Kokkos::HostSpace, false)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, ProbabilistHermite, Exp, AdaptiveSimpson, Kokkos::HostSpace, true)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, ProbabilistHermite, SoftPlus, AdaptiveSimpson, Kokkos::HostSpace, true)
+REGISTER_HOMOGENEOUS_MONO_COMP(ProbabilistHermite, Exp, AdaptiveSimpson, Kokkos::HostSpace, false)
+REGISTER_HOMOGENEOUS_MONO_COMP(ProbabilistHermite, SoftPlus, AdaptiveSimpson, Kokkos::HostSpace, false)
+REGISTER_HOMOGENEOUS_MONO_COMP(ProbabilistHermite, Exp, AdaptiveSimpson, Kokkos::HostSpace, true)
+REGISTER_HOMOGENEOUS_MONO_COMP(ProbabilistHermite, SoftPlus, AdaptiveSimpson, Kokkos::HostSpace, true)
 #if defined(MPART_ENABLE_GPU)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, ProbabilistHermite, Exp, AdaptiveSimpson, mpart::DeviceSpace, false)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, ProbabilistHermite, SoftPlus, AdaptiveSimpson, mpart::DeviceSpace, false)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, ProbabilistHermite, Exp, AdaptiveSimpson, mpart::DeviceSpace, true)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, ProbabilistHermite, SoftPlus, AdaptiveSimpson, mpart::DeviceSpace, true)
+REGISTER_HOMOGENEOUS_MONO_COMP(ProbabilistHermite, Exp, AdaptiveSimpson, mpart::DeviceSpace, false)
+REGISTER_HOMOGENEOUS_MONO_COMP(ProbabilistHermite, SoftPlus, AdaptiveSimpson, mpart::DeviceSpace, false)
+REGISTER_HOMOGENEOUS_MONO_COMP(ProbabilistHermite, Exp, AdaptiveSimpson, mpart::DeviceSpace, true)
+REGISTER_HOMOGENEOUS_MONO_COMP(ProbabilistHermite, SoftPlus, AdaptiveSimpson, mpart::DeviceSpace, true)
 #endif 
 CEREAL_REGISTER_DYNAMIC_INIT(mpartInitMapFactory6)
 #endif

@@ -39,11 +39,11 @@ static auto reg_host_linprob_acc_splus = mpart::MapFactory::CompFactoryImpl<Kokk
 #endif
 
 #if defined(MPART_HAS_CEREAL)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, LinearizedBasis<mpart::ProbabilistHermite>, Exp, AdaptiveClenshawCurtis, Kokkos::HostSpace, false)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, LinearizedBasis<mpart::ProbabilistHermite>, SoftPlus, AdaptiveClenshawCurtis, Kokkos::HostSpace, false)
+REGISTER_HOMOGENEOUS_MONO_COMP(LinearizedBasis<mpart::ProbabilistHermite>, Exp, AdaptiveClenshawCurtis, Kokkos::HostSpace, false)
+REGISTER_HOMOGENEOUS_MONO_COMP(LinearizedBasis<mpart::ProbabilistHermite>, SoftPlus, AdaptiveClenshawCurtis, Kokkos::HostSpace, false)
 #if defined(MPART_ENABLE_GPU)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, LinearizedBasis<mpart::ProbabilistHermite>, Exp, AdaptiveClenshawCurtis, mpart::DeviceSpace, false)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, LinearizedBasis<mpart::ProbabilistHermite>, SoftPlus, AdaptiveClenshawCurtis, mpart::DeviceSpace, false)
+REGISTER_HOMOGENEOUS_MONO_COMP(LinearizedBasis<mpart::ProbabilistHermite>, Exp, AdaptiveClenshawCurtis, mpart::DeviceSpace, false)
+REGISTER_HOMOGENEOUS_MONO_COMP(LinearizedBasis<mpart::ProbabilistHermite>, SoftPlus, AdaptiveClenshawCurtis, mpart::DeviceSpace, false)
 #endif 
 CEREAL_REGISTER_DYNAMIC_INIT(mpartInitMapFactory13)
 #endif 

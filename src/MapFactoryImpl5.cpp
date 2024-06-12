@@ -42,15 +42,15 @@ static auto reg_host_prob_cc_splus_compact = mpart::MapFactory::CompFactoryImpl<
 #endif
 
 #if defined(MPART_HAS_CEREAL)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, ProbabilistHermite, Exp, ClenshawCurtisQuadrature, Kokkos::HostSpace, false)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, ProbabilistHermite, SoftPlus, ClenshawCurtisQuadrature, Kokkos::HostSpace, false)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, ProbabilistHermite, Exp, ClenshawCurtisQuadrature, Kokkos::HostSpace, true)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, ProbabilistHermite, SoftPlus, ClenshawCurtisQuadrature, Kokkos::HostSpace, true)
+REGISTER_HOMOGENEOUS_MONO_COMP(ProbabilistHermite, Exp, ClenshawCurtisQuadrature, Kokkos::HostSpace, false)
+REGISTER_HOMOGENEOUS_MONO_COMP(ProbabilistHermite, SoftPlus, ClenshawCurtisQuadrature, Kokkos::HostSpace, false)
+REGISTER_HOMOGENEOUS_MONO_COMP(ProbabilistHermite, Exp, ClenshawCurtisQuadrature, Kokkos::HostSpace, true)
+REGISTER_HOMOGENEOUS_MONO_COMP(ProbabilistHermite, SoftPlus, ClenshawCurtisQuadrature, Kokkos::HostSpace, true)
 #if defined(MPART_ENABLE_GPU)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, ProbabilistHermite, Exp, ClenshawCurtisQuadrature, mpart::DeviceSpace, false)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, ProbabilistHermite, SoftPlus, ClenshawCurtisQuadrature, mpart::DeviceSpace, false)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, ProbabilistHermite, Exp, ClenshawCurtisQuadrature, mpart::DeviceSpace, true)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, ProbabilistHermite, SoftPlus, ClenshawCurtisQuadrature, mpart::DeviceSpace, true)
+REGISTER_HOMOGENEOUS_MONO_COMP(ProbabilistHermite, Exp, ClenshawCurtisQuadrature, mpart::DeviceSpace, false)
+REGISTER_HOMOGENEOUS_MONO_COMP(ProbabilistHermite, SoftPlus, ClenshawCurtisQuadrature, mpart::DeviceSpace, false)
+REGISTER_HOMOGENEOUS_MONO_COMP(ProbabilistHermite, Exp, ClenshawCurtisQuadrature, mpart::DeviceSpace, true)
+REGISTER_HOMOGENEOUS_MONO_COMP(ProbabilistHermite, SoftPlus, ClenshawCurtisQuadrature, mpart::DeviceSpace, true)
 #endif 
 CEREAL_REGISTER_DYNAMIC_INIT(mpartInitMapFactory5)
 #endif

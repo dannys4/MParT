@@ -37,11 +37,11 @@ static auto reg_host_linphys_as_splus = mpart::MapFactory::CompFactoryImpl<Kokko
 #endif
 
 #if defined(MPART_HAS_CEREAL)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, LinearizedBasis<mpart::PhysicistHermite>, Exp, AdaptiveSimpson, Kokkos::HostSpace, false)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, LinearizedBasis<mpart::PhysicistHermite>, SoftPlus, AdaptiveSimpson, Kokkos::HostSpace, false)
+REGISTER_HOMOGENEOUS_MONO_COMP(LinearizedBasis<mpart::PhysicistHermite>, Exp, AdaptiveSimpson, Kokkos::HostSpace, false)
+REGISTER_HOMOGENEOUS_MONO_COMP(LinearizedBasis<mpart::PhysicistHermite>, SoftPlus, AdaptiveSimpson, Kokkos::HostSpace, false)
 #if defined(MPART_ENABLE_GPU)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, LinearizedBasis<mpart::PhysicistHermite>, Exp, AdaptiveSimpson, mpart::DeviceSpace, false)
-REGISTER_MONO_COMP(BasisHomogeneity::Homogeneous, LinearizedBasis<mpart::PhysicistHermite>, SoftPlus, AdaptiveSimpson, mpart::DeviceSpace, false)
+REGISTER_HOMOGENEOUS_MONO_COMP(LinearizedBasis<mpart::PhysicistHermite>, Exp, AdaptiveSimpson, mpart::DeviceSpace, false)
+REGISTER_HOMOGENEOUS_MONO_COMP(LinearizedBasis<mpart::PhysicistHermite>, SoftPlus, AdaptiveSimpson, mpart::DeviceSpace, false)
 #endif 
 CEREAL_REGISTER_DYNAMIC_INIT(mpartInitMapFactory12)
 #endif
