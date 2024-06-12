@@ -1110,7 +1110,7 @@ public:
     }
 
     template <class Archive>
-    static void load_and_construct( Archive & ar, cereal::construct<MonotoneComponent<ExpansionType, PosFuncType,QuadratureType,MemorySpace>> & construct )
+    static void load_and_construct( Archive & ar, cereal::construct<MonotoneComponent<ExpansionType, PosFuncType,QuadratureType,MemorySpace,isCompact>> & construct )
     {   
         ExpansionType expansion;
         QuadratureType quad;
