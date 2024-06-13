@@ -224,7 +224,7 @@ namespace mpart{
             static FactoryFunctionType GetFactoryFunction(MapOptions opts)
             {
                 bool isLinearized = (!isinf(opts.basisLB)) ||(!isinf(opts.basisUB));
-                bool isCompact = false; // TODO: Create Options type here
+                bool isCompact = opts.isCompact;
                 OptionsKeyType optionsKey(opts.basisType, isLinearized, opts.posFuncType, opts.quadType, isCompact);
 
                 auto factoryMap = GetFactoryMap();

@@ -417,6 +417,9 @@ public:
                 double y_scale = ys(ptInd);
                 if constexpr(isCompact) y_scale *= eval(1);
                 output(ptInd) = RootFinding::InverseSingleBracket<MemorySpace>(y_scale, eval, pt(pt.extent(0)-1), xtol, ytol, info);
+                if constexpr(isCompact) {
+                    output(ptInd) = fmin(fmax(output(ptInd), 0.0), 1.0);
+                }
             }
         };
 
