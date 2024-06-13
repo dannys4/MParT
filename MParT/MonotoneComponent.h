@@ -469,11 +469,13 @@ public:
         const unsigned int numPts = pts.extent(1);
         const unsigned int dim = pts.extent(0);
 
-        // Ask the expansion how much memory it would like for it's one-point cache
+        // Ask the expansion how much memory it would like for its one-point cache
+        quad_.SetDim(1);
+        const unsigned int workspaceSize = quad_.WorkspaceSize();
         const unsigned int cacheSize = expansion_.CacheSize();
 
         // Create a policy with enough scratch memory to cache the polynomial evaluations
-        auto cacheBytes = Kokkos::View<double*,MemorySpace>::shmem_size(cacheSize);
+        auto cacheBytes = Kokkos::View<double*,MemorySpace>::shmem_size(cacheSize + isCompact*(workspaceSize));
 
         auto functor = KOKKOS_CLASS_LAMBDA (typename Kokkos::TeamPolicy<ExecutionSpace>::member_type team_member) {
 
@@ -501,8 +503,8 @@ public:
                 
                 // If compact, normalize by part independent of x_d
                 if constexpr(isCompact) {
-                    expansion_.FillCache2(cache.data(), pt, 1, DerivativeFlags::None);
-                    derivs(ptInd) /= expansion_.Evaluate(cache.data(), coeffs);
+                    Kokkos::View<double*,MemorySpace> workspace(team_member.thread_scratch(1), workspaceSize);
+                    derivs(ptInd) /= EvaluateSingle(cache.data(), workspace.data(), pt, 1., coeffs, quad_, expansion_);
                 }
             }
         };
@@ -551,6 +553,9 @@ public:
                              StridedVector<double, MemorySpace>              evals,
                              StridedVector<double, MemorySpace>              derivs)
     {
+        if constexpr(isCompact) {
+            throw std::invalid_argument("Cannot use discrete derivatives with compact monotone component at this time");
+        }
         const unsigned int numPts = pts.extent(1);
         const unsigned int numTerms = coeffs.extent(0);
 
@@ -779,25 +784,24 @@ public:
 
                 // Create the integrand g( \partial_D f(x_1,...,x_{D-1},t))
                 MonotoneIntegrand<ExpansionType, PosFuncType, decltype(pt),decltype(coeffs), MemorySpace> integrand(cache.data(), expansion_, pt, coeffs, DerivativeFlags::Input, nugget_);
-                // Create the integrand g( \partial_D f(x_1,...,x_{D-1},1))
-                MonotoneIntegrand<ExpansionType, PosFuncType, decltype(pt),decltype(coeffs), MemorySpace> integrand_denom(cache.data(), expansion_, pt, 1, coeffs, DerivativeFlags::Input, nugget_);
 
                 // Compute \int_0^x g( \partial_D f(x_1,...,x_{D-1},t)) dt as well as the gradient of this term wrt the map input
                 quad_.Integrate(workspace.data(), integrand, 0, 1, integral.data());
-                if constexpr(isCompact) {
-                    // Compute \int_0^1 g( \partial_D f(x_1,...,x_{D-1},t)) dt as well as the gradient of this term wrt the map input
-                    quad_.Integrate(workspace.data(), integrand_denom, 0, 1, integral_denom.data());
-                }
 
                 double numer_diag_eval = integral(0);
 
                 expansion_.FillCache2(cache.data(), pt, 0.0, DerivativeFlags::Input);
                 double offdiag_eval = expansion_.InputDerivative(cache.data(), coeffs, jacView);
 
-                double denom_eval, denom_eval_sq;
                 double numer_eval = numer_diag_eval + offdiag_eval;
                 evaluations(ptInd) = numer_eval;
+                
+                double denom_eval, denom_eval_sq;
                 if constexpr(isCompact) {
+                    // Create the integrand g( \partial_D f(x_1,...,x_{D-1},1))
+                    MonotoneIntegrand<ExpansionType, PosFuncType, decltype(pt),decltype(coeffs), MemorySpace> integrand_denom(cache.data(), expansion_, pt, 1., coeffs, DerivativeFlags::Input, nugget_);
+                    // Compute \int_0^1 g( \partial_D f(x_1,...,x_{D-1},t)) dt as well as the gradient of this term wrt the map input
+                    quad_.Integrate(workspace.data(), integrand_denom, 0, 1, integral_denom.data());
                     denom_eval = integral_denom(0) + offdiag_eval;
                     denom_eval_sq = denom_eval*denom_eval;
                     evaluations(ptInd) /= denom_eval;
@@ -815,7 +819,7 @@ public:
                 }
 
                 if constexpr(isCompact) {
-                    jacView(dim_-1) = (integral(dim_)*denom_eval - integral_denom(dim_)*numer_eval)/denom_eval_sq;
+                    jacView(dim_-1) = integral(dim_)/denom_eval;
                 } else {
                     jacView(dim_-1) = integral(dim_);
                 }
@@ -845,11 +849,12 @@ public:
         checkMixedJacobianInput("ContinuousMixedJacobian", jacobian.extent(0), jacobian.extent(1), numTerms, numPts);
 
         // Ask the expansion how much memory it would like for it's one-point cache
+        quad_.SetDim(numTerms+1);
         const unsigned int workspaceSize = quad_.WorkspaceSize();
-        const unsigned int cacheSize = expansion_.CacheSize() + isCompact*(2*numTerms+1+workspaceSize);
+        const unsigned int cacheSize = expansion_.CacheSize();
 
         // Create a policy with enough scratch memory to cache the polynomial evaluations
-        auto cacheBytes = Kokkos::View<double*,MemorySpace>::shmem_size(cacheSize);
+        auto cacheBytes = Kokkos::View<double*,MemorySpace>::shmem_size(cacheSize + isCompact*(2*numTerms+1+workspaceSize));
 
         auto functor = KOKKOS_CLASS_LAMBDA (typename Kokkos::TeamPolicy<ExecutionSpace>::member_type team_member) {
 
@@ -875,11 +880,6 @@ public:
                 // Precompute anything that does not depend on x_d. The DerivativeFlags::MixedCoeff arguments specifies that we won't want to derivative wrt to x_i for i<d
                 expansion_.FillCache1(cache.data(), pt, DerivativeFlags::MixedCoeff);
 
-                if constexpr(isCompact) {
-                    MonotoneIntegrand<ExpansionType, PosFuncType, decltype(pt),decltype(coeffs), MemorySpace> integrand_denom(cache.data(), expansion_, pt, 1., coeffs, DerivativeFlags::Parameters, nugget_);
-                    quad_.Integrate(workspace.data(), integrand_denom, 0, 1, integral_denom.data());
-                }
-                
                 // Fill in parts of the cache that depend on x_d. Tell the expansion we're going to want first derivatives wrt x_d
                 expansion_.FillCache2(cache.data(), pt, pt(dim-1), DerivativeFlags::MixedCoeff);
 
@@ -889,7 +889,10 @@ public:
 
                 double offdiag_eval, numer_diag_deriv, denom_eval, denom_eval_sq;
                 if constexpr(isCompact) {
-                    expansion_.FillCache2(cache.data(), pt, 1., DerivativeFlags::Parameters);
+                    MonotoneIntegrand<ExpansionType, PosFuncType, decltype(pt),decltype(coeffs), MemorySpace> integrand_denom(cache.data(), expansion_, pt, 1., coeffs, DerivativeFlags::Parameters, nugget_);
+                    quad_.Integrate(workspace.data(), integrand_denom, 0, 1, integral_denom.data());
+
+                    expansion_.FillCache2(cache.data(), pt, 0., DerivativeFlags::Parameters);
                     offdiag_eval = expansion_.CoeffDerivative(cache.data(), coeffs, jac_denom);
                     numer_diag_deriv = PosFuncType::Evaluate(df);
                     denom_eval = integral_denom(0) + offdiag_eval;
