@@ -68,7 +68,12 @@ public:
                                                     quad_(quad),
                                                     dim_(expansion.InputSize()),
                                                     useContDeriv_(useContDeriv),
-                                                    nugget_(nugget){};
+                                                    nugget_(nugget){
+        if constexpr(isCompact) {
+            zero_param_grad_ = Kokkos::View<double*, MemorySpace>("Zero param grad", expansion.NumCoeffs());
+            zero_eval_ = Kokkos::View<double, MemorySpace>("Evaluation at zero");
+        }
+    };
 
     MonotoneComponent(ExpansionType  const& expansion,
                       QuadratureType const& quad,
@@ -79,7 +84,13 @@ public:
                                                     quad_(quad),
                                                     dim_(expansion.InputSize()),
                                                     useContDeriv_(useContDeriv),
-                                                    nugget_(nugget){};
+                                                    nugget_(nugget){
+        if constexpr(isCompact) {
+            zero_param_grad_ = Kokkos::View<double*, MemorySpace>("Zero param grad", expansion.NumCoeffs());
+            zero_eval_ = Kokkos::View<double, MemorySpace>("Evaluation at zero");
+            initializeZeroEval<isCompact>(this->savedCoeffs);
+        }
+    };
 
     virtual std::shared_ptr<ParameterizedFunctionBase<MemorySpace>> GetBaseFunction() override{return std::make_shared<MultivariateExpansion<typename ExpansionType::BasisType, typename ExpansionType::KokkosSpace>>(1,expansion_);};
 
@@ -281,7 +292,8 @@ public:
                 expansion_.FillCache1(cache.data(), pt, DerivativeFlags::None);
                 output(ptInd) = EvaluateSingle(cache.data(), workspace.data(), pt, pt(dim_-1), coeffs, quad_, expansion_);
                 if constexpr(isCompact) {
-                    output(ptInd) /= EvaluateSingle(cache.data(), workspace.data(), pt, 1., coeffs, quad_, expansion_);
+                    double denom_eval = EvaluateSingle(cache.data(), workspace.data(), pt, 1., coeffs, quad_, expansion_);
+                    output(ptInd) = (output(ptInd) - zero_eval_())/(denom_eval - zero_eval_());
                 }
             }
         };
@@ -415,7 +427,7 @@ public:
                 Kokkos::View<double*,MemorySpace> workspace(team_member.thread_scratch(1), workspaceSize);
                 auto eval = SingleEvaluator<decltype(pt),decltype(coeffs)>(workspace.data(), cache.data(), pt, coeffs, quad_, expansion_, nugget_);
                 double y_scale = ys(ptInd);
-                if constexpr(isCompact) y_scale *= eval(1);
+                if constexpr(isCompact) y_scale = y_scale*(eval(1.)-zero_eval_()) + zero_eval_();
                 output(ptInd) = RootFinding::InverseSingleBracket<MemorySpace>(y_scale, eval, pt(pt.extent(0)-1), xtol, ytol, info);
                 if constexpr(isCompact) {
                     output(ptInd) = fmin(fmax(output(ptInd), 0.0), 1.0);
@@ -428,7 +440,6 @@ public:
         // Paralel loop over each point computing x_D = T^{-1}(x_1,...,x_{D-1},y_D) for that point
         Kokkos::parallel_for(policy, functor);
     }
-
 
     /**
        @brief Approximates the "continuous derivative" \f$\frac{\partial T}{\partial x_D}\f$ derived from the exact integral form of the transport map.
@@ -504,7 +515,7 @@ public:
                 // If compact, normalize by part independent of x_d
                 if constexpr(isCompact) {
                     Kokkos::View<double*,MemorySpace> workspace(team_member.thread_scratch(1), workspaceSize);
-                    derivs(ptInd) /= EvaluateSingle(cache.data(), workspace.data(), pt, 1., coeffs, quad_, expansion_);
+                    derivs(ptInd) /= (EvaluateSingle(cache.data(), workspace.data(), pt, 1., coeffs, quad_, expansion_) - zero_eval_());
                 }
             }
         };
@@ -675,8 +686,7 @@ public:
                 Kokkos::View<double*,MemorySpace> cache(team_member.thread_scratch(1), cacheSize);
                 Kokkos::View<double*,MemorySpace> workspace(team_member.thread_scratch(1), workspaceSize);
                 Kokkos::View<double*,MemorySpace> integral(team_member.thread_scratch(1), numTerms+1);
-                Kokkos::View<double*,MemorySpace> integral_frac;
-                if constexpr(isCompact) integral_frac = Kokkos::View<double*,MemorySpace>(team_member.thread_scratch(1), numTerms+1);
+                Kokkos::View<double*,MemorySpace> integral_denom;
 
                 // Fill in the cache with anything that doesn't depend on x_d
                 expansion_.FillCache1(cache.data(), pt, DerivativeFlags::Parameters);
@@ -689,10 +699,10 @@ public:
                 
                 // Do the same work for the denominator if needed
                 if constexpr(isCompact) {
-                    MonotoneIntegrand<ExpansionType, PosFuncType, decltype(pt),decltype(coeffs), MemorySpace> integrand_frac(cache.data(), expansion_, pt, 1., coeffs, DerivativeFlags::Parameters, nugget_);
-                    quad_.Integrate(workspace.data(), integrand_frac, 0, 1, integral_frac.data());
+                    integral_denom = Kokkos::View<double*,MemorySpace>(team_member.thread_scratch(1), numTerms+1);
+                    MonotoneIntegrand<ExpansionType, PosFuncType, decltype(pt),decltype(coeffs), MemorySpace> integrand_denom(cache.data(), expansion_, pt, 1., coeffs, DerivativeFlags::Parameters, nugget_);
+                    quad_.Integrate(workspace.data(), integrand_denom, 0, 1, integral_denom.data());
                 }
-
 
                 expansion_.FillCache2(cache.data(), pt, 0.0, DerivativeFlags::Parameters);
 
@@ -704,7 +714,8 @@ public:
 
                 double denom_eval;
                 if constexpr(isCompact) {
-                    denom_eval = integral_frac(0) + offdiag_eval;
+                    denom_eval = integral_denom(0) + offdiag_eval - zero_eval_();
+                    numer_eval -= zero_eval_();
                     evaluations(ptInd) /= denom_eval;
                 }
 
@@ -713,7 +724,8 @@ public:
                     double offdiag_jac_term = jacView(termInd);
                     double numer_jacobian = integral(termInd+1) + offdiag_jac_term; 
                     if constexpr(isCompact) {
-                        double denom_jacobian = integral_frac(termInd+1) + offdiag_jac_term;
+                        numer_jacobian -= zero_param_grad_(termInd);
+                        double denom_jacobian = integral_denom(termInd+1) + offdiag_jac_term - zero_param_grad_(termInd);
                         jacView(termInd) = (numer_jacobian*denom_eval - denom_jacobian*numer_eval)/(denom_eval*denom_eval);
                     } else {
                         jacView(termInd) = numer_jacobian;
@@ -798,11 +810,12 @@ public:
                 
                 double denom_eval, denom_eval_sq;
                 if constexpr(isCompact) {
+                    numer_eval -= zero_eval_();
                     // Create the integrand g( \partial_D f(x_1,...,x_{D-1},1))
                     MonotoneIntegrand<ExpansionType, PosFuncType, decltype(pt),decltype(coeffs), MemorySpace> integrand_denom(cache.data(), expansion_, pt, 1., coeffs, DerivativeFlags::Input, nugget_);
                     // Compute \int_0^1 g( \partial_D f(x_1,...,x_{D-1},t)) dt as well as the gradient of this term wrt the map input
                     quad_.Integrate(workspace.data(), integrand_denom, 0, 1, integral_denom.data());
-                    denom_eval = integral_denom(0) + offdiag_eval;
+                    denom_eval = integral_denom(0) + offdiag_eval - zero_eval_();
                     denom_eval_sq = denom_eval*denom_eval;
                     evaluations(ptInd) /= denom_eval;
                 }
@@ -895,7 +908,7 @@ public:
                     expansion_.FillCache2(cache.data(), pt, 0., DerivativeFlags::Parameters);
                     offdiag_eval = expansion_.CoeffDerivative(cache.data(), coeffs, jac_denom);
                     numer_diag_deriv = PosFuncType::Evaluate(df);
-                    denom_eval = integral_denom(0) + offdiag_eval;
+                    denom_eval = integral_denom(0) + offdiag_eval - zero_eval_();
                     denom_eval_sq = denom_eval*denom_eval;
                 }
 
@@ -903,7 +916,7 @@ public:
                 for(unsigned int i=0; i<numTerms; ++i){
                     double numer_mixed_grad = jacView(i)*dgdf;
                     if constexpr(isCompact) {
-                        double denom_coeff_grad = integral_denom(i+1) + jac_denom(i);
+                        double denom_coeff_grad = integral_denom(i+1) + jac_denom(i) - zero_param_grad_(i);
                         jacView(i) = (numer_mixed_grad*denom_eval - numer_diag_deriv*denom_coeff_grad)/denom_eval_sq;
                     } else {
                         jacView(i) = numer_mixed_grad;
@@ -971,7 +984,7 @@ public:
                     expansion_.FillCache2(cache.data(), pt, 1., DerivativeFlags::Input);
                     offdiag_eval = expansion_.InputDerivative(cache.data(), coeffs, jac_denom);
                     numer_diag_deriv = PosFuncType::Evaluate(df);
-                    denom_eval = integral_denom(0) + offdiag_eval;
+                    denom_eval = integral_denom(0) + offdiag_eval - zero_eval_();
                     denom_eval_sq = denom_eval*denom_eval;
                 }
 
@@ -1112,6 +1125,7 @@ public:
     {   
         ar( cereal::base_class<ConditionalMapBase<MemorySpace>>( this )); 
         ar( expansion_, quad_, useContDeriv_, nugget_);
+        // TODO: Serialize zero_eval and zero_param_grad
         ar( this->savedCoeffs );
     }
 
@@ -1122,11 +1136,11 @@ public:
         QuadratureType quad;
         bool useContDeriv;
         double nugget;
-        ar(expansion, quad, useContDeriv, nugget);
 
+        ar(expansion, quad, useContDeriv, nugget);
+        // TODO: Serialize zero_eval and zero_param_grad (needs custom constructor)
         Kokkos::View<double*, MemorySpace> coeffs;
         ar( coeffs );
-
         if(coeffs.size() == expansion.NumCoeffs()){
             construct( expansion, quad, useContDeriv, nugget, coeffs);
         }else{
@@ -1136,6 +1150,32 @@ public:
 
 #endif // MPART_HAS_CEREAL
 
+        void SetCoeffs(Kokkos::View<const double*, MemorySpace> coeffs) override {
+            ConditionalMapBase<MemorySpace>::SetCoeffs(coeffs);
+            if constexpr(isCompact) {
+                initializeZeroEval(this->savedCoeffs);
+            }
+        }
+
+        void WrapCoeffs(Kokkos::View<double*, MemorySpace> coeffs) override {
+            ConditionalMapBase<MemorySpace>::WrapCoeffs(coeffs);
+            if constexpr(isCompact) {
+                std::cerr << "\033[33m" // yellow
+                    << "WARNING: Changing wrapped coefficients in a Compact MonotoneComponent will give incorrect answers"
+                    << "\033[0m" // reset
+                    << std::endl;
+                initializeZeroEval(this->savedCoeffs);
+            }
+        }
+
+        #if defined(MPART_ENABLE_GPU)
+        void SetCoeffs(Kokkos::View<const double*, std::conditional_t<std::is_same_v<Kokkos::HostSpace,MemorySpace>, mpart::DeviceSpace, Kokkos::HostSpace>> coeffs) override {
+            ConditionalMapBase<MemorySpace>::SetCoeffs(coeffs);
+            if constexpr(isCompact) {
+                initializeZeroEval(this->savedCoeffs);
+            }
+        }
+        #endif
 private:
 
     ExpansionType expansion_;
@@ -1143,7 +1183,35 @@ private:
     unsigned int dim_;
     bool useContDeriv_;
     double nugget_;
+    Kokkos::View<double ,MemorySpace> zero_eval_;
+    Kokkos::View<double*,MemorySpace> zero_param_grad_;
 
+    template<bool B=isCompact, typename std::enable_if_t<B, bool> = true>
+    void initializeZeroEval(StridedVector<const double, MemorySpace> const& coeffs) {
+        const unsigned int cacheSize = expansion_.CacheSize();
+
+        auto functor = KOKKOS_CLASS_LAMBDA (typename Kokkos::TeamPolicy<typename MemoryToExecution<MemorySpace>::Space>::member_type team_member) {
+
+            unsigned int ptInd = team_member.league_rank () * team_member.team_size () + team_member.team_rank ();
+
+            if(ptInd<1){
+                // Get a pointer to the shared memory that Kokkos set up for this team
+                Kokkos::View<double*,MemorySpace> cache(team_member.thread_scratch(1), cacheSize);
+
+                // Fill in entries in the cache that are independent of x_d.  By passing DerivativeFlags::None, we are telling the expansion that no derivatives with wrt x_1,...x_{d-1} will be needed.
+                expansion_.FillCache0(cache.data(), DerivativeFlags::Parameters);
+                zero_eval_() = expansion_.CoeffDerivative(cache.data(), coeffs, zero_param_grad_);
+            }
+        };
+
+        // Create a policy with enough scratch memory to cache the polynomial evaluations
+        unsigned int cacheBytes = Kokkos::View<double*,MemorySpace>::shmem_size(cacheSize);
+        // Only need to evaluate this once
+        auto policy = GetCachedRangePolicy<typename MemoryToExecution<MemorySpace>::Space>(1, cacheBytes, functor);
+
+        // Compute f(0)
+        Kokkos::parallel_for(policy, functor);
+    }
 
     template<typename PointType, typename CoeffType>
     struct SingleEvaluator {

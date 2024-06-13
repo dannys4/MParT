@@ -424,50 +424,55 @@ TEST_CASE("Testing CompactMonotoneComponent CoeffGrad and LogDeterminantCoeffGra
 
     Kokkos::View<double**, HostSpace> evalPts("Evaluate Points", dim, numPts);
     for(unsigned int i=0; i<numPts; ++i){
-        evalPts(0,i) = 0.3;
-        evalPts(1,i) = 0.5;
+        evalPts(0,i) = i / double(numPts + 2);
+        evalPts(1,i) = i / double(numPts);
     }
 
     unsigned int maxDegree = 3;
-    MultiIndexSet mset = MultiIndexSet::CreateTotalOrder(dim, maxDegree, [](MultiIndex m){return m.HasNonzeroEnd() || m.Max() == 0;});
-    MultivariateExpansionWorker<BasisEvaluator<BasisHomogeneity::Homogeneous,ProbabilistHermite>,HostSpace> expansion(mset);
+    MultiIndexSet mset = MultiIndexSet::CreateTotalOrder(dim, maxDegree);
+    MultivariateExpansionWorker<BasisEvaluator<BasisHomogeneity::Homogeneous,ShiftedLegendre>,HostSpace> expansion(mset);
 
     unsigned int maxSub = 20;
     double relTol = 1e-7;
     double absTol = 1e-7;
     AdaptiveSimpson quad(maxSub, 1, nullptr, absTol, relTol, QuadError::First);
 
-    MonotoneComponent<decltype(expansion), Exp, AdaptiveSimpson<HostSpace>, HostSpace, true> comp(expansion, quad);
+    MonotoneComponent<decltype(expansion), SoftPlus, AdaptiveSimpson<HostSpace>, HostSpace, true> comp(expansion, quad);
 
     Kokkos::View<double*, HostSpace> coeffs("Expansion coefficients", mset.Size());
     for(unsigned int i=0; i<coeffs.extent(0); ++i)
-        coeffs(i) = 0.1*std::cos( 0.01*i );
+        coeffs(i) = 1. + 0.1*std::cos( 2*i + 0.5);
 
-    comp.SetCoeffs(coeffs);
-
-    SECTION("CoeffGrad"){
-
-        Kokkos::View<double**, HostSpace> sens("Sensitivity", 1, numPts);
-        for(unsigned int i=0; i<numPts; ++i)
-            sens(0,i) = 0.25*(i+1);
-
+    SECTION("CoeffGrad") {
+        Kokkos::View<double**, HostSpace> sens ("sensitivities", 1, numPts);
+        Kokkos::deep_copy(sens, 1.);
+        Kokkos::View<double**, HostSpace> evals = comp.Evaluate(evalPts);
+        Kokkos::View<double**, HostSpace> evals2;
         Kokkos::View<double**, HostSpace> grads = comp.CoeffGrad(evalPts, sens);
         REQUIRE(grads.extent(0)==comp.numCoeffs);
         REQUIRE(grads.extent(1)==numPts);
 
-        for(unsigned int j=1; j<numPts; ++j){
-            for(unsigned int i=0; i<comp.numCoeffs; ++i){
-                CHECK(grads(i,j) == (j+1.0)*grads(i,0));
+        // Compare with finite difference derivatives
+        const double fdstep = 1e-5;
+
+        for(unsigned int i=0; i<coeffs.extent(0); ++i){
+            coeffs(i) += fdstep;
+
+            comp.SetCoeffs(coeffs);
+            evals2 = comp.Evaluate(evalPts);
+            for(unsigned int ptInd=0; ptInd<numPts; ++ptInd) {
+                double fd_grad = (evals2(0,ptInd)-evals(0,ptInd))/fdstep;
+                if(i == 0 || (ptInd == 0 && !mset[i].HasNonzeroEnd())) {
+                    CHECK_THAT( grads(i,ptInd), WithinAbs(0., 1e-10));
+                }
+                else CHECK_THAT( grads(i,ptInd), WithinRel(fd_grad, 1e-3) || WithinAbs(fd_grad, 1e-5));
             }
+
+            coeffs(i) -= fdstep;
         }
     }
 
     SECTION("LogDeterminantCoeffGrad"){
-
-        for(unsigned int i=0; i<numPts; ++i){
-            evalPts(0,i) = 0.03*i;
-            evalPts(1,i) = -0.05*i;
-        }
 
         Kokkos::View<double*, HostSpace> logDets = comp.LogDeterminant(evalPts);
         Kokkos::View<double*, HostSpace> logDets2;
@@ -483,8 +488,12 @@ TEST_CASE("Testing CompactMonotoneComponent CoeffGrad and LogDeterminantCoeffGra
 
             comp.SetCoeffs(coeffs);
             logDets2 = comp.LogDeterminant(evalPts);
-            for(unsigned int ptInd=0; ptInd<numPts; ++ptInd)
-                CHECK_THAT( grads(i,ptInd), WithinRel((logDets2(ptInd)-logDets(ptInd))/fdstep, 1e-3));
+            for(unsigned int ptInd=0; ptInd<numPts; ++ptInd) {
+                if(i == 0 || (ptInd == 0 && !mset[i].HasNonzeroEnd())) {
+                    CHECK_THAT( grads(i,ptInd), WithinAbs(0., 1e-10));
+                }
+                else CHECK_THAT( grads(i,ptInd), WithinRel((logDets2(ptInd)-logDets(ptInd))/fdstep, 1e-3));
+            }
 
             coeffs(i) -= fdstep;
         }
