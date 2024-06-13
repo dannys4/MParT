@@ -13,7 +13,7 @@ namespace mpart{
         ProbabilistHermite,
         PhysicistHermite,
         HermiteFunctions,
-        SinusoidLegendre
+        Legendre
     };
 
     enum class PosFuncTypes

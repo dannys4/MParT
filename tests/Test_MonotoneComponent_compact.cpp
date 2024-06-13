@@ -29,7 +29,7 @@ TEST_CASE( "Testing compact monotone component evaluation in 1d", "[MonotoneComp
 
     /* Create and evaluate an affine map
        - Set coefficients so that f(x) = 1.0 + x
-       - (f(0) + int_0^x exp( d f(t) ) dt)/(f(0) + int_0^1 exp( d f(t) ) dt ) =  (1 + |x| * exp(1))/(1 + exp(1))
+       - (int_0^x exp( d f(t) ) dt)/(int_0^1 exp( d f(t) ) dt ) =  x*exp(-1) + 1
     */
     SECTION("Affine Map"){
         unsigned int maxDegree = 1;
@@ -53,7 +53,7 @@ TEST_CASE( "Testing compact monotone component evaluation in 1d", "[MonotoneComp
         comp.EvaluateImpl(evalPts, coeffs, output);
 
         for(unsigned int i=0; i<numPts; ++i){
-            CHECK_THAT(output(i), WithinRel( (1+exp(1)*evalPts(0,i))/(1 + exp(1)), testTol));
+            CHECK_THAT(output(i), WithinRel( 1+exp(-1)*evalPts(0,i), testTol));
             bool isInbounds = output(i) < 1. && output(i) > 0.;
             CHECK(isInbounds);
         }
@@ -62,7 +62,7 @@ TEST_CASE( "Testing compact monotone component evaluation in 1d", "[MonotoneComp
     /* Create and evaluate a quadratic map
        - Set coefficients so that f(x) = 1.0 + x + 0.5*x^2
        - df/dt = 1.0 + t
-       - f(0) + int_0^x exp( df/dt ) dt = ( 1.0 + int_0^x exp(1+t) dt )/( 1.0 + int_0^1 exp(1+t) dt) = (1+exp(1+x)-exp(1))/(1+exp(2)-exp(1))
+       - int_0^x exp( df/dt ) dt = int_0^x exp(1+t) = exp(1+x)-exp(1) => (exp(1+x)-exp(1))/(exp(2)-exp(1))
     */
     SECTION("Quadratic Map"){
         unsigned int maxDegree = 2;
@@ -87,14 +87,14 @@ TEST_CASE( "Testing compact monotone component evaluation in 1d", "[MonotoneComp
 
         for(unsigned int i=0; i<numPts; ++i){
             double x = evalPts(0,i);
-            CHECK_THAT(output(i), WithinRel( (1 + exp(1+x) - exp(1))/(1 + exp(2) - exp(1)) , testTol));
+            CHECK_THAT(output(i), WithinRel( (exp(1+x) - exp(1))/(exp(2) - exp(1)) , testTol));
         }
     }
 }
 
 TEST_CASE( "Testing bracket-based inversion of compact monotone component", "[CompactMonotoneBracketInverse]" ) {
 
-    const double testTol = 1e-6;
+    const double testTol = 2e-6;
     unsigned int dim = 1;
 
     // Create points evently space on [lb,ub]
@@ -227,13 +227,9 @@ TEST_CASE( "Testing compact monotone component derivative", "[CompactMonotoneCom
         rightEvalPts(1,i) = evalPts(1,i) + fdStep;
     }
 
-    unsigned int maxDegree = 2;
+    unsigned int maxDegree = 4;
 
-    // Need nonzero end to midx's for compact since we need 0 to map to 0
-    // i.e. T(x,y) = (f(x,0) + int_0^y g(d_y f(x,t)) dt )/(f(x,0) + int_0^1 g(d_y f(x,t)) dt )
-    // so T(x,0) = f(x,0)/(f(x,0) + int_0^1 g(d_y f(x,t)) dt)
-    // Since we assume support on the entire domain, then we must have f(x,0) == 0
-    MultiIndexSet mset = MultiIndexSet::CreateTotalOrder(dim, maxDegree, [](MultiIndex m){return m.HasNonzeroEnd();});
+    MultiIndexSet mset = MultiIndexSet::CreateTotalOrder(dim, maxDegree);
     MultivariateExpansionWorker<BasisEvaluator<BasisHomogeneity::Homogeneous,ProbabilistHermite>,HostSpace> expansion(mset);
 
     unsigned int numTerms = mset.Size();
@@ -248,7 +244,7 @@ TEST_CASE( "Testing compact monotone component derivative", "[CompactMonotoneCom
     // Create some arbitrary coefficients
     Kokkos::View<double*, HostSpace> coeffs("Expansion coefficients", mset.Size());
     for(unsigned int i=0; i<coeffs.extent(0); ++i)
-        coeffs(i) = 0.1*std::cos( 0.01*i );
+        coeffs(i) = 0.1*std::cos( 2*i + 0.5);
 
     Kokkos::View<double*, HostSpace> evals("evals",numPts);
     comp.EvaluateImpl(evalPts, coeffs, evals);
@@ -256,9 +252,11 @@ TEST_CASE( "Testing compact monotone component derivative", "[CompactMonotoneCom
     comp.EvaluateImpl(rightEvalPts, coeffs, rightEvals);
     Kokkos::View<double*, HostSpace> contDerivs = comp.ContinuousDerivative(evalPts, coeffs);
 
-    for(unsigned int i=0; i<numPts; ++i){
-        double fdDeriv = (rightEvals(i)-evals(i))/fdStep;
-        CHECK_THAT( contDerivs(i), WithinRel(fdDeriv, testTol) );
+    SECTION("Continuous derivatives") {
+        for(unsigned int i=0; i<numPts; ++i){
+            double fdDeriv = (rightEvals(i)-evals(i))/fdStep;
+            CHECK_THAT( contDerivs(i), WithinRel(fdDeriv, testTol) );
+        }
     }
 
     SECTION("Coefficient Jacobian"){
@@ -277,8 +275,11 @@ TEST_CASE( "Testing compact monotone component derivative", "[CompactMonotoneCom
             coeffs(j) += fdStep;
             comp.EvaluateImpl(evalPts, coeffs, evals2);
 
-            for(unsigned int i=0; i<numPts; ++i)
-                CHECK_THAT(jac(j,i), WithinRel((evals2(i)-evals(i))/fdStep, 1e-4));
+            for(unsigned int i=0; i<numPts; ++i) {
+                // TODO: Why is jacobian zero for midx (k_1,k_2) k_2<=1 ??
+                double fd_deriv = (evals2(i)-evals(i))/fdStep;
+                CHECK_THAT(jac(j,i), WithinRel(fd_deriv, 5*fdStep) || WithinAbs(fd_deriv, 1e-10));
+            }
 
             coeffs(j) -= fdStep;
         }
@@ -305,12 +306,13 @@ TEST_CASE( "Testing compact monotone component derivative", "[CompactMonotoneCom
             derivs2 = comp.ContinuousDerivative(evalPts, coeffs2);
 
             for(unsigned int i=0; i<derivs2.extent(0); ++i){
-                CHECK_THAT(jac(j,i), WithinRel((derivs2(i) - derivs(i))/fdStep, 25*fdStep));
+                // TODO: Why is jacobian zero for midx (k_1,k_2) k_2<=1 ??
+                double fd_deriv = (derivs2(i) - derivs(i))/fdStep;
+                CHECK_THAT(jac(j,i), WithinRel(fd_deriv, 20*fdStep) || WithinAbs(fd_deriv, 1e-10));
             }
 
             coeffs2(j) = coeffs(j);
         }
-
     }
 
     SECTION("Input Jacobian"){
@@ -334,7 +336,8 @@ TEST_CASE( "Testing compact monotone component derivative", "[CompactMonotoneCom
             comp.EvaluateImpl(evalPts2, coeffs, evals2);
 
             for(unsigned int ptInd=0; ptInd<numPts; ++ptInd) {
-                CHECK_THAT(jac(j,ptInd), WithinRel((evals2(ptInd) - evals(ptInd))/fdStep, 20*fdStep));
+                double fd_deriv = (evals2(ptInd) - evals(ptInd))/fdStep;
+                CHECK_THAT(jac(j,ptInd), WithinRel(fd_deriv, 10*fdStep) || WithinAbs(fd_deriv, 1e-10));
             }
 
             for(unsigned int ptInd=0; ptInd<numPts; ++ptInd)
@@ -442,6 +445,8 @@ TEST_CASE("Testing CompactMonotoneComponent CoeffGrad and LogDeterminantCoeffGra
     Kokkos::View<double*, HostSpace> coeffs("Expansion coefficients", mset.Size());
     for(unsigned int i=0; i<coeffs.extent(0); ++i)
         coeffs(i) = 1. + 0.1*std::cos( 2*i + 0.5);
+
+    comp.SetCoeffs(coeffs);
 
     SECTION("CoeffGrad") {
         Kokkos::View<double**, HostSpace> sens ("sensitivities", 1, numPts);

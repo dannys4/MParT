@@ -163,8 +163,6 @@ TEST_CASE( "Testing compact map component factory", "[MapFactoryCompactComponent
         
         Kokkos::View<double**, MemorySpace> evals = map->Evaluate(pts);
 
-        // This is perhaps broken for certain coefficient values when the polynomial p(x,y) does not have p(x,0) = 0.
-        SKIP();
         for(unsigned int i=0; i<numPts; ++i){
             CHECK(evals(0,i) >= 0.);
             CHECK(evals(0,i) <= 1.);
@@ -172,10 +170,10 @@ TEST_CASE( "Testing compact map component factory", "[MapFactoryCompactComponent
     }
 }
 
-TEST_CASE( "Testing compact map component factory, sinusoid-legendre basis", "[MapFactoryCompactComponent_Sinusoid]" ) {
+TEST_CASE( "Testing compact map component factory, legendre basis", "[MapFactoryCompactComponent_Legendre]" ) {
 
     MapOptions options;
-    options.basisType = BasisTypes::SinusoidLegendre;
+    options.basisType = BasisTypes::Legendre;
     options.isCompact = true;
     options.basisNorm = false;
     
@@ -184,15 +182,15 @@ TEST_CASE( "Testing compact map component factory, sinusoid-legendre basis", "[M
     MultiIndexSet mset_h = MultiIndexSet::CreateTotalOrder(dim,maxDegree);
     FixedMultiIndexSet<MemorySpace> mset = mset_h.Fix(true);
 
-    SECTION("AdaptiveSimpson"){
-        options.quadType = QuadTypes::ClenshawCurtis;
+    SECTION("AdaptiveClenshawCurtis"){
+        options.quadType = QuadTypes::AdaptiveClenshawCurtis;
 
         std::shared_ptr<ConditionalMapBase<MemorySpace>> map = MapFactory::CreateComponent<MemorySpace>(mset, options);
         REQUIRE(map!=nullptr);
 
         Kokkos::View<double*,MemorySpace> coeffs("Coefficients", map->numCoeffs);
         for(unsigned int i=0; i<map->numCoeffs; ++i)
-            coeffs(i) = i*cos(i*M_PI*2/map->numCoeffs);
+            coeffs(i) = i*cos(0.5+i*M_PI*2/map->numCoeffs);
         map->SetCoeffs(coeffs);
 
         unsigned int numPts = 5;
