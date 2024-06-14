@@ -20,6 +20,8 @@ MapOptions MapOptionsFromMatlabArgs(
     opts.basisType    = BasisTypes::PhysicistHermite;
     } else if (basisType == "HermiteFunctions") {
     opts.basisType    = BasisTypes::HermiteFunctions;
+    } else if (basisType == "Legendre") {
+    opts.basisType    = BasisTypes::Legendre;
     } else {
     std::cout << "Unknown basisType, value is set to default" <<std::endl;
     }
