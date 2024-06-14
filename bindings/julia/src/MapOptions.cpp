@@ -48,6 +48,7 @@ void mpart::binding::MapOptionsWrapper(jlcxx::Module &mod) {
         .method("__basisLB!", [](MapOptions &opts, double lb){ opts.basisLB = lb; })
         .method("__basisUB!", [](MapOptions &opts, double ub){ opts.basisUB = ub; })
         .method("__basisNorm!", [](MapOptions &opts, bool shouldNorm){ opts.basisNorm = shouldNorm; })
+        .method("__isCompact!", [](MapOptions &opts, bool isCompact){ opts.isCompact = isCompact; })
         .method("__posFuncType!", [](MapOptions &opts, unsigned int f){ opts.posFuncType = static_cast<PosFuncTypes>(f); })
         .method("__quadType!", [](MapOptions &opts, unsigned int quad){ opts.quadType = static_cast<QuadTypes>(quad); })
         .method("__sigmoidType!", [](MapOptions &opts, unsigned int sig){ opts.sigmoidType = static_cast<SigmoidTypes>(sig); })

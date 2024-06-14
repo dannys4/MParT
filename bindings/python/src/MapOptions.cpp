@@ -21,8 +21,9 @@ void mpart::binding::MapOptionsWrapper(py::module &m)
     py::enum_<BasisTypes>(m, "BasisTypes")
     .value("ProbabilistHermite",BasisTypes::ProbabilistHermite)
     .value("PhysicistHermite",BasisTypes::PhysicistHermite)
-    .value("HermiteFunctions",BasisTypes::HermiteFunctions);
-    .value("Legendre",BasisTypes::Legendre);
+    .value("HermiteFunctions",BasisTypes::HermiteFunctions)
+    .value("Legendre",BasisTypes::Legendre)
+    ;
 
     // PosFuncTypes
     py::enum_<PosFuncTypes>(m, "PosFuncTypes")
@@ -57,6 +58,7 @@ void mpart::binding::MapOptionsWrapper(py::module &m)
     .def_readwrite("basisType", &MapOptions::basisType)
     .def_readwrite("basisLB", &MapOptions::basisLB)
     .def_readwrite("basisUB", &MapOptions::basisUB)
+    .def_readwrite("isCompact", &MapOptions::isCompact)
     .def_readwrite("basisNorm", &MapOptions::basisNorm)
     .def_readwrite("posFuncType", &MapOptions::posFuncType)
     .def_readwrite("edgeType", &MapOptions::edgeType)

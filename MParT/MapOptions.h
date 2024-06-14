@@ -129,7 +129,7 @@ namespace mpart{
         template<class Archive>
         void serialize(Archive &archive)
         {
-            archive( basisType, basisLB, basisUB, posFuncType, quadType, quadAbsTol, quadRelTol, quadMaxSub, quadMinSub, quadPts, contDeriv, basisNorm, nugget);
+            archive( basisType, basisLB, basisUB, isCompact, posFuncType, quadType, quadAbsTol, quadRelTol, quadMaxSub, quadMinSub, quadPts, contDeriv, basisNorm, nugget);
         }
         #endif // MPART_HAS_CEREAL
 
@@ -138,6 +138,7 @@ namespace mpart{
             ret &= (basisType   == opts2.basisType);
             ret &= (basisLB     == opts2.basisLB);
             ret &= (basisUB     == opts2.basisUB);
+            ret &= (isCompact   == opts2.isCompact);
             ret &= (edgeType    == opts2.edgeType);
             ret &= (edgeShape   == opts2.edgeShape);
             ret &= (sigmoidBasisSumType == opts2.sigmoidBasisSumType);
@@ -160,6 +161,7 @@ namespace mpart{
             ss << "basisType = " << btypes[static_cast<unsigned int>(basisType)] << "\n";
             ss << "basisLB = " << basisLB << "\n";
             ss << "basisUB = " << basisUB << "\n";
+            ss << "isCompact = " << isCompact << "\n";
             ss << "edgeType = " << etypes[static_cast<unsigned int>(edgeType)] << "\n";
             ss << "sigmoidType = " << stypes[static_cast<unsigned int>(sigmoidType)] << "\n";
             ss << "sigmoidBasisSumType = " << sbstypes[static_cast<unsigned int>(sigmoidBasisSumType)] << "\n";
@@ -176,7 +178,7 @@ namespace mpart{
             return ss.str();
         }
 
-        inline static const std::string btypes[3] = {"ProbabilistHermite", "PhysicistHermite", "HermiteFunctions"};
+        inline static const std::string btypes[4] = {"ProbabilistHermite", "PhysicistHermite", "HermiteFunctions", "Legendre"};
         inline static const std::string pftypes[2] = {"Exp", "SoftPlus"};
         inline static const std::string qtypes[3] = {"ClenshawCurtis", "AdaptiveSimpson", "AdaptiveClenshawCurtis"};
         inline static const std::string etypes[1] = {"SoftPlus"};
