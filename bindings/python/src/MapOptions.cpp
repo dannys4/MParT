@@ -28,7 +28,9 @@ void mpart::binding::MapOptionsWrapper(py::module &m)
     // PosFuncTypes
     py::enum_<PosFuncTypes>(m, "PosFuncTypes")
     .value("Exp",PosFuncTypes::Exp)
-    .value("SoftPlus",PosFuncTypes::SoftPlus);
+    .value("SoftPlus",PosFuncTypes::SoftPlus)
+    .value("Logistic",PosFuncTypes::Logistic)
+    ;
 
     // QuadTypes
     py::enum_<QuadTypes>(m, "QuadTypes")

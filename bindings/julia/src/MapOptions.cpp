@@ -22,6 +22,7 @@ void mpart::binding::MapOptionsWrapper(jlcxx::Module &mod) {
     mod.add_bits<PosFuncTypes>("__PosFuncTypes", jlcxx::julia_type("CppEnum"));
     mod.set_const("__Exp", PosFuncTypes::Exp);
     mod.set_const("__SoftPlus", PosFuncTypes::SoftPlus);
+    mod.set_const("__Logistic", PosFuncTypes::Logistic);
 
     // QuadTypes
     mod.add_bits<QuadTypes>("__QuadTypes", jlcxx::julia_type("CppEnum"));
@@ -29,9 +30,9 @@ void mpart::binding::MapOptionsWrapper(jlcxx::Module &mod) {
     mod.set_const("__AdaptiveSimpson", QuadTypes::AdaptiveSimpson);
     mod.set_const("__AdaptiveClenshawCurtis", QuadTypes::AdaptiveClenshawCurtis);
 
-    // SigmoidTypes
-    mod.add_bits<SigmoidTypes>("__SigmoidTypes", jlcxx::julia_type("CppEnum"));
-    mod.set_const("__Logistic", SigmoidTypes::Logistic);
+    // SigmoidTypes: TODO: Logistic overlaps with PosFuncTypes, needs to be fixed
+    // mod.add_bits<SigmoidTypes>("__SigmoidTypes", jlcxx::julia_type("CppEnum"));
+    // mod.set_const("__Logistic", SigmoidTypes::Logistic);
 
     // SigmoidSumTypes
     mod.add_bits<SigmoidSumSizeType>("__SigmoidSumSizeType", jlcxx::julia_type("CppEnum"));

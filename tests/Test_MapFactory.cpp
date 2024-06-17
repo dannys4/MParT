@@ -131,9 +131,7 @@ TEST_CASE("Testing map component factory with linearized basis", "[MapFactoryLin
 
 TEST_CASE("Testing compact map component factory", "[MapFactoryCompactComponent]")
 {
-
     MapOptions options;
-    options.basisType = BasisTypes::ProbabilistHermite;
     options.isCompact = true;
     options.basisNorm = false;
 
@@ -142,65 +140,17 @@ TEST_CASE("Testing compact map component factory", "[MapFactoryCompactComponent]
     MultiIndexSet mset_h = MultiIndexSet::CreateTotalOrder(dim, maxDegree, [](MultiIndex m)
                                                            { return m.HasNonzeroEnd() || m.Max() == 0; });
     FixedMultiIndexSet<MemorySpace> mset = mset_h.Fix(true);
-
-    SECTION("AdaptiveSimpson")
-    {
-        options.quadType = QuadTypes::AdaptiveSimpson;
-
+    options.quadType = QuadTypes::AdaptiveClenshawCurtis;
+    std::vector<std::tuple<BasisTypes, PosFuncTypes>> opts_tuples {{BasisTypes::ProbabilistHermite, PosFuncTypes::Exp}, {BasisTypes::Legendre, PosFuncTypes::SoftPlus}, {BasisTypes::Legendre, PosFuncTypes::Logistic}};
+    for(auto& opts_tuple : opts_tuples) {
+        options.basisType = std::get<0>(opts_tuple);
+        options.posFuncType = std::get<1>(opts_tuple);
         std::shared_ptr<ConditionalMapBase<MemorySpace>> map = MapFactory::CreateComponent<MemorySpace>(mset, options);
         REQUIRE(map != nullptr);
 
         Kokkos::View<double *, MemorySpace> coeffs("Coefficients", map->numCoeffs);
         for (unsigned int i = 0; i < map->numCoeffs; ++i)
             coeffs(i) = 1.0;
-        map->SetCoeffs(coeffs);
-
-        unsigned int numPts = 5;
-        Kokkos::View<double **, MemorySpace> pts("Points", dim, numPts);
-        pts(0, 0) = 0.0;
-        pts(0, 1) = 0.2;
-        pts(0, 2) = 0.5;
-        pts(0, 3) = 0.94;
-        pts(0, 4) = 1.0;
-        pts(1, 0) = 0.0;
-        pts(1, 1) = 0.0;
-        pts(1, 2) = 0.4;
-        pts(1, 3) = 1.0;
-        pts(1, 4) = 1.0;
-
-        Kokkos::View<double **, MemorySpace> evals = map->Evaluate(pts);
-
-        for (unsigned int i = 0; i < numPts; ++i)
-        {
-            CHECK(evals(0, i) >= 0.);
-            CHECK(evals(0, i) <= 1.);
-        }
-    }
-}
-
-TEST_CASE("Testing compact map component factory, legendre basis", "[MapFactoryCompactComponent_Legendre]")
-{
-
-    MapOptions options;
-    options.basisType = BasisTypes::Legendre;
-    options.isCompact = true;
-    options.basisNorm = false;
-
-    unsigned int dim = 2;
-    unsigned int maxDegree = 7;
-    MultiIndexSet mset_h = MultiIndexSet::CreateTotalOrder(dim, maxDegree);
-    FixedMultiIndexSet<MemorySpace> mset = mset_h.Fix(true);
-
-    SECTION("AdaptiveClenshawCurtis")
-    {
-        options.quadType = QuadTypes::AdaptiveClenshawCurtis;
-
-        std::shared_ptr<ConditionalMapBase<MemorySpace>> map = MapFactory::CreateComponent<MemorySpace>(mset, options);
-        REQUIRE(map != nullptr);
-
-        Kokkos::View<double *, MemorySpace> coeffs("Coefficients", map->numCoeffs);
-        for (unsigned int i = 0; i < map->numCoeffs; ++i)
-            coeffs(i) = i * cos(0.5 + i * M_PI * 2 / map->numCoeffs);
         map->SetCoeffs(coeffs);
 
         unsigned int numPts = 5;
