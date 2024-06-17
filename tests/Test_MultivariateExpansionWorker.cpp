@@ -12,7 +12,7 @@ using namespace mpart;
 using namespace Catch;
 
 using HomogeneousEval_T = BasisEvaluator<BasisHomogeneity::Homogeneous, ProbabilistHermite>;
-using Sigmoid_T = Sigmoid1d<Kokkos::HostSpace,SigmoidTypeSpace::Logistic>;
+using Sigmoid_T = Sigmoid1d<Kokkos::HostSpace,Logistic>;
 using OffdiagHomogeneousEval_T = BasisEvaluator<BasisHomogeneity::OffdiagHomogeneous, Kokkos::pair<ProbabilistHermite,Sigmoid_T>, Identity>;
 using RectifiedOffdiagHomogeneousEval_T = BasisEvaluator<
     BasisHomogeneity::OffdiagHomogeneous,
@@ -47,7 +47,7 @@ Sigmoid_T CreateDefaultSigmoids() {
         }
     }
 
-    return Sigmoid1d<Kokkos::HostSpace,SigmoidTypeSpace::Logistic> {centers, widths, weights};
+    return Sigmoid1d<Kokkos::HostSpace,Logistic> {centers, widths, weights};
 }
 
 template<>

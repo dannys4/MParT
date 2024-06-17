@@ -31,17 +31,21 @@ std::shared_ptr<ConditionalMapBase<MemorySpace>> CreateComponentImpl_LEG_ACC(Fix
 
 static auto reg_host_leg_acc_exp_compact = mpart::MapFactory::CompFactoryImpl<Kokkos::HostSpace>::GetFactoryMap()->insert(std::make_pair(std::make_tuple(BasisTypes::Legendre, false, PosFuncTypes::Exp, QuadTypes::AdaptiveClenshawCurtis, true), CreateComponentImpl_LEG_ACC<Kokkos::HostSpace, Exp>));
 static auto reg_host_leg_acc_splus_compact = mpart::MapFactory::CompFactoryImpl<Kokkos::HostSpace>::GetFactoryMap()->insert(std::make_pair(std::make_tuple(BasisTypes::Legendre, false, PosFuncTypes::SoftPlus, QuadTypes::AdaptiveClenshawCurtis, true), CreateComponentImpl_LEG_ACC<Kokkos::HostSpace, SoftPlus>));
+static auto reg_host_leg_acc_sig_compact = mpart::MapFactory::CompFactoryImpl<Kokkos::HostSpace>::GetFactoryMap()->insert(std::make_pair(std::make_tuple(BasisTypes::Legendre, false, PosFuncTypes::Logistic, QuadTypes::AdaptiveClenshawCurtis, true), CreateComponentImpl_LEG_ACC<Kokkos::HostSpace, Logistic>));
 #if defined(MPART_ENABLE_GPU)
     static auto reg_device_leg_acc_exp_compact = mpart::MapFactory::CompFactoryImpl<mpart::DeviceSpace>::GetFactoryMap()->insert(std::make_pair(std::make_tuple(BasisTypes::Legendre, false, PosFuncTypes::Exp, QuadTypes::AdaptiveClenshawCurtis, true), CreateComponentImpl_LEG_ACC<mpart::DeviceSpace, Exp>));
     static auto reg_device_leg_acc_splus_compact = mpart::MapFactory::CompFactoryImpl<mpart::DeviceSpace>::GetFactoryMap()->insert(std::make_pair(std::make_tuple(BasisTypes::Legendre, false, PosFuncTypes::SoftPlus, QuadTypes::AdaptiveClenshawCurtis, true), CreateComponentImpl_LEG_ACC<mpart::DeviceSpace, SoftPlus>));
+    static auto reg_device_leg_acc_sig_compact = mpart::MapFactory::CompFactoryImpl<mpart::DeviceSpace>::GetFactoryMap()->insert(std::make_pair(std::make_tuple(BasisTypes::Legendre, false, PosFuncTypes::Logistic, QuadTypes::AdaptiveClenshawCurtis, true), CreateComponentImpl_LEG_ACC<mpart::DeviceSpace, Logistic>));
 #endif
 
 #if defined(MPART_HAS_CEREAL)
 REGISTER_HOMOGENEOUS_MONO_COMP(ShiftedLegendre, Exp, AdaptiveClenshawCurtis, Kokkos::HostSpace, true)
 REGISTER_HOMOGENEOUS_MONO_COMP(ShiftedLegendre, SoftPlus, AdaptiveClenshawCurtis, Kokkos::HostSpace, true)
+REGISTER_HOMOGENEOUS_MONO_COMP(ShiftedLegendre, Logistic, AdaptiveClenshawCurtis, Kokkos::HostSpace, true)
 #if defined(MPART_ENABLE_GPU)
 REGISTER_HOMOGENEOUS_MONO_COMP(ShiftedLegendre, Exp, AdaptiveClenshawCurtis, mpart::DeviceSpace, true)
 REGISTER_HOMOGENEOUS_MONO_COMP(ShiftedLegendre, SoftPlus, AdaptiveClenshawCurtis, mpart::DeviceSpace, true)
+REGISTER_HOMOGENEOUS_MONO_COMP(ShiftedLegendre, Logistic, AdaptiveClenshawCurtis, mpart::DeviceSpace, true)
 #endif
 CEREAL_REGISTER_DYNAMIC_INIT(mpartInitMapFactory19)
 #endif

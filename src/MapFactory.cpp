@@ -359,9 +359,9 @@ std::shared_ptr<ConditionalMapBase<MemorySpace>> MapFactory::CreateSigmoidCompon
     Kokkos::deep_copy(centers_copy, centers);
     // Dispatch to the correct sigmoid expansion template
     if(opts.posFuncType == PosFuncTypes::Exp) {
-        return CreateSigmoidExpansionTemplate<MemorySpace, HermiteFunction, Exp, SigmoidTypeSpace::Logistic, SoftPlus>(inputDim, offDiagOrder, crossOrder, centers_copy, opts.edgeShape, opts.sigmoidBasisSumType);
+        return CreateSigmoidExpansionTemplate<MemorySpace, HermiteFunction, Exp, Logistic, SoftPlus>(inputDim, offDiagOrder, crossOrder, centers_copy, opts.edgeShape, opts.sigmoidBasisSumType);
     } else if(opts.posFuncType == PosFuncTypes::SoftPlus) {
-        return CreateSigmoidExpansionTemplate<MemorySpace, HermiteFunction, SoftPlus, SigmoidTypeSpace::Logistic, SoftPlus>(inputDim, offDiagOrder, crossOrder, centers_copy, opts.edgeShape, opts.sigmoidBasisSumType);
+        return CreateSigmoidExpansionTemplate<MemorySpace, HermiteFunction, SoftPlus, Logistic, SoftPlus>(inputDim, offDiagOrder, crossOrder, centers_copy, opts.edgeShape, opts.sigmoidBasisSumType);
     }
     else {
         return nullptr;
@@ -387,9 +387,9 @@ std::shared_ptr<ConditionalMapBase<MemorySpace>> MapFactory::CreateSigmoidCompon
     Kokkos::deep_copy(centers_copy, centers);
     // Dispatch to the correct sigmoid expansion template
     if(opts.posFuncType == PosFuncTypes::Exp) {
-        return CreateSigmoidExpansionTemplate<MemorySpace, HermiteFunction, Exp, SigmoidTypeSpace::Logistic, SoftPlus>(mset_diag, centers_copy, opts.edgeShape, opts.sigmoidBasisSumType);
+        return CreateSigmoidExpansionTemplate<MemorySpace, HermiteFunction, Exp, Logistic, SoftPlus>(mset_diag, centers_copy, opts.edgeShape, opts.sigmoidBasisSumType);
     } else if(opts.posFuncType == PosFuncTypes::SoftPlus) {
-        return CreateSigmoidExpansionTemplate<MemorySpace, HermiteFunction, SoftPlus, SigmoidTypeSpace::Logistic, SoftPlus>(mset_diag, centers_copy, opts.edgeShape, opts.sigmoidBasisSumType);
+        return CreateSigmoidExpansionTemplate<MemorySpace, HermiteFunction, SoftPlus, Logistic, SoftPlus>(mset_diag, centers_copy, opts.edgeShape, opts.sigmoidBasisSumType);
     }
     else {
         return nullptr;

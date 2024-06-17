@@ -4,6 +4,8 @@
 #include <Kokkos_Core.hpp>
 #include <math.h>
 
+#include "MParT/Utilities/MathFunctions.h"
+
 namespace mpart{
 
 /**
@@ -54,6 +56,24 @@ public:
         return std::log(x);
     }
 
+};
+
+struct Logistic {
+	KOKKOS_INLINE_FUNCTION double static Evaluate(double x) {
+		return 0.5 + 0.5 * MathSpace::tanh(x / 2);
+	}
+	KOKKOS_INLINE_FUNCTION double static Inverse(double y) {
+		return y > 1 ? -MathSpace::log((1 - y) / y) : MathSpace::log(y / (1 - y));
+	}
+	KOKKOS_INLINE_FUNCTION double static Derivative(double x) {
+		double fx = Evaluate(x);
+		return fx * (1 - fx);  // Known expression for the derivative of this
+	}
+	KOKKOS_INLINE_FUNCTION double static SecondDerivative(double x) {
+		double fx = Evaluate(x);
+		return fx * (1 - fx) *
+					(1 - 2 * fx);  // Known expression for the second derivative of this
+	}
 };
 
 } // namespace mpart

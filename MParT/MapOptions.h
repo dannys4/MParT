@@ -19,7 +19,8 @@ namespace mpart{
     enum class PosFuncTypes
     {
         Exp,
-        SoftPlus
+        SoftPlus,
+        Logistic
     };
 
     enum class QuadTypes
@@ -179,7 +180,7 @@ namespace mpart{
         }
 
         inline static const std::string btypes[4] = {"ProbabilistHermite", "PhysicistHermite", "HermiteFunctions", "Legendre"};
-        inline static const std::string pftypes[2] = {"Exp", "SoftPlus"};
+        inline static const std::string pftypes[3] = {"Exp", "SoftPlus", "Logistic"};
         inline static const std::string qtypes[3] = {"ClenshawCurtis", "AdaptiveSimpson", "AdaptiveClenshawCurtis"};
         inline static const std::string etypes[1] = {"SoftPlus"};
         inline static const std::string stypes[1] = {"Logistic"};

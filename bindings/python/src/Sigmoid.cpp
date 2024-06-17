@@ -13,7 +13,7 @@ using namespace mpart::binding;
 
 void mpart::binding::Sigmoid1dWrapper(py::module &m)
 {
-    typedef Sigmoid1d<Kokkos::HostSpace, mpart::SigmoidTypeSpace::Logistic, mpart::SoftPlus> SigmoidType;
+    typedef Sigmoid1d<Kokkos::HostSpace, mpart::Logistic, mpart::SoftPlus> SigmoidType;
 
     py::class_<SigmoidType, std::shared_ptr<SigmoidType>>(m, "Sigmoid1d")
         .def(py::init([](Eigen::Ref<Eigen::VectorXd> centers, 

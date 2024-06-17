@@ -868,7 +868,6 @@ public:
 
                 Kokkos::View<double*,MemorySpace> integral_denom;
                 Kokkos::View<double*,MemorySpace> workspace;
-                Kokkos::View<double*,MemorySpace> jac_denom;
 
                 // Evaluate the orthogonal polynomials in each direction (except the last) for all possible orders
                 Kokkos::View<double*,MemorySpace> cache(team_member.thread_scratch(1), cacheSize);
@@ -884,7 +883,6 @@ public:
 
                 double numer_diag_deriv, denom_eval, denom_eval_sq;
                 if constexpr(isCompact) {
-
                     integral_denom = Kokkos::View<double*,MemorySpace>(team_member.thread_scratch(1), numTerms+1);
                     workspace = Kokkos::View<double*,MemorySpace>(team_member.thread_scratch(1), workspaceSize);
 
@@ -973,7 +971,6 @@ public:
                     // Scale the jacobian by dg(df)
                     double numer_mixed_grad = jacView(i)*dgdf;
                     if constexpr(isCompact) {
-                        // TODO: do I need jac_denom in last dimension?
                         double denom_input_grad = integral_denom(i+1);
                         jacView(i) = (numer_mixed_grad*denom_eval - numer_diag_deriv*denom_input_grad)/denom_eval_sq;
                     } else {

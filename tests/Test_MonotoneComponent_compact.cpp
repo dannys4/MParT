@@ -30,7 +30,7 @@ TEST_CASE("Testing compact monotone component evaluation in 1d", "[MonotoneCompo
 
     /* Create and evaluate an affine map
        - Set coefficients so that f(x) = 1.0 + x
-       - (int_0^x exp( d f(t) ) dt)/(int_0^1 exp( d f(t) ) dt ) =  x*exp(-1) + 1
+       - (int_0^x exp( d f(t) ) dt)/(int_0^1 exp( d f(t) ) dt ) =  (x - 0)*exp(1) /( (1 - 0)*exp(1)) = x
     */
     SECTION("Affine Map")
     {
@@ -56,8 +56,8 @@ TEST_CASE("Testing compact monotone component evaluation in 1d", "[MonotoneCompo
 
         for (unsigned int i = 0; i < numPts; ++i)
         {
-            CHECK_THAT(output(i), WithinRel(1 + exp(-1) * evalPts(0, i), testTol));
-            bool isInbounds = output(i) < 1. && output(i) > 0.;
+            CHECK_THAT(output(i), WithinRel(evalPts(0, i), testTol));
+            bool isInbounds = output(i) <= 1. && output(i) >= 0.;
             CHECK(isInbounds);
         }
     }

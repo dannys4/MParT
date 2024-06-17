@@ -154,7 +154,7 @@ TEST_CASE("RectifiedMultivariateExpansion, Unrectified", "[RMVE_NoRect]") {
     // Cannot test Inverse since the unrectified expansion is generally not be invertible
 }
 
-using TestPair1 = std::pair<HermiteFunction, SigmoidTypeSpace::Logistic>;
+using TestPair1 = std::pair<HermiteFunction, Logistic>;
 TEMPLATE_TEST_CASE("Single Sigmoid RectifiedMultivariateExpansion","[single_sigmoid_rmve]", TestPair1) {
     using OffdiagBasis = typename TestType::first_type;
     using SigmoidShape = typename TestType::second_type;

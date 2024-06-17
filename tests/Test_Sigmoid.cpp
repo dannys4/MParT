@@ -65,12 +65,12 @@ void TestSigmoidGradients(Function Sigmoid, unsigned int N_grad_points, double f
     }
 }
 
-using TestType1 = std::pair< SigmoidTypeSpace::Logistic, Kokkos::HostSpace>;
+using TestType1 = std::pair< Logistic, Kokkos::HostSpace>;
 
 #if defined(MPART_ENABLE_GPU)
-using TestType2 = std::pair< SigmoidTypeSpace::Logistic, DeviceSpace>;
+using TestType2 = std::pair< Logistic, DeviceSpace>;
 #else
-using TestType2 = std::pair< SigmoidTypeSpace::Logistic, std::false_type>;
+using TestType2 = std::pair< Logistic, std::false_type>;
 #endif
 
 TEMPLATE_TEST_CASE("Sigmoid1d","[sigmoid1d]", TestType1, TestType2) {

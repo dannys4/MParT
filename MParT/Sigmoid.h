@@ -6,40 +6,10 @@
 #include "MParT/Utilities/MathFunctions.h"
 #include "MParT/Utilities/KokkosSpaceMappings.h"
 #include "MParT/Utilities/Miscellaneous.h"
-#include "MParT/Utilities/MathFunctions.h"
+#include "MParT/PositiveBijectors.h"
 #include <iostream>
 
 namespace mpart {
-
-/**
- * @brief A small namespace to store univariate functions used in @ref Sigmoid1d
- *
- * A "sigmoid" class is expected to have at least three functions:
- *
- * - \c Evaluate
- * - \c Derivative
- * - \c SecondDerivative
- */
-namespace SigmoidTypeSpace {
-struct Logistic {
-	KOKKOS_INLINE_FUNCTION double static Evaluate(double x) {
-		return 0.5 + 0.5 * MathSpace::tanh(x / 2);
-	}
-	KOKKOS_INLINE_FUNCTION double static Inverse(double y) {
-		return y > 1 ? -MathSpace::log((1 - y) / y) : MathSpace::log(y / (1 - y));
-	}
-	KOKKOS_INLINE_FUNCTION double static Derivative(double x) {
-		double fx = Evaluate(x);
-		return fx * (1 - fx);  // Known expression for the derivative of this
-	}
-	KOKKOS_INLINE_FUNCTION double static SecondDerivative(double x) {
-		double fx = Evaluate(x);
-		return fx * (1 - fx) *
-					(1 - 2 * fx);  // Known expression for the second derivative of this
-	}
-};
-}  // namespace SigmoidTypeSpace
-
 
 /** If the array of starting indices \f$\sigma_k\f$ is not defined explicitly, we can 
  *  will interpret the length of the weight and center vectors in one of these ways.
@@ -83,7 +53,7 @@ enum class SigmoidSumSizeType {
  * @tparam SigmoidType Class defining eval, @ref SigmoidTypeSpace
  * @tparam EdgeType Class defining the edge function type, e.g., SoftPlus
  */
-template <typename MemorySpace, typename SigmoidType = SigmoidTypeSpace::Logistic, typename EdgeType = SoftPlus>
+template <typename MemorySpace, typename SigmoidType = Logistic, typename EdgeType = SoftPlus>
 class Sigmoid1d {
  public:
 
