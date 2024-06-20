@@ -385,6 +385,79 @@ TEST_CASE("Testing compact monotone component derivative", "[CompactMonotoneComp
     }
 }
 
+TEST_CASE("Compact component input gradients", "[CompactInputGrad]") {
+
+    // const double testTol = 1e-4;
+    unsigned int dim = 2;
+
+    // Create points evently spaced on [lb,ub]
+    unsigned int numPts = 20;
+    double fd_step = 1e-7;
+
+    Kokkos::View<double **, HostSpace> evalPts("Evaluate Points", dim, numPts);
+    for (unsigned int i = 0; i < numPts; ++i)
+    {
+        evalPts(0, i) = i / double(numPts + 2);
+        evalPts(1, i) = i / double(numPts + 1);
+    }
+
+    unsigned int maxDegree = 3;
+    MultiIndexSet mset = MultiIndexSet::CreateTotalOrder(dim, maxDegree);
+    MultivariateExpansionWorker<BasisEvaluator<BasisHomogeneity::Homogeneous, ShiftedLegendre>, HostSpace> expansion(mset);
+
+    unsigned int maxSub = 20;
+    double relTol = 1e-7;
+    double absTol = 1e-7;
+    AdaptiveSimpson quad(maxSub, 1, nullptr, absTol, relTol, QuadError::First);
+
+    MonotoneComponent<decltype(expansion), SoftPlus, AdaptiveSimpson<HostSpace>, HostSpace, true> comp(expansion, quad);
+
+    Kokkos::View<double *, HostSpace> coeffs("Expansion coefficients", mset.Size());
+    for (unsigned int i = 0; i < coeffs.extent(0); ++i)
+        coeffs(i) = 1. + 0.1 * std::cos(2 * i + 0.5);
+
+    comp.SetCoeffs(coeffs);
+
+
+    SECTION("Gradient") {
+        Kokkos::View<double **, HostSpace> evals = comp.Evaluate(evalPts);
+        Kokkos::View<double **, HostSpace> evals_fd("Finite Difference Eval space", 1, numPts);
+        Kokkos::View<double **, HostSpace> sens("sensitivities", 1, numPts);
+        double sens_constant = 2.;
+        Kokkos::deep_copy(sens, sens_constant);
+        Kokkos::View<double **, HostSpace> grads = comp.Gradient(evalPts, sens);
+        REQUIRE(grads.extent(0) == comp.inputDim);
+        REQUIRE(grads.extent(1) == numPts);
+        for(int i = 0; i < dim; i++) {
+            for(int j = 0; j < numPts; j++)
+                evalPts(i,j) += fd_step;
+            comp.EvaluateImpl(evalPts, evals_fd);
+            for(int j = 0; j < numPts; j++) {
+                double fd_grad = (evals_fd(0, j) - evals(0,j))/fd_step;
+                CHECK_THAT(grads(i,j), WithinRel(sens_constant*fd_grad, 1e-3) || WithinAbs(sens_constant*fd_grad, 1e-3));
+                evalPts(i,j) -= fd_step;
+            }
+        }
+    }
+
+    SECTION("LogDeterminantInputGrad") {
+        Kokkos::View<double*, HostSpace> logdets = comp.LogDeterminant(evalPts);
+        Kokkos::View<double*, HostSpace> logdets_fd("Finite Difference LogDeterminant space", numPts);
+        Kokkos::View<double**, HostSpace> grads = comp.LogDeterminantInputGrad(evalPts);
+        REQUIRE(grads.extent(0) == comp.inputDim);
+        REQUIRE(grads.extent(1) == numPts);
+        for(int i = 0; i < dim; i++) {
+            for(int j = 0; j < numPts; j++) evalPts(i,j) += fd_step;
+            comp.LogDeterminantImpl(evalPts, logdets_fd);
+            for(int j = 0; j < numPts; j++) {
+                double fd_grad = (logdets_fd(j) - logdets(j))/fd_step;
+                CHECK_THAT(grads(i,j), WithinRel(fd_grad, 1e-3) || WithinAbs(fd_grad, 1e-3));
+                evalPts(i,j) -= fd_step;
+            }
+        }
+    }
+}
+
 TEST_CASE("Compact least squares test", "[CompactMonotoneComponentRegression]")
 {
 
