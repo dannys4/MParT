@@ -56,8 +56,8 @@ TEST_CASE("Testing compact monotone component evaluation in 1d", "[MonotoneCompo
 
         for (unsigned int i = 0; i < numPts; ++i)
         {
-            CHECK_THAT(output(i), WithinRel(1 + exp(-1) * evalPts(0, i), testTol));
-            bool isInbounds = output(i) < 1. && output(i) > 0.;
+            CHECK_THAT(output(i), WithinRel(evalPts(0, i), testTol));
+            bool isInbounds = output(i) <= 1. && output(i) >= 0.;
             CHECK(isInbounds);
         }
     }
