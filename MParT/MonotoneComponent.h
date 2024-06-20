@@ -849,7 +849,7 @@ public:
         checkMixedJacobianInput("ContinuousMixedJacobian", jacobian.extent(0), jacobian.extent(1), numTerms, numPts);
 
         // Ask the expansion how much memory it would like for it's one-point cache
-        quad_.SetDim(numTerms+1);
+        if constexpr(isCompact) quad_.SetDim(numTerms+1);
         const unsigned int workspaceSize = quad_.WorkspaceSize();
         const unsigned int cacheSize = expansion_.CacheSize();
 
@@ -889,7 +889,6 @@ public:
                     MonotoneIntegrand<ExpansionType, PosFuncType, decltype(pt),decltype(coeffs), MemorySpace> integrand_denom(cache.data(), expansion_, pt, 1., coeffs, DerivativeFlags::Parameters, nugget_);
                     quad_.Integrate(workspace.data(), integrand_denom, 0, 1, integral_denom.data());
 
-                    expansion_.FillCache2(cache.data(), pt, 0., DerivativeFlags::Parameters);
                     numer_diag_deriv = PosFuncType::Evaluate(df);
                     denom_eval = integral_denom(0);
                     denom_eval_sq = denom_eval*denom_eval;
@@ -923,12 +922,13 @@ public:
 
         checkMixedJacobianInput("ContinuousMixedInputJacobian", jacobian.extent(0), jacobian.extent(1), dim, numPts);
 
-        // Ask the expansion how much memory it would like for its one-point cache
+        // Ask the expansion how much memory it would like for it's one-point cache
+        if constexpr(isCompact) quad_.SetDim(dim_+1);
         const unsigned int workspaceSize = quad_.WorkspaceSize();
-        const unsigned int cacheSize = expansion_.CacheSize() + isCompact*(workspaceSize + dim_ + 1);
+        const unsigned int cacheSize = expansion_.CacheSize();
 
         // Create a policy with enough scratch memory to cache the polynomial evaluations
-        auto cacheBytes = Kokkos::View<double*,MemorySpace>::shmem_size(cacheSize);
+        auto cacheBytes = Kokkos::View<double*,MemorySpace>::shmem_size(cacheSize + isCompact*(workspaceSize + dim_ + 1));
 
         auto functor = KOKKOS_CLASS_LAMBDA (typename Kokkos::TeamPolicy<ExecutionSpace>::member_type team_member) {
 
@@ -961,13 +961,15 @@ public:
                     integral_denom = Kokkos::View<double*,MemorySpace>(team_member.thread_scratch(1), dim_+1);
                     workspace = Kokkos::View<double*,MemorySpace>(team_member.thread_scratch(1), workspaceSize);
 
-                    expansion_.FillCache2(cache.data(), pt, 1., DerivativeFlags::Input);
+                    MonotoneIntegrand<ExpansionType, PosFuncType, decltype(pt),decltype(coeffs), MemorySpace> integrand_denom(cache.data(), expansion_, pt, 1., coeffs, DerivativeFlags::Input, nugget_);
+                    quad_.Integrate(workspace.data(), integrand_denom, 0, 1, integral_denom.data());
+
                     numer_diag_deriv = PosFuncType::Evaluate(df);
                     denom_eval = integral_denom(0);
                     denom_eval_sq = denom_eval*denom_eval;
                 }
 
-                for(unsigned int i=0; i<dim_; ++i){
+                for(unsigned int i=0; i<dim_-isCompact; ++i){
                     // Scale the jacobian by dg(df)
                     double numer_mixed_grad = jacView(i)*dgdf;
                     if constexpr(isCompact) {
@@ -977,6 +979,8 @@ public:
                         jacView(i) = numer_mixed_grad;
                     }
                 }
+                if constexpr(isCompact) jacView(dim_-1) = jacView(dim_-1)*dgdf/denom_eval;
+                
             }
 
         };
