@@ -8,13 +8,12 @@ on:
   pull_request: {}
 
 env:
-  CONDA_CACHE_NUMBER: 0  # increase to reset cache manually
+  CONDA_CACHE_NUMBER: 0 # increase to reset cache manually
 
 jobs:
   build-tests:
     runs-on: ubuntu-latest
     steps:
-
       - name: Store Date
         shell: bash -l {0}
         run: echo "DATE=$(date +'%Y%m%d')" >> $GITHUB_ENV
@@ -25,26 +24,26 @@ jobs:
           path: mpart
 
       - name: Use Conda
-        uses: conda-incubator/setup-miniconda@v2
+        uses: conda-incubator/setup-miniconda@v3
         with:
-          miniforge-variant: Mambaforge
-          miniforge-version: latest
-          activate-environment: test
-          use-mamba: true
           auto-update-conda: true
           python-version: "3.8"
+          activate-environment: "test"
 
       - name: Cache Conda Deps
         uses: actions/cache@v3
         id: cache-conda
         with:
-          path: /usr/share/miniconda3/envs/test
+          path: /usr/share/miniconda/envs/test
           key: cache-conda-${{ hashFiles('mpart/.github/environment.yml') }}-${{ env.DATE }}-${{ env.CONDA_CACHE_NUMBER }}-BINDINGS
 
       - name: Install Conda Dependencies
         shell: bash -l {0}
-        run: mamba env update -n test -f $GITHUB_WORKSPACE/mpart/.github/environment.yml
+        run: conda env update -n test -f $GITHUB_WORKSPACE/mpart/.github/environment.yml
         if: steps.cache-conda.outputs.cache-hit != 'true'
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: "1.10"
 
       - name: Setup Julia
         run: |
@@ -62,7 +61,7 @@ jobs:
         id: cache-kokkos
         with:
           path: "${{ github.workspace }}/KOKKOS_INSTALL"
-          key: kokkos4.2.00
+          key: kokkos4.5.01
 
       - if: ${{steps.cache-kokkos.outputs.cache-hit != 'true'}}
         name: Checkout Kokkos
@@ -70,7 +69,7 @@ jobs:
         with:
           repository: kokkos/kokkos
           path: kokkos
-          ref: '4.2.00'
+          ref: "4.5.01"
 
       - if: ${{steps.cache-kokkos.outputs.cache-hit != 'true'}}
         name: Install Kokkos
@@ -83,7 +82,8 @@ jobs:
                 -DCMAKE_CXX_STANDARD=17    \
                 -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/KOKKOS_INSTALL/ \
                 ../
-          sudo make -j2 install
+          sudo cmake --build . -- -j2
+          sudo cmake --install .
 
       - name: Configure MParT
         shell: bash -l {0}
@@ -97,7 +97,7 @@ jobs:
 
       - name: Build MParT
         shell: bash -l {0}
-        run: cd $GITHUB_WORKSPACE/mpart/build; make -j2 install
+        run: cd $GITHUB_WORKSPACE/mpart/build; cmake --build . -- -j2; cmake --install .
 
       - name: Run Python Tests
         continue-on-error: true
@@ -132,4 +132,4 @@ jobs:
         if: always()
         with:
           check_name: "Test Results with Bindings"
-          junit_files: ${{ github.workspace }}/test-results-*.xml
+          files: ${{ github.workspace }}/test-results-*.xml

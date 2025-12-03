@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.13...3.31)
 project(MParT VERSION 2.2.1)
 
 message(STATUS "Will install MParT to ${CMAKE_INSTALL_PREFIX}")
@@ -88,7 +88,7 @@ if(NOT Kokkos_FOUND)
         FetchContent_Declare(
             kokkos
             GIT_REPOSITORY https://github.com/kokkos/kokkos
-            GIT_TAG 4.2.00
+            GIT_TAG 4.5.01
             GIT_SHALLOW TRUE
         )
         FetchContent_MakeAvailable(kokkos)
@@ -96,7 +96,7 @@ if(NOT Kokkos_FOUND)
         message(FATAL_ERROR "Could not find Kokkos library and MPART_FETCH_DEPS=OFF, so CMake will not attempt to fetch and install Kokkos itself.")
     endif()
 else()
-    message(STATUS "Found Kokkos!")
+    message(STATUS "Found Kokkos: ${Kokkos_DIR}")
 endif()
 
 if(${COMPILER_IS_NVCC})
@@ -297,7 +297,7 @@ if(MPART_BUILD_TESTS)
             FetchContent_Declare(
                 Catch2
                 GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-                GIT_TAG v3.2.1
+                GIT_TAG v3.4.0
             )
 
             FetchContent_MakeAvailable(Catch2)
